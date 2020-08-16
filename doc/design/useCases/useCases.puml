@@ -1,5 +1,4 @@
 @startuml
-
 'Participants
 left to right direction
 actor User
