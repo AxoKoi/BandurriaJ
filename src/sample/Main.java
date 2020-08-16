@@ -22,7 +22,7 @@ public class Main extends Application {
 		MenuBar menuBar = getMenuBar();
 		VBox mainBox = new VBox(menuBar);
 
-		primaryStage.setTitle("Hello World");
+		primaryStage.setTitle("BandurriaJ");
 		VBox vboxLeft = new VBox();
 
 		FileChooser fileChooser = new FileChooser();
