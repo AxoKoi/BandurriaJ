@@ -1,0 +1,11 @@
+@startuml
+
+'Participants
+left to right direction
+actor User
+
+'Relationships
+User --> (Load CD Metadata)
+User --> (Stores Cd in Catalogue)
+User --> (Retrieves data from catalogue)
+@enduml
