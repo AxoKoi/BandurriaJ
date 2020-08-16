@@ -18,6 +18,13 @@
 			<artifactId>javafx-controls</artifactId>
 			<version>13</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.tika/tika-parsers -->
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-parsers</artifactId>
+			<version>1.24.1</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -27,6 +34,14 @@
 				<version>0.0.3</version>
 				<configuration>
 					<mainClass>HelloFX</mainClass>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>7</source>
+					<target>7</target>
 				</configuration>
 			</plugin>
 		</plugins>
