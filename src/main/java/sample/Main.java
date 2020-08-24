@@ -8,8 +8,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -39,6 +41,12 @@ public class Main extends Application {
 
 		VBox vboxRight = new VBox();
 		vboxRight.getChildren().add(new Button("RightBox"));
+		TextField inputText = new TextField("Enter band");
+		inputText.setOnKeyPressed(e->{
+			if(e.getEventType().equals(KeyCode.ENTER)){
+
+			}
+		});
 
 		HBox hbox = new HBox(vboxLeft, vboxRight);
 		mainBox.getChildren().add(hbox);
