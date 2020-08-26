@@ -2,6 +2,7 @@ package application;
 
 import java.io.File;
 
+import application.views.DiscView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.Disc;
 
 public class Main extends Application {
 
@@ -39,15 +41,7 @@ public class Main extends Application {
 		vboxLeft.getChildren().add(button);
 		vboxLeft.getChildren().add(treeView);
 
-		VBox vboxRight = new VBox();
-		vboxRight.getChildren().add(new Button("RightBox"));
-		TextField inputText = new TextField("Enter band");
-		inputText.setOnKeyPressed(e->{
-			if(e.getEventType().equals(KeyCode.ENTER)){
-
-			}
-		});
-
+		VBox vboxRight = new DiscView(new Disc());
 		HBox hbox = new HBox(vboxLeft, vboxRight);
 		mainBox.getChildren().add(hbox);
 		hbox.setPrefWidth(300);
