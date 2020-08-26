@@ -2,38 +2,47 @@ package application;
 
 import java.io.File;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Component;
+
+import application.model.Disc;
+import application.model.DiscRepository;
 import application.views.DiscView;
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import model.Disc;
 
-public class Main extends Application {
+@Component
+public class stageInitializer implements ApplicationListener<MainApplication.StageReadyEvent> {
+
+	@Autowired
+	DiscRepository discRepository;
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void onApplicationEvent(MainApplication.StageReadyEvent event) {
+		Stage stage = event.getStage();
+		buildEntities();
+
 		MenuBar menuBar = getMenuBar();
 		VBox mainBox = new VBox(menuBar);
 
-		primaryStage.setTitle("BandurriaJ");
+		stage.setTitle("BandurriaJ");
 		VBox vboxLeft = new VBox();
 
 		FileChooser fileChooser = new FileChooser();
 
 		Button button = new Button("Select File");
 		button.setOnAction(e -> {
-			File selectedFile = fileChooser.showOpenDialog(primaryStage);
+			File selectedFile = fileChooser.showOpenDialog(stage);
 		});
 
 		TreeView<String> treeView = getTreeView();
@@ -41,13 +50,19 @@ public class Main extends Application {
 		vboxLeft.getChildren().add(button);
 		vboxLeft.getChildren().add(treeView);
 
-		VBox vboxRight = new DiscView(new Disc());
+		VBox vboxRight = new DiscView(discRepository.findAll().iterator().next());
 		HBox hbox = new HBox(vboxLeft, vboxRight);
 		mainBox.getChildren().add(hbox);
 		hbox.setPrefWidth(300);
 
-		primaryStage.setScene(new Scene(mainBox, 800, 500));
-		primaryStage.show();
+		stage.setScene(new Scene(mainBox, 800, 500));
+		stage.show();
+	}
+
+	private void buildEntities() {
+		Disc testDisc = new Disc();
+		testDisc.setName("test disc Name");
+		discRepository.save(testDisc);
 	}
 
 	private MenuBar getMenuBar() {
@@ -78,7 +93,4 @@ public class Main extends Application {
 		return treeView;
 	}
 
-	public static void main(String[] args) {
-		launch(args);
-	}
 }
