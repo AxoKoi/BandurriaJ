@@ -13,8 +13,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>8</source>
-					<target>8</target>
+					<source>11</source>
+					<target>11</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -24,6 +24,17 @@
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
 			<version>14</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.tika/tika-parsers -->
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-parsers</artifactId>
+			<version>1.24.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hihn</groupId>
+			<artifactId>musicbrainzws2-java</artifactId>
+			<version>3.0.15</version>
 		</dependency>
 	</dependencies>
 </project>

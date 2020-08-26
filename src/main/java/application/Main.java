@@ -1,4 +1,4 @@
-package sample;
+package application;
 
 import java.io.File;
 
