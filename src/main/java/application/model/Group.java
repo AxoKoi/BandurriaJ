@@ -16,7 +16,7 @@ public class Group {
 	private String name;
 
 	@OneToMany(targetEntity=Artist.class)
-	private List<Artist> artist;
+	private List<Artist> artists;
 
 	private String comment;
 
@@ -28,12 +28,12 @@ public class Group {
 		this.name = name;
 	}
 
-	public List<Artist> getArtist() {
-		return artist;
+	public List<Artist> getArtists() {
+		return artists;
 	}
 
-	public void setArtist(List<Artist> artist) {
-		this.artist = artist;
+	public void setArtists(List<Artist> artists) {
+		this.artists = artists;
 	}
 
 	public String getComment() {
