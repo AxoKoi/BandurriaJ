@@ -1,0 +1,18 @@
+@startuml
+
+package "Model" {
+'Entities definition
+ class Disc
+ class Catalogue
+ class Artist
+ class Band
+ class Track
+
+'Relationships
+  Disc }o- Catalogue
+  Disc }o- Band
+  Band -o{ Artist
+  Disc -|{ Track
+}
+
+@enduml
