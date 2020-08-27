@@ -1,6 +1,11 @@
 @startuml
 
-package "Model" {
+package "View JavaFX" as Front {
+
+}
+
+
+package "Model" as Model{
 'Entities definition
  class Disc
  class Catalogue
@@ -14,5 +19,12 @@ package "Model" {
   Band -o{ Artist
   Disc -|{ Track
 }
+
+database DB [
+  DB
+]
+
+    Front --> Model
+    Model --> DB
 
 @enduml
