@@ -1,13 +1,19 @@
 package application;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import application.model.Artist;
+import application.model.Band;
 import application.model.Disc;
 import application.model.DiscRepository;
+import application.model.GroupRepository;
+import application.model.Track;
 import application.views.DiscView;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,10 +28,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 @Component
-public class stageInitializer implements ApplicationListener<MainApplication.StageReadyEvent> {
+public class StageInitializer implements ApplicationListener<MainApplication.StageReadyEvent> {
 
 	@Autowired
-	DiscRepository discRepository;
+	private DiscRepository discRepository;
+	@Autowired
+	private GroupRepository groupRepository;
 
 	@Override
 	public void onApplicationEvent(MainApplication.StageReadyEvent event) {
@@ -62,6 +70,22 @@ public class stageInitializer implements ApplicationListener<MainApplication.Sta
 	private void buildEntities() {
 		Disc testDisc = new Disc();
 		testDisc.setName("test disc Name");
+
+		Band band = new Band();
+		band.setName("group name");
+		band.setComment("");
+		Artist artist = new Artist();
+		artist.setName("this is the artist name");
+		List<Artist> artists = new ArrayList<>();
+		artists.add(artist);
+		band.setArtists(artists);
+		testDisc.setBand(band);
+
+		Track track = new Track();
+		track.setName("Track 1");
+		List<Track> tracks = new ArrayList<>();
+		testDisc.setTracks(tracks);
+		groupRepository.save(band);
 		discRepository.save(testDisc);
 	}
 
