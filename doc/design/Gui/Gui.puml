@@ -42,7 +42,8 @@ salt
                  +++ Artist 1: Singer
                  +++ Artist 2: Drums
                 ++ Comments
-             }
+             } | {# Disc Image <&image> }
+
 
            } | { Search Results:
               {T
