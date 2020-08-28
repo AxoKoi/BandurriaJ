@@ -1,5 +1,9 @@
 # BandurriaJ
 
-Music fan may have a huge amounts of physical CDs. BandurriaJ will allow them to manage their full catalogue, providing tagging features and queries possibilities.
+Music fan may have a huge amount of physical CDs, LPs, Cassettes. BandurriaJ will allow them to manage their full catalogue,
+ providing tagging features and queries possibilities.
+ 
+ BandurriaJ is a full java desktop application based on JavaFx and Spring boot.
+ 
 
 If you want to participate, please do not hesitate to contact us!

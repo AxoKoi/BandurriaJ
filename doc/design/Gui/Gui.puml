@@ -27,7 +27,7 @@ salt
               }
              --
              {T
-               +Track1
+               + Current Track
                 ++ Title
                 ++ Duration
                 ++ Comments
@@ -53,6 +53,5 @@ salt
               }
              }
     }
-
 }
 @enduml
