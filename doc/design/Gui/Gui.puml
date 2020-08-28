@@ -1,7 +1,7 @@
 @startuml
 salt
 {
-    {* File | Edit | Import}
+    {* File | Edit | Import | Export | Settings }
     --
     {#
     My Catalogues | Current Disc: LP 1                  .| Smart search:"Enter search  "
