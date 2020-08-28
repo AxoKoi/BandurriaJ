@@ -1,4 +1,4 @@
-package sample.services.cd;
+package application.cd;
 
 import java.io.IOException;
 import java.io.InputStream;

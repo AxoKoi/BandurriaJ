@@ -1,12 +1,20 @@
 package application.views;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import application.model.Artist;
+import application.model.ArtistService;
+import application.model.Band;
+import application.model.BandService;
+import application.model.Disc;
+import application.model.DiscService;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import model.Disc;
 
 public class DiscView extends VBox {
 
-	private final Disc discToDisplay;
+	private Disc discToDisplay;
 
 	public DiscView(Disc discToDisplay) {
 		this.discToDisplay = discToDisplay;
@@ -14,7 +22,22 @@ public class DiscView extends VBox {
 	}
 
 	private void build() {
-		this.getChildren().add(new Label("Displaying disc:" + discToDisplay));
+		discToDisplay = DiscService.findById(discToDisplay.getId()).get();
+		VBox discInformationVBox = new VBox();
+//todo add checks if values are null/empty
+		Label discName = new Label("Name:" + discToDisplay.getName());
+		Label bandName = new Label("Group :" + discToDisplay.getBand().getName());
+		Band band = BandService.findById(discToDisplay.getBand().getId()).get();
+		List<Artist> artistList = band.getArtists();
+		artistList = artistList.stream().map(x -> ArtistService.getById(x.getId()).get()).collect(Collectors.toList());
+		List<Label> artists = artistList.stream().map(x -> new Label(x.getName() + ":" + x.getRole()))
+				.collect(Collectors.toList());
+
+		discInformationVBox.getChildren().add(discName);
+		discInformationVBox.getChildren().add(bandName);
+		discInformationVBox.getChildren().addAll(artists);
+
+		this.getChildren().add(discInformationVBox);
 	}
 
 }

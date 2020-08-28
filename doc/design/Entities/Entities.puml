@@ -1,0 +1,61 @@
+@startuml
+allowmixing
+
+package "View JavaFX" as Front {
+
+}
+
+package "Model" as Model{
+'Entities definition
+ class Disc
+ class Catalogue
+ class Artist
+ class Band
+ class Track
+
+'Relationships
+  Disc }o- Catalogue
+  Disc }o- Band
+  Band -o{ Artist
+  Disc -|{ Track
+}
+
+package Controller as Controller {
+
+}
+
+package "Services" as Services {
+
+  package CatalogueService as CatalogueS{
+
+  }
+
+  package MetadataRetrievalServices as MetaS {
+
+    package ApiService as ApiS{
+
+      package APItoProviderA{
+      }
+      package APItoProviderB{
+      }
+    }
+    package CdMetadata as CDMetaS{
+    }
+  }
+
+}
+
+database DB [
+  DB
+]
+
+storage "Api Provider <&cloud>" as apiProvider
+
+'Dependencies
+Front --> Controller
+Controller --> Model
+Controller --> Services
+ApiS --> apiProvider
+Model --> DB
+
+@enduml
