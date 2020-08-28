@@ -1,31 +1,30 @@
-package application.model;
+package com.axokoi.BandurriaJ.model;
 
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import lombok.Data;
 
 @Data
 @Entity
-public class Band {
+public class Disc {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
 	private String name;
 
-	@OneToMany(targetEntity = Artist.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Artist> artists;
+	@ManyToOne(targetEntity = Band.class, cascade = CascadeType.REFRESH)
+	private Band band;
 
-	@OneToMany(targetEntity = Disc.class, cascade = CascadeType.ALL)
-	private List<Disc> discs;
+	@OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL)
+	private List<Track> tracks;
 
 	private String comment;
 

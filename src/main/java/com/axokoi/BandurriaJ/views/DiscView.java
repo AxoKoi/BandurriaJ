@@ -1,14 +1,14 @@
-package application.views;
+package com.axokoi.BandurriaJ.views;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import application.model.Artist;
-import application.model.ArtistService;
-import application.model.Band;
-import application.model.BandService;
-import application.model.Disc;
-import application.model.DiscService;
+import com.axokoi.BandurriaJ.model.Artist;
+import com.axokoi.BandurriaJ.model.ArtistService;
+import com.axokoi.BandurriaJ.model.Band;
+import com.axokoi.BandurriaJ.model.BandService;
+import com.axokoi.BandurriaJ.model.Disc;
+import com.axokoi.BandurriaJ.model.DiscService;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 

@@ -1,4 +1,4 @@
-package application;
+package com.axokoi.BandurriaJ;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import application.model.DiscRepository;
+import com.axokoi.BandurriaJ.model.DiscRepository;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;

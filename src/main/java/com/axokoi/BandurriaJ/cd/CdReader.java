@@ -1,4 +1,4 @@
-package application.cd;
+package com.axokoi.BandurriaJ.cd;
 
 import java.io.IOException;
 import java.io.InputStream;

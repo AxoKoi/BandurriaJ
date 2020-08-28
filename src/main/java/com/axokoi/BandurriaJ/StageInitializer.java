@@ -1,4 +1,4 @@
-package application;
+package com.axokoi.BandurriaJ;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import application.model.Artist;
-import application.model.Band;
-import application.model.Disc;
-import application.model.DiscRepository;
-import application.model.GroupRepository;
-import application.model.Track;
-import application.views.DiscView;
+import com.axokoi.BandurriaJ.model.Artist;
+import com.axokoi.BandurriaJ.model.Band;
+import com.axokoi.BandurriaJ.model.Disc;
+import com.axokoi.BandurriaJ.model.DiscRepository;
+import com.axokoi.BandurriaJ.model.GroupRepository;
+import com.axokoi.BandurriaJ.model.Track;
+import com.axokoi.BandurriaJ.views.DiscView;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;

@@ -1,4 +1,4 @@
-package application.model;
+package com.axokoi.BandurriaJ.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

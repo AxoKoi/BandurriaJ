@@ -1,4 +1,4 @@
-package application.model;
+package com.axokoi.BandurriaJ.model;
 
 import org.springframework.data.repository.CrudRepository;
 

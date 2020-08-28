@@ -1,4 +1,4 @@
-package application;
+package com.axokoi.BandurriaJ;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
