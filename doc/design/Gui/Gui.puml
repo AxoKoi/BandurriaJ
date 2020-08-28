@@ -1,0 +1,57 @@
+@startuml
+salt
+{
+    {* File | Edit | Import}
+    --
+    {#
+    My Catalogues | Current Disc: LP 1                  .| Smart search:"Enter search  "
+        {T
+         + Catalogues
+          ++ Catalogue 1 : CDs
+           +++ Disc A
+           +++ Disc B
+           +++ Disc C
+          ++ Catalogue 2 : LP
+           +++ LP 1
+           +++ LP 2
+          ++ Cassettes
+           +++ Cassette 1
+           +++ Cassette 2
+        } | {
+              {T
+                + LP1
+                ++ Track1
+                ++ Track2
+                ++ Track3
+                ++ Track4
+              }
+             --
+             {T
+               +Track1
+                ++ Title
+                ++ Duration
+                ++ Comments
+             }
+             --
+             {T
+               +Disc Information
+                ++ Title
+                ++ Year
+                ++ Band
+                ++ Artist
+                 +++ Artist 1: Singer
+                 +++ Artist 2: Drums
+                ++ Comments
+             }
+
+           } | { Search Results:
+              {T
+                + Result 1
+                + Result 2
+                + Result 3
+              }
+             }
+    }
+
+}
+@enduml

@@ -7,3 +7,8 @@ First of all, you can see some of the usecases:
 Here is the class diagram:
 
 ![](../images/Entities.svg)
+
+
+You can check the Gui archetype:
+
+![](../images/Gui.svg)
