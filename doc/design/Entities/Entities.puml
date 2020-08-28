@@ -1,9 +1,9 @@
 @startuml
+allowmixing
 
 package "View JavaFX" as Front {
 
 }
-
 
 package "Model" as Model{
 'Entities definition
@@ -20,11 +20,42 @@ package "Model" as Model{
   Disc -|{ Track
 }
 
+package Controller as Controller {
+
+}
+
+package "Services" as Services {
+
+  package CatalogueService as CatalogueS{
+
+  }
+
+  package MetadataRetrievalServices as MetaS {
+
+    package ApiService as ApiS{
+
+      package APItoProviderA{
+      }
+      package APItoProviderB{
+      }
+    }
+    package CdMetadata as CDMetaS{
+    }
+  }
+
+}
+
 database DB [
   DB
 ]
 
-    Front --> Model
-    Model --> DB
+storage "Api Provider <&cloud>" as apiProvider
+
+'Dependencies
+Front --> Controller
+Controller --> Model
+Controller --> Services
+ApiS --> apiProvider
+Model --> DB
 
 @enduml
