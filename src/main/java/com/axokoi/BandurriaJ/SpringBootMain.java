@@ -7,8 +7,12 @@ import javafx.application.Application;
 @SpringBootApplication
 public class SpringBootMain {
 
+	private static DBCreation dbCreation;
+
 	public static void main(String[] args) {
 		Application.launch(MainApplication.class, args);
 	}
 
 }
+
+

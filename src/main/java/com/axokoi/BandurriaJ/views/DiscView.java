@@ -9,6 +9,7 @@ import com.axokoi.BandurriaJ.model.Band;
 import com.axokoi.BandurriaJ.model.BandService;
 import com.axokoi.BandurriaJ.model.Disc;
 import com.axokoi.BandurriaJ.model.DiscService;
+
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
