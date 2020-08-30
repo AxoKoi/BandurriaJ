@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import com.axokoi.BandurriaJ.Controllers.CatalogueController;
 import com.axokoi.BandurriaJ.model.Catalogue;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
@@ -15,6 +17,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -44,6 +48,14 @@ public class CatalogueView extends VBox {
 					rootItem.getChildren().add(catalogueItem);
 				}
 		);
+		treeView.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+			if (event.getCode() == KeyCode.DELETE) {
+				displayDeleteCatalogue(treeView.getSelectionModel().getSelectedItems().get(0).getValue());
+			}
+			if (event.getCode() == KeyCode.INSERT) {
+				displayAddNewCataloguePopUp();
+			}
+		});
 		treeView.setRoot(rootItem);
 		addContextMenu(treeView);
 		rootItem.setExpanded(true);
@@ -51,26 +63,32 @@ public class CatalogueView extends VBox {
 	}
 
 	private void addContextMenu(TreeView<String> treeView) {
-//todo need to pass the selected Catalogue to the popupwindow
 		ContextMenu catalogueContextMenu = new ContextMenu();
 		MenuItem addNewCatalogueItem = new MenuItem("add a new Catalogue");
-		addNewCatalogueItem.setOnAction(event -> displayAddNewCataloguePopUp());
+		addNewCatalogueItem.setOnAction(displayAddNewCataloguePopupHandler());
 
-		MenuItem deleteCatalogue = new MenuItem("delete this catalogue!");
-		deleteCatalogue.setOnAction(event -> displayDeleteCatalogue((MenuItem) event.getSource()));
-		catalogueContextMenu.getItems().addAll(addNewCatalogueItem, deleteCatalogue);
+		catalogueContextMenu.getItems().addAll(addNewCatalogueItem);
 
 		treeView.setContextMenu(catalogueContextMenu);
+
 	}
 
-	private void displayDeleteCatalogue(MenuItem menuItem) {
-		Stage popUpStage = new Stage();
-		Label warning = new Label("Warninig! This will delete your catalogue: " + menuItem.getText());
-		Button proceedButton = new Button("Delete");
-		Button cancelButton = new Button("Cancel");
+	private EventHandler<ActionEvent> displayAddNewCataloguePopupHandler() {
+		return event -> displayAddNewCataloguePopUp();
+	}
 
-		VBox vbox = new VBox(warning, proceedButton, cancelButton);
-		Scene popUpScene = new Scene(vbox, 200, 200);
+	private void displayDeleteCatalogue(String catalogueName) {
+		Stage popUpStage = new Stage();
+		Label warning = new Label("Warning! This will delete your catalogue: " + catalogueName);
+		Button deleteButton = new Button("Delete");
+		deleteButton.setOnMouseClicked(e -> {
+			catalogueController.deleteCatalogue(catalogueName);
+			((Stage) deleteButton.getScene().getWindow()).close();
+		});
+		Button cancelButton = new Button("Cancel");
+		cancelButton.setOnMouseClicked(e -> ((Stage) cancelButton.getScene().getWindow()).close());
+		VBox vbox = new VBox(warning, deleteButton, cancelButton);
+		Scene popUpScene = new Scene(vbox, 300, 100);
 		popUpStage.setScene(popUpScene);
 		popUpStage.show();
 	}
@@ -91,7 +109,14 @@ public class CatalogueView extends VBox {
 
 		VBox vbox = new VBox(catalogueName, catalogueNameInput, saveButton, cancelButton);
 		Scene popUpScene = new Scene(vbox, 200, 200);
+
 		popUpStage.setScene(popUpScene);
+		popUpScene.addEventHandler(KeyEvent.KEY_PRESSED,event->{
+			if(event.getCode()==KeyCode.ENTER){
+				catalogueController.addNewCatalogue(catalogueNameInput.getText());
+				popUpStage.close();
+			}
+		});
 		popUpStage.show();
 	}
 

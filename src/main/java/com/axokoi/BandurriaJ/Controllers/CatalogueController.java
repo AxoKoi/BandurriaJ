@@ -2,6 +2,8 @@ package com.axokoi.BandurriaJ.Controllers;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,6 +31,12 @@ public class CatalogueController {
 		Catalogue newCatalogue = new Catalogue();
 		newCatalogue.setName(catalogueName);
 		catalogueRepository.save(newCatalogue);
+		catalogueView.update();
+	}
+
+	@Transactional
+	public void deleteCatalogue(String catalogueName) {
+		catalogueRepository.deleteByName(catalogueName);
 		catalogueView.update();
 	}
 }
