@@ -3,6 +3,8 @@ package com.axokoi.BandurriaJ.views;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+
 import com.axokoi.BandurriaJ.model.Artist;
 import com.axokoi.BandurriaJ.model.ArtistService;
 import com.axokoi.BandurriaJ.model.Band;
@@ -13,16 +15,10 @@ import com.axokoi.BandurriaJ.model.DiscService;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+@Component
 public class DiscView extends VBox {
 
-	private Disc discToDisplay;
-
-	public DiscView(Disc discToDisplay) {
-		this.discToDisplay = discToDisplay;
-		this.build();
-	}
-
-	private void build() {
+	public void refresh(Disc discToDisplay) {
 		discToDisplay = DiscService.findById(discToDisplay.getId()).get();
 		VBox discInformationVBox = new VBox();
 //todo add checks if values are null/empty
@@ -38,6 +34,7 @@ public class DiscView extends VBox {
 		discInformationVBox.getChildren().add(bandName);
 		discInformationVBox.getChildren().addAll(artists);
 
+		this.getChildren().clear();
 		this.getChildren().add(discInformationVBox);
 	}
 

@@ -19,6 +19,8 @@ public class CatalogueController {
 	@Autowired
 	CatalogueView catalogueView;
 
+
+
 	public CatalogueController(CatalogueRepository catalogueRepository) {
 		this.catalogueRepository = catalogueRepository;
 	}
@@ -31,12 +33,12 @@ public class CatalogueController {
 		Catalogue newCatalogue = new Catalogue();
 		newCatalogue.setName(catalogueName);
 		catalogueRepository.save(newCatalogue);
-		catalogueView.update();
+		catalogueView.refresh();
 	}
 
 	@Transactional
 	public void deleteCatalogue(String catalogueName) {
 		catalogueRepository.deleteByName(catalogueName);
-		catalogueView.update();
+		catalogueView.refresh();
 	}
 }

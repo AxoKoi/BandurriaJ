@@ -37,29 +37,39 @@ public class DBCreation {
 		Catalogue cat2 = new Catalogue();
 		cat2.setName("Catalogue 2");
 
+
+		Disc testDisc1 = createDisc(1);
+		Disc testDisc2 = createDisc(2);
+
+		List<Disc> discs1 = new ArrayList<>();
+		discs1.add(testDisc1);
+		discs1.add(testDisc2);
+		cat1.setDiscs(discs1);
+		catalogueRepository.save(cat1);
+		catalogueRepository.save(cat2);
+	}
+
+	private Disc createDisc(int value) {
 		Disc testDisc = new Disc();
-		testDisc.setName("test disc Name");
+		testDisc.setName("test disc Name:" + value);
 
 		Band band = new Band();
-		band.setName("group name");
+		band.setName("group name:" +value);
 		band.setComment("");
 		Artist artist = new Artist();
-		artist.setName("this is the artist name");
+		artist.setName("this is the artist name:"+value);
 		List<Artist> artists = new ArrayList<>();
 		artists.add(artist);
 		band.setArtists(artists);
 		testDisc.setBand(band);
 
 		Track track = new Track();
-		track.setName("Track 1");
+		track.setName("Track 1:"+value);
 		List<Track> tracks = new ArrayList<>();
 		testDisc.setTracks(tracks);
+
 		groupRepository.save(band);
 		discRepository.save(testDisc);
-		List<Disc> discs1 = new ArrayList<>();
-		discs1.add(testDisc);
-		cat1.setDiscs(discs1);
-		catalogueRepository.save(cat1);
-		catalogueRepository.save(cat2);
+		return testDisc;
 	}
 }

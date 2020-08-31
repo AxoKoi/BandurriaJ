@@ -18,3 +18,4 @@ public class Artist {
 	private String role;
 	private String comment;
 }
+

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.axokoi.BandurriaJ.model.DiscRepository;
 import com.axokoi.BandurriaJ.views.CatalogueView;
 import com.axokoi.BandurriaJ.views.DiscView;
+import com.axokoi.BandurriaJ.views.SmartSearchView;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -24,6 +25,12 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 
 	@Autowired
 	private CatalogueView catalogueView;
+
+	@Autowired
+	private DiscView discView;
+
+	@Autowired
+	private SmartSearchView smartSearchView;
 
 	@Autowired
 	private DBCreation dbCreation;
@@ -47,9 +54,9 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 
 		/*vboxLeft.getChildren().add(button);*/
 
-		catalogueView.update();
-		VBox vboxRight = new DiscView(discRepository.findAll().iterator().next());
-		HBox hbox = new HBox(catalogueView, vboxRight);
+		catalogueView.refresh();
+
+		HBox hbox = new HBox(catalogueView, discView,smartSearchView);
 		mainBox.getChildren().add(hbox);
 		hbox.setPrefWidth(300);
 

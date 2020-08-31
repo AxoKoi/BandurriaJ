@@ -2,9 +2,11 @@ package com.axokoi.BandurriaJ.views;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.axokoi.BandurriaJ.Controllers.CatalogueController;
+import com.axokoi.BandurriaJ.Controllers.DiscController;
 import com.axokoi.BandurriaJ.model.Catalogue;
 
 import javafx.event.ActionEvent;
@@ -19,6 +21,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -27,11 +30,14 @@ public class CatalogueView extends VBox {
 
 	private final CatalogueController catalogueController;
 
+	@Autowired
+	DiscController discController;
+
 	public CatalogueView(CatalogueController catalogueController) {
 		this.catalogueController = catalogueController;
 	}
 
-	public void update() {
+	public void refresh() {
 		TreeView<String> treeView = cataloguesToTreeView();
 		this.getChildren().clear();
 		this.getChildren().add(treeView);
@@ -48,18 +54,49 @@ public class CatalogueView extends VBox {
 					rootItem.getChildren().add(catalogueItem);
 				}
 		);
-		treeView.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-			if (event.getCode() == KeyCode.DELETE) {
-				displayDeleteCatalogue(treeView.getSelectionModel().getSelectedItems().get(0).getValue());
-			}
-			if (event.getCode() == KeyCode.INSERT) {
-				displayAddNewCataloguePopUp();
-			}
-		});
+
+		treeView.addEventHandler(KeyEvent.KEY_PRESSED, getCatalogueKeyEventEventHandler(treeView));
+		treeView.addEventHandler(MouseEvent.MOUSE_CLICKED,
+				event -> discController.refreshView(treeView.getSelectionModel().getSelectedItems().get(0).getValue()));
+
 		treeView.setRoot(rootItem);
 		addContextMenu(treeView);
 		rootItem.setExpanded(true);
 		return treeView;
+	}
+
+	private EventHandler<KeyEvent> getCatalogueKeyEventEventHandler(TreeView<String> treeView) {
+		return event -> {
+			if(!(event.getSource() instanceof TreeItem)){
+				return;
+			}
+			boolean isCD = ((TreeItem<String>) event.getSource()).isLeaf();
+
+			if (isCD) {
+				switch (event.getCode()) {
+				case ENTER:
+				case UP:
+				case DOWN:
+					discController.refreshView(treeView.getSelectionModel().getSelectedItems().get(0).getValue());
+					break;
+				default:
+					break;
+				}
+			}
+			else{
+				switch (event.getCode()) {
+				case DELETE:
+					displayDeleteCatalogue(treeView.getSelectionModel().getSelectedItems().get(0).getValue());
+					break;
+				case INSERT:
+					displayAddNewCataloguePopUp();
+					break;
+
+				default:
+					break;
+				}
+			}
+		};
 	}
 
 	private void addContextMenu(TreeView<String> treeView) {
@@ -111,8 +148,8 @@ public class CatalogueView extends VBox {
 		Scene popUpScene = new Scene(vbox, 200, 200);
 
 		popUpStage.setScene(popUpScene);
-		popUpScene.addEventHandler(KeyEvent.KEY_PRESSED,event->{
-			if(event.getCode()==KeyCode.ENTER){
+		popUpScene.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+			if (event.getCode() == KeyCode.ENTER) {
 				catalogueController.addNewCatalogue(catalogueNameInput.getText());
 				popUpStage.close();
 			}
