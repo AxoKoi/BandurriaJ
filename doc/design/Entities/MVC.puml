@@ -1,0 +1,24 @@
+@startuml
+
+package view{
+class View_A {}
+class View_B  {}
+}
+
+package model{
+class Model_X{}
+class Model_Y{}
+}
+package controller {
+class Controller_A{}
+class Controller_B{}
+}
+
+
+view-->controller: requests actions
+view-->model: Read
+Controller_A-->View_A : manages
+Controller_B-->View_B : manages
+controller-->model: modify
+
+@enduml
