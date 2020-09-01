@@ -43,11 +43,8 @@ public class MainApplication extends Application {
 	@Override
 	public void start(Stage stage) {
 
+		setUserAgentStylesheet(STYLESHEET_MODENA);
 		applicationContext.publishEvent(new StageReadyEvent(stage));
 	}
-/*
-	public static void main(String[] args) {
-		launch(args);
-	}
-*/
+
 }

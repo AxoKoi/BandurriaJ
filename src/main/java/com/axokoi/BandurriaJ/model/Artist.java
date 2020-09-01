@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Artist {
+public class Artist implements ArtistInterface {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,3 +18,4 @@ public class Artist {
 	private String role;
 	private String comment;
 }
+

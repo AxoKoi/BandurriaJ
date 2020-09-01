@@ -1,30 +1,20 @@
 package com.axokoi.BandurriaJ;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import com.axokoi.BandurriaJ.model.Artist;
-import com.axokoi.BandurriaJ.model.Band;
-import com.axokoi.BandurriaJ.model.Disc;
 import com.axokoi.BandurriaJ.model.DiscRepository;
-import com.axokoi.BandurriaJ.model.GroupRepository;
-import com.axokoi.BandurriaJ.model.Track;
+import com.axokoi.BandurriaJ.views.CatalogueView;
 import com.axokoi.BandurriaJ.views.DiscView;
+import com.axokoi.BandurriaJ.views.SmartSearchView;
+
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 @Component
@@ -32,61 +22,46 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 
 	@Autowired
 	private DiscRepository discRepository;
+
 	@Autowired
-	private GroupRepository groupRepository;
+	private CatalogueView catalogueView;
+
+	@Autowired
+	private DiscView discView;
+
+	@Autowired
+	private SmartSearchView smartSearchView;
+
+	@Autowired
+	private DBCreation dbCreation;
 
 	@Override
 	public void onApplicationEvent(MainApplication.StageReadyEvent event) {
 		Stage stage = event.getStage();
-		buildEntities();
-
+		dbCreation.init();
 		MenuBar menuBar = getMenuBar();
 		VBox mainBox = new VBox(menuBar);
 
 		stage.setTitle("BandurriaJ");
-		VBox vboxLeft = new VBox();
 
+/*
 		FileChooser fileChooser = new FileChooser();
 
 		Button button = new Button("Select File");
 		button.setOnAction(e -> {
 			File selectedFile = fileChooser.showOpenDialog(stage);
-		});
+		});*/
 
-		TreeView<String> treeView = getTreeView();
+		/*vboxLeft.getChildren().add(button);*/
 
-		vboxLeft.getChildren().add(button);
-		vboxLeft.getChildren().add(treeView);
+		catalogueView.refresh();
 
-		VBox vboxRight = new DiscView(discRepository.findAll().iterator().next());
-		HBox hbox = new HBox(vboxLeft, vboxRight);
+		HBox hbox = new HBox(catalogueView, discView,smartSearchView);
 		mainBox.getChildren().add(hbox);
 		hbox.setPrefWidth(300);
 
 		stage.setScene(new Scene(mainBox, 800, 500));
 		stage.show();
-	}
-
-	private void buildEntities() {
-		Disc testDisc = new Disc();
-		testDisc.setName("test disc Name");
-
-		Band band = new Band();
-		band.setName("group name");
-		band.setComment("");
-		Artist artist = new Artist();
-		artist.setName("this is the artist name");
-		List<Artist> artists = new ArrayList<>();
-		artists.add(artist);
-		band.setArtists(artists);
-		testDisc.setBand(band);
-
-		Track track = new Track();
-		track.setName("Track 1");
-		List<Track> tracks = new ArrayList<>();
-		testDisc.setTracks(tracks);
-		groupRepository.save(band);
-		discRepository.save(testDisc);
 	}
 
 	private MenuBar getMenuBar() {
@@ -98,23 +73,6 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 		menu1.getItems().add(menuItem2);
 		menuBar.getMenus().add(menu1);
 		return menuBar;
-	}
-
-	private TreeView<String> getTreeView() {
-		TreeView<String> treeView = new TreeView<>();
-		TreeItem<String> rootItem = new TreeItem<>("Catalogues");
-
-		TreeItem<String> catalogue1 = new TreeItem<>("Catalogue 1");
-		catalogue1.getChildren().add(new TreeItem<>("CD1"));
-		catalogue1.getChildren().add(new TreeItem<>("CD2"));
-
-		TreeItem<String> catalogue2 = new TreeItem<>("Catalogue 2");
-		catalogue2.getChildren().add(new TreeItem<>("CD1"));
-		catalogue2.getChildren().add(new TreeItem<>("CD2"));
-
-		rootItem.getChildren().addAll(catalogue1, catalogue2);
-		treeView.setRoot(rootItem);
-		return treeView;
 	}
 
 }
