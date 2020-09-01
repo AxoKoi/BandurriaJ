@@ -11,6 +11,7 @@ import com.axokoi.BandurriaJ.model.Catalogue;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
@@ -28,10 +29,13 @@ import javafx.stage.Stage;
 @Component
 public class CatalogueView extends VBox {
 
-	private final CatalogueController catalogueController;
 
 	@Autowired
 	DiscController discController;
+
+	private final CatalogueController catalogueController;
+
+
 
 	public CatalogueView(CatalogueController catalogueController) {
 		this.catalogueController = catalogueController;
@@ -40,7 +44,10 @@ public class CatalogueView extends VBox {
 	public void refresh() {
 		TreeView<String> treeView = cataloguesToTreeView();
 		this.getChildren().clear();
+
 		this.getChildren().add(treeView);
+		this.setPadding(new Insets(10));
+		this.setSpacing(8);
 
 	}
 
@@ -57,8 +64,11 @@ public class CatalogueView extends VBox {
 
 		treeView.addEventHandler(KeyEvent.KEY_PRESSED, getCatalogueKeyEventEventHandler(treeView));
 		treeView.addEventHandler(MouseEvent.MOUSE_CLICKED,
-				event -> discController.refreshView(treeView.getSelectionModel().getSelectedItems().get(0).getValue()));
-
+				event -> {
+					if (treeView.getSelectionModel().getSelectedItem() != null) {
+						discController.refreshView(treeView.getSelectionModel().getSelectedItem().getValue());
+					}
+				});
 		treeView.setRoot(rootItem);
 		addContextMenu(treeView);
 		rootItem.setExpanded(true);
@@ -67,7 +77,7 @@ public class CatalogueView extends VBox {
 
 	private EventHandler<KeyEvent> getCatalogueKeyEventEventHandler(TreeView<String> treeView) {
 		return event -> {
-			if(!(event.getSource() instanceof TreeItem)){
+			if (!(event.getSource() instanceof TreeItem)) {
 				return;
 			}
 			boolean isCD = ((TreeItem<String>) event.getSource()).isLeaf();
@@ -82,8 +92,7 @@ public class CatalogueView extends VBox {
 				default:
 					break;
 				}
-			}
-			else{
+			} else {
 				switch (event.getCode()) {
 				case DELETE:
 					displayDeleteCatalogue(treeView.getSelectionModel().getSelectedItems().get(0).getValue());

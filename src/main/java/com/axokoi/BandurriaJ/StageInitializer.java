@@ -13,8 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 @Component
@@ -40,14 +41,14 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 		Stage stage = event.getStage();
 		dbCreation.init();
 		MenuBar menuBar = getMenuBar();
-		VBox mainBox = new VBox(menuBar);
+		BorderPane mainPane = new BorderPane(menuBar);
 
 		stage.setTitle("BandurriaJ");
 
 /*
 		FileChooser fileChooser = new FileChooser();
+Button button = new Button("Select File");
 
-		Button button = new Button("Select File");
 		button.setOnAction(e -> {
 			File selectedFile = fileChooser.showOpenDialog(stage);
 		});*/
@@ -56,12 +57,20 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 
 		catalogueView.refresh();
 
-		HBox hbox = new HBox(catalogueView, discView,smartSearchView);
-		mainBox.getChildren().add(hbox);
-		hbox.setPrefWidth(300);
-
-		stage.setScene(new Scene(mainBox, 800, 500));
+		mainPane.setLeft(catalogueView);
+		mainPane.setCenter(discView);
+		mainPane.setRight(smartSearchView);
+		HBox footerView = new HBox();
+		footerView.getChildren().add(new Text("BandurriaJ by Axokoi"));
+		mainPane.setBottom(footerView);
+		mainPane.setTop(menuBar);
+		stage.setScene(new Scene(mainPane, 1000, 350));
+		stage.getScene().getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
+		catalogueView.prefHeightProperty().bind(stage.getScene().heightProperty().multiply(0.8));
+		discView.prefHeightProperty().bind(stage.getScene().heightProperty().multiply(0.8));
+		smartSearchView.prefHeightProperty().bind(stage.getScene().heightProperty().multiply(0.8));
 		stage.show();
+
 	}
 
 	private MenuBar getMenuBar() {

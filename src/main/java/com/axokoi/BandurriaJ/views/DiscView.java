@@ -13,14 +13,26 @@ import com.axokoi.BandurriaJ.model.BandService;
 import com.axokoi.BandurriaJ.model.Disc;
 import com.axokoi.BandurriaJ.model.DiscService;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 @Component
 public class DiscView extends VBox {
-	Label discName = new Label("Disc Name:");
-	Label bandName = new Label("Group :");
-	List<Label> artists = new ArrayList<>();
+	private final Label discName = new Label("Disc Name:");
+	private final Label bandName = new Label("Group :");
+	private List<Label> artists = new ArrayList<>();
+
+	public DiscView() {
+		discName.setFont(new Font("Arial",14));
+		getChildren().add(discName);
+		getChildren().add(bandName);
+		getChildren().addAll(artists);
+		this.setPadding(new Insets(10));
+		this.setSpacing(8);
+
+	}
 
 	public void refresh(Disc discToDisplay) {
 		discToDisplay = DiscService.findById(discToDisplay.getId()).get();
