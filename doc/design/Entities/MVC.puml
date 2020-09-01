@@ -1,5 +1,6 @@
 @startuml
 
+left to right direction
 package view{
 class View_A {}
 class View_B  {}
