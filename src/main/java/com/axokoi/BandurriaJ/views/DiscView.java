@@ -1,5 +1,6 @@
 package com.axokoi.BandurriaJ.views;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,25 +18,29 @@ import javafx.scene.layout.VBox;
 
 @Component
 public class DiscView extends VBox {
+	Label discName = new Label("Disc Name:");
+	Label bandName = new Label("Group :");
+	List<Label> artists = new ArrayList<>();
 
 	public void refresh(Disc discToDisplay) {
 		discToDisplay = DiscService.findById(discToDisplay.getId()).get();
-		VBox discInformationVBox = new VBox();
+
 //todo add checks if values are null/empty
-		Label discName = new Label("Name:" + discToDisplay.getName());
-		Label bandName = new Label("Group :" + discToDisplay.getBand().getName());
+		discName.setText("Name:" + discToDisplay.getName());
+		bandName.setText("Group :" + discToDisplay.getBand().getName());
+
 		Band band = BandService.findById(discToDisplay.getBand().getId()).get();
 		List<Artist> artistList = band.getArtists();
 		artistList = artistList.stream().map(x -> ArtistService.getById(x.getId()).get()).collect(Collectors.toList());
-		List<Label> artists = artistList.stream().map(x -> new Label(x.getName() + ":" + x.getRole()))
+
+		artists = artistList.stream().map(x -> new Label(x.getName() + ":" + x.getRole()))
 				.collect(Collectors.toList());
 
-		discInformationVBox.getChildren().add(discName);
-		discInformationVBox.getChildren().add(bandName);
-		discInformationVBox.getChildren().addAll(artists);
-
 		this.getChildren().clear();
-		this.getChildren().add(discInformationVBox);
+		this.getChildren().add(discName);
+		this.getChildren().add(bandName);
+		this.getChildren().addAll(artists);
+
 	}
 
 }
