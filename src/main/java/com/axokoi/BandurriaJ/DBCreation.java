@@ -62,6 +62,7 @@ public class DBCreation {
 		Track track = new Track();
 		track.setName("Track 1:" + value);
 		List<Track> tracks = new ArrayList<>();
+		tracks.add(track);
 		testDisc.setTracks(tracks);
 
 		groupRepository.save(band);

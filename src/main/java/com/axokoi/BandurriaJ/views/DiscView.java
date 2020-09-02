@@ -16,6 +16,7 @@ import com.axokoi.BandurriaJ.model.DiscService;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 @Component
@@ -23,12 +24,14 @@ public class DiscView extends VBox {
 	private final Label discName = new Label("Disc Name:");
 	private final Label bandName = new Label("Group :");
 	private List<Label> artists = new ArrayList<>();
+	private List<Label> tracks = new ArrayList<>();
 
 	public DiscView() {
 
 		getChildren().add(discName);
 		getChildren().add(bandName);
 		getChildren().addAll(artists);
+		getChildren().addAll(tracks);
 
 		this.setPadding(new Insets(10));
 		this.setSpacing(8);
@@ -44,6 +47,8 @@ public class DiscView extends VBox {
 
 		disc = optionalDiscToDisplay.get();
 		discName.setText("Name:" + disc.getName());
+		tracks.clear();
+		tracks.addAll(disc.getTracks().stream().map(x->new Label(x.getName())).collect(Collectors.toList()));
 
 		Optional<Band> optionalBand = BandService.findById(disc.getBand().getId());
 		if (optionalBand.isPresent()) {
@@ -61,6 +66,7 @@ public class DiscView extends VBox {
 		this.getChildren().add(discName);
 		this.getChildren().add(bandName);
 		this.getChildren().addAll(artists);
+		this.getChildren().addAll(tracks);
 
 	}
 }
