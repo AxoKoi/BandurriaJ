@@ -37,8 +37,8 @@ public class SmartSearchView extends VBox {
 
 	}
 
-	public void refresh(List<String> results) {
-		ObservableList<String> items = FXCollections.observableArrayList(results);
+	public void refresh(List<String> smartSearchResult) {
+		ObservableList<String> items = FXCollections.observableArrayList(smartSearchResult);
 
 		this.results.getItems().clear();
 		this.results.getItems().addAll(items);

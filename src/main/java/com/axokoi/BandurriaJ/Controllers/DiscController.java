@@ -22,7 +22,6 @@ public class DiscController {
 
 	@Transactional
 	public void refreshView(String discName) {
-
 		Disc discToDisplay = discRepository.findByName(discName);
 		if (discToDisplay != null) {
 			discView.refresh(discToDisplay);

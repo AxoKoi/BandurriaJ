@@ -38,49 +38,44 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 
 	@Override
 	public void onApplicationEvent(MainApplication.StageReadyEvent event) {
-		Stage stage = event.getStage();
+
 		dbCreation.init();
-		MenuBar menuBar = getMenuBar();
-		BorderPane mainPane = new BorderPane(menuBar);
-
-		stage.setTitle("BandurriaJ");
-
-/*
-		FileChooser fileChooser = new FileChooser();
-Button button = new Button("Select File");
-
-		button.setOnAction(e -> {
-			File selectedFile = fileChooser.showOpenDialog(stage);
-		});*/
-
-		/*vboxLeft.getChildren().add(button);*/
-
 		catalogueView.refresh();
 
+		Stage stage = event.getStage();
+		BorderPane mainPane = new BorderPane();
+
+		MenuBar menuBar = getMenuBar();
+
+		mainPane.setTop(menuBar);
 		mainPane.setLeft(catalogueView);
 		mainPane.setCenter(discView);
 		mainPane.setRight(smartSearchView);
+
 		HBox footerView = new HBox();
 		footerView.getChildren().add(new Text("BandurriaJ by Axokoi"));
 		mainPane.setBottom(footerView);
-		mainPane.setTop(menuBar);
+
+		stage.setTitle("BandurriaJ");
 		stage.setScene(new Scene(mainPane, 1000, 350));
 		stage.getScene().getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
-		catalogueView.prefHeightProperty().bind(stage.getScene().heightProperty().multiply(0.8));
-		discView.prefHeightProperty().bind(stage.getScene().heightProperty().multiply(0.8));
-		smartSearchView.prefHeightProperty().bind(stage.getScene().heightProperty().multiply(0.8));
+		stage.sizeToScene();
 		stage.show();
 
 	}
 
 	private MenuBar getMenuBar() {
 		MenuBar menuBar = new MenuBar();
-		Menu menu1 = new Menu("menu1");
-		MenuItem menuItem1 = new MenuItem("Item1");
-		MenuItem menuItem2 = new MenuItem("Item2");
+		Menu menu1 = new Menu("File");
+		MenuItem menuItem1 = new MenuItem("save");
 		menu1.getItems().add(menuItem1);
-		menu1.getItems().add(menuItem2);
+
+		Menu menu2 = new Menu("Import");
+		MenuItem menu2Item1 = new MenuItem("from CD");
+		menu2.getItems().add(menu2Item1);
+
 		menuBar.getMenus().add(menu1);
+		menuBar.getMenus().add(menu2);
 		return menuBar;
 	}
 

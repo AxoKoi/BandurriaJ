@@ -20,12 +20,11 @@ public class SmartSearchController {
 	DiscRepository discRepository;
 
 	public void smartSearch(String inputSearch) {
-		List<String> results = new ArrayList<>();
 
 		//search catalogues
 
 		//search discs
-		results.addAll(discRepository.findByNameContaining(inputSearch).stream().map(Disc::getName).collect(Collectors.toList()));
+		List<String> results = discRepository.findByNameContaining(inputSearch).stream().map(Disc::getName).collect(Collectors.toList());
 		//search artist
 
 		//search Band
