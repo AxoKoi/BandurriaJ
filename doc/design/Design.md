@@ -33,3 +33,19 @@ The mvc scheme is the following:
 You can check the Gui archetype and it's diferent views here:
 
 ![](../images/Gui.svg)
+
+# Smart search
+
+The smart search feature will allow to the user to query its catalogues only by writing a word
+that may be present in its collection. For instance, imagine that the user would like to 
+find an item that has the text TIM. The smart search would allow to find results for:
+* The track One more Time by Daft Punk
+* Tee artis Justin Timberlake
+* The catalogue named CATIM_123.
+
+The overview of the solution can be found here:
+![](../images/SmartSearch.svg)
+
+## Important points
+As for the moment, this won't allow the user to search for instance, 
+every song that has JAZZ in it's title or all the songs belonging JAZZ genre. 
