@@ -4,17 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.axokoi.BandurriaJ.model.DiscRepository;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
-@EnableJpaRepositories("application.model")
 public class MainApplication extends Application {
 
-	static class StageReadyEvent extends ApplicationEvent {
+	public static class StageReadyEvent extends ApplicationEvent {
 		public StageReadyEvent(Stage stage) {
 			super(stage);
 		}
@@ -42,8 +41,6 @@ public class MainApplication extends Application {
 
 	@Override
 	public void start(Stage stage) {
-
-		setUserAgentStylesheet(STYLESHEET_MODENA);
 		applicationContext.publishEvent(new StageReadyEvent(stage));
 	}
 

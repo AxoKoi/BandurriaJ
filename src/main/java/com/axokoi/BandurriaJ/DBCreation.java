@@ -3,8 +3,6 @@ package com.axokoi.BandurriaJ;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +14,6 @@ import com.axokoi.BandurriaJ.model.Disc;
 import com.axokoi.BandurriaJ.model.DiscRepository;
 import com.axokoi.BandurriaJ.model.GroupRepository;
 import com.axokoi.BandurriaJ.model.Track;
-import com.axokoi.BandurriaJ.views.CatalogueView;
 
 @Component
 public class DBCreation {
@@ -29,14 +26,13 @@ public class DBCreation {
 	@Autowired
 	private CatalogueRepository catalogueRepository;
 
-	public void init(){
+	public void init() {
 
 		Catalogue cat1 = new Catalogue();
 		cat1.setName("Catalogue 1");
 
 		Catalogue cat2 = new Catalogue();
 		cat2.setName("Catalogue 2");
-
 
 		Disc testDisc1 = createDisc(1);
 		Disc testDisc2 = createDisc(2);
@@ -54,18 +50,19 @@ public class DBCreation {
 		testDisc.setName("test disc Name:" + value);
 
 		Band band = new Band();
-		band.setName("group name:" +value);
+		band.setName("group name:" + value);
 		band.setComment("");
 		Artist artist = new Artist();
-		artist.setName("this is the artist name:"+value);
+		artist.setName("this is the artist name:" + value);
 		List<Artist> artists = new ArrayList<>();
 		artists.add(artist);
 		band.setArtists(artists);
 		testDisc.setBand(band);
 
 		Track track = new Track();
-		track.setName("Track 1:"+value);
+		track.setName("Track 1:" + value);
 		List<Track> tracks = new ArrayList<>();
+		tracks.add(track);
 		testDisc.setTracks(tracks);
 
 		groupRepository.save(band);

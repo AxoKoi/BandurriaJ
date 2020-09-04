@@ -13,8 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 @Component
@@ -37,41 +38,44 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 
 	@Override
 	public void onApplicationEvent(MainApplication.StageReadyEvent event) {
-		Stage stage = event.getStage();
+
 		dbCreation.init();
-		MenuBar menuBar = getMenuBar();
-		VBox mainBox = new VBox(menuBar);
-
-		stage.setTitle("BandurriaJ");
-
-/*
-		FileChooser fileChooser = new FileChooser();
-
-		Button button = new Button("Select File");
-		button.setOnAction(e -> {
-			File selectedFile = fileChooser.showOpenDialog(stage);
-		});*/
-
-		/*vboxLeft.getChildren().add(button);*/
-
 		catalogueView.refresh();
 
-		HBox hbox = new HBox(catalogueView, discView,smartSearchView);
-		mainBox.getChildren().add(hbox);
-		hbox.setPrefWidth(300);
+		Stage stage = event.getStage();
+		BorderPane mainPane = new BorderPane();
 
-		stage.setScene(new Scene(mainBox, 800, 500));
+		MenuBar menuBar = getMenuBar();
+
+		mainPane.setTop(menuBar);
+		mainPane.setLeft(catalogueView);
+		mainPane.setCenter(discView);
+		mainPane.setRight(smartSearchView);
+
+		HBox footerView = new HBox();
+		footerView.getChildren().add(new Text("BandurriaJ by Axokoi"));
+		mainPane.setBottom(footerView);
+
+		stage.setTitle("BandurriaJ");
+		stage.setScene(new Scene(mainPane, 1000, 350));
+		stage.getScene().getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
+		stage.sizeToScene();
 		stage.show();
+
 	}
 
 	private MenuBar getMenuBar() {
 		MenuBar menuBar = new MenuBar();
-		Menu menu1 = new Menu("menu1");
-		MenuItem menuItem1 = new MenuItem("Item1");
-		MenuItem menuItem2 = new MenuItem("Item2");
+		Menu menu1 = new Menu("File");
+		MenuItem menuItem1 = new MenuItem("save");
 		menu1.getItems().add(menuItem1);
-		menu1.getItems().add(menuItem2);
+
+		Menu menu2 = new Menu("Import");
+		MenuItem menu2Item1 = new MenuItem("from CD");
+		menu2.getItems().add(menu2Item1);
+
 		menuBar.getMenus().add(menu1);
+		menuBar.getMenus().add(menu2);
 		return menuBar;
 	}
 

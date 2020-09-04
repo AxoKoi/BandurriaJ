@@ -11,6 +11,8 @@ import com.axokoi.BandurriaJ.model.Catalogue;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
@@ -22,26 +24,29 @@ import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 @Component
 public class CatalogueView extends VBox {
 
-	private final CatalogueController catalogueController;
-
 	@Autowired
 	DiscController discController;
 
+	private final CatalogueController catalogueController;
+
 	public CatalogueView(CatalogueController catalogueController) {
 		this.catalogueController = catalogueController;
+		this.setPadding(new Insets(10));
+		this.setSpacing(8);
+
 	}
 
 	public void refresh() {
 		TreeView<String> treeView = cataloguesToTreeView();
 		this.getChildren().clear();
 		this.getChildren().add(treeView);
-
 	}
 
 	private TreeView<String> cataloguesToTreeView() {
@@ -57,8 +62,11 @@ public class CatalogueView extends VBox {
 
 		treeView.addEventHandler(KeyEvent.KEY_PRESSED, getCatalogueKeyEventEventHandler(treeView));
 		treeView.addEventHandler(MouseEvent.MOUSE_CLICKED,
-				event -> discController.refreshView(treeView.getSelectionModel().getSelectedItems().get(0).getValue()));
-
+				event -> {
+					if (treeView.getSelectionModel().getSelectedItem() != null) {
+						discController.refreshView(treeView.getSelectionModel().getSelectedItem().getValue());
+					}
+				});
 		treeView.setRoot(rootItem);
 		addContextMenu(treeView);
 		rootItem.setExpanded(true);
@@ -67,10 +75,10 @@ public class CatalogueView extends VBox {
 
 	private EventHandler<KeyEvent> getCatalogueKeyEventEventHandler(TreeView<String> treeView) {
 		return event -> {
-			if(!(event.getSource() instanceof TreeItem)){
+			if (!(event.getSource() instanceof TreeView)) {
 				return;
 			}
-			boolean isCD = ((TreeItem<String>) event.getSource()).isLeaf();
+			boolean isCD = ((TreeView<String>) event.getSource()).getSelectionModel().getSelectedItem().isLeaf();
 
 			if (isCD) {
 				switch (event.getCode()) {
@@ -82,8 +90,7 @@ public class CatalogueView extends VBox {
 				default:
 					break;
 				}
-			}
-			else{
+			} else {
 				switch (event.getCode()) {
 				case DELETE:
 					displayDeleteCatalogue(treeView.getSelectionModel().getSelectedItems().get(0).getValue());
@@ -91,7 +98,6 @@ public class CatalogueView extends VBox {
 				case INSERT:
 					displayAddNewCataloguePopUp();
 					break;
-
 				default:
 					break;
 				}
@@ -107,7 +113,6 @@ public class CatalogueView extends VBox {
 		catalogueContextMenu.getItems().addAll(addNewCatalogueItem);
 
 		treeView.setContextMenu(catalogueContextMenu);
-
 	}
 
 	private EventHandler<ActionEvent> displayAddNewCataloguePopupHandler() {
@@ -124,7 +129,10 @@ public class CatalogueView extends VBox {
 		});
 		Button cancelButton = new Button("Cancel");
 		cancelButton.setOnMouseClicked(e -> ((Stage) cancelButton.getScene().getWindow()).close());
-		VBox vbox = new VBox(warning, deleteButton, cancelButton);
+
+		HBox saveCancelBox = new HBox(deleteButton, cancelButton);
+		VBox vbox = new VBox(warning, saveCancelBox);
+
 		Scene popUpScene = new Scene(vbox, 300, 100);
 		popUpStage.setScene(popUpScene);
 		popUpStage.show();
@@ -144,8 +152,10 @@ public class CatalogueView extends VBox {
 		Button cancelButton = new Button("Cancel");
 		cancelButton.setOnMouseClicked(e -> ((Stage) cancelButton.getScene().getWindow()).close());
 
-		VBox vbox = new VBox(catalogueName, catalogueNameInput, saveButton, cancelButton);
-		Scene popUpScene = new Scene(vbox, 200, 200);
+		HBox catalogueHBox = new HBox(catalogueName, catalogueNameInput);
+		HBox saveCancelButton = new HBox(saveButton, cancelButton);
+		VBox vbox = new VBox(catalogueHBox, saveCancelButton);
+		Scene popUpScene = new Scene(vbox, 300, 100);
 
 		popUpStage.setScene(popUpScene);
 		popUpScene.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
