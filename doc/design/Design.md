@@ -49,3 +49,6 @@ The overview of the solution can be found here:
 ## Important points
 As for the moment, this won't allow the user to search for instance, 
 every song that has JAZZ in it's title or all the songs belonging JAZZ genre. 
+
+## To do
+Study the posibility to use Lucene as the search Engine
