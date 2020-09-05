@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.axokoi.BandurriaJ.model.Artist;
@@ -16,11 +17,14 @@ import com.axokoi.BandurriaJ.model.DiscService;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 @Component
 public class DiscView extends VBox {
+
+	@Autowired
+	DiscService discService;
+
 	private final Label discName = new Label("Disc Name:");
 	private final Label bandName = new Label("Group :");
 	private List<Label> artists = new ArrayList<>();
@@ -39,16 +43,15 @@ public class DiscView extends VBox {
 	}
 
 	public void refresh(Disc discToDisplay) {
-		Disc disc = discToDisplay;
-		Optional<Disc> optionalDiscToDisplay = DiscService.findById(disc.getId());
-		if (optionalDiscToDisplay.isEmpty()) {
-			return;
-		}
+		Disc disc = discService.findById(discToDisplay.getId());
 
-		disc = optionalDiscToDisplay.get();
 		discName.setText("Name:" + disc.getName());
 		tracks.clear();
-		tracks.addAll(disc.getTracks().stream().map(x->new Label(x.getName())).collect(Collectors.toList()));
+
+		tracks.addAll(disc.getTracks().stream()
+				//		.map(x -> trackRepository.findById(x.getId()))
+				.map(x -> new Label(x.getName()))
+				.collect(Collectors.toList()));
 
 		Optional<Band> optionalBand = BandService.findById(disc.getBand().getId());
 		if (optionalBand.isPresent()) {

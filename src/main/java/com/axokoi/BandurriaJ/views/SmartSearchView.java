@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.axokoi.BandurriaJ.Controllers.DiscController;
 import com.axokoi.BandurriaJ.Controllers.SmartSearchController;
+import com.axokoi.BandurriaJ.model.Artist;
 import com.axokoi.BandurriaJ.model.Disc;
 import com.axokoi.BandurriaJ.model.Searchable;
 
@@ -27,6 +28,11 @@ public class SmartSearchView extends VBox {
 
 	@Autowired
 	DiscController discController;
+/*	@Autowired
+	ArtistController artistController;
+
+	@Autowired
+	BandController bandController;*/
 
 	private final Label search = new Label("Enter your search");
 	private final TextField inputSearch = new TextField();
@@ -53,11 +59,20 @@ public class SmartSearchView extends VBox {
 
 		this.results.setOnMouseClicked(event -> {
 			//needs to handle all possible results: Artist, CD, catalogues, bands.
-			if (this.results.getSelectionModel().getSelectedItem() instanceof Disc) {
-				discController.refreshView((Disc) this.results.getSelectionModel().getSelectedItem());
-			}
+			dispatchRefreshToController();
 		});
 
+	}
+
+	private void dispatchRefreshToController() {
+
+		Searchable selectedItem = this.results.getSelectionModel().getSelectedItem();
+		if (selectedItem instanceof Disc) {
+			discController.refreshView((Disc) selectedItem);
+		} /*else if (selectedItem instanceof Artist) {
+			artistController.refreshView((Artist) selectedItem)
+		}
+*/
 	}
 
 	static class SearchableCell extends ListCell<Searchable> {
