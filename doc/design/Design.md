@@ -52,3 +52,11 @@ every song that has JAZZ in it's title or all the songs belonging JAZZ genre.
 
 ## To do
 Study the posibility to use Lucene as the search Engine
+
+### solution
+Each of our entities have a series of attributes that may be selected to enter into the search.
+For instance, CD may have, for instance, it's title, its genre and also the comments,
+which could include the history of the CD, the context of the band, etc.
+First, this text may be long, thus, for a big collection, this may be a bottle neck.
+We can delegate the decision on what to include to each repository, which would implement
+a SmartSearch Interface.  

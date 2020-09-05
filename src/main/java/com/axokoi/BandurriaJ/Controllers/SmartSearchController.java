@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.axokoi.BandurriaJ.model.Disc;
 import com.axokoi.BandurriaJ.model.DiscRepository;
+import com.axokoi.BandurriaJ.model.Searchable;
 import com.axokoi.BandurriaJ.views.SmartSearchView;
 
 @Component
@@ -24,7 +25,7 @@ public class SmartSearchController {
 		//search catalogues
 
 		//search discs
-		List<String> results = discRepository.findByNameContaining(inputSearch).stream().map(Disc::getName).collect(Collectors.toList());
+		List<Searchable> results = new ArrayList<>(discRepository.findByNameContaining(inputSearch));
 		//search artist
 
 		//search Band

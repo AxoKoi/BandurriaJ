@@ -64,7 +64,7 @@ public class CatalogueView extends VBox {
 		treeView.addEventHandler(MouseEvent.MOUSE_CLICKED,
 				event -> {
 					if (treeView.getSelectionModel().getSelectedItem() != null) {
-						discController.refreshView(treeView.getSelectionModel().getSelectedItem().getValue());
+						discController.refreshViewWithName(treeView.getSelectionModel().getSelectedItem().getValue());
 					}
 				});
 		treeView.setRoot(rootItem);
@@ -85,7 +85,8 @@ public class CatalogueView extends VBox {
 				case ENTER:
 				case UP:
 				case DOWN:
-					discController.refreshView(treeView.getSelectionModel().getSelectedItems().get(0).getValue());
+					discController.refreshViewWithName(
+							treeView.getSelectionModel().getSelectedItems().get(0).getValue());
 					break;
 				default:
 					break;

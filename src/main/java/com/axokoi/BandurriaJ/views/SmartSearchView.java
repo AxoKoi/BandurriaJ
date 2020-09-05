@@ -7,11 +7,14 @@ import org.springframework.stereotype.Component;
 
 import com.axokoi.BandurriaJ.Controllers.DiscController;
 import com.axokoi.BandurriaJ.Controllers.SmartSearchController;
+import com.axokoi.BandurriaJ.model.Disc;
+import com.axokoi.BandurriaJ.model.Searchable;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -27,7 +30,7 @@ public class SmartSearchView extends VBox {
 
 	private final Label search = new Label("Enter your search");
 	private final TextField inputSearch = new TextField();
-	private final ListView<String> results = new ListView<>();
+	private final ListView<Searchable> results = new ListView<>();
 
 	public SmartSearchView() {
 		inputSearch.setOnAction(x -> smartSearchController.smartSearch(inputSearch.getText().trim()));
@@ -37,16 +40,32 @@ public class SmartSearchView extends VBox {
 
 	}
 
-	public void refresh(List<String> smartSearchResult) {
-		ObservableList<String> items = FXCollections.observableArrayList(smartSearchResult);
+	public void refresh(List<Searchable> smartSearchResult) {
+		ObservableList<Searchable> items = FXCollections.observableArrayList(smartSearchResult);
 
 		this.results.getItems().clear();
+		if (items.isEmpty()) {
+			return;
+		}
+
 		this.results.getItems().addAll(items);
+		this.results.setCellFactory(list -> new SearchableCell());
+
 		this.results.setOnMouseClicked(event -> {
 			//needs to handle all possible results: Artist, CD, catalogues, bands.
-			discController.refreshView(this.results.getSelectionModel().getSelectedItem());
+			if (this.results.getSelectionModel().getSelectedItem() instanceof Disc) {
+				discController.refreshView((Disc) this.results.getSelectionModel().getSelectedItem());
+			}
 		});
 
 	}
 
+	static class SearchableCell extends ListCell<Searchable> {
+		@Override
+		protected void updateItem(Searchable searchable, boolean empty) {
+			super.updateItem(searchable, empty);
+
+			setText(searchable == null ? "" : searchable.getName());
+		}
+	}
 }
