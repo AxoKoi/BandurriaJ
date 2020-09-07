@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.axokoi.BandurriaJ.model.DiscRepository;
 import com.axokoi.BandurriaJ.views.ArtistView;
+import com.axokoi.BandurriaJ.views.BandView;
 import com.axokoi.BandurriaJ.views.CatalogueView;
 import com.axokoi.BandurriaJ.views.DiscView;
 import com.axokoi.BandurriaJ.views.SmartSearchView;
@@ -31,9 +32,11 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 
 	@Autowired
 	private DiscView discView;
+	@Autowired
+	private ArtistView artistView;
 
 	@Autowired
-	ArtistView artistView;
+	BandView bandView;
 
 	@Autowired
 	private SmartSearchView smartSearchView;
@@ -52,7 +55,7 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 
 		MenuBar menuBar = getMenuBar();
 
-		VBox center = new VBox(discView,artistView);
+		VBox center = new VBox(discView,artistView, bandView);
 		mainPane.setTop(menuBar);
 		mainPane.setLeft(catalogueView);
 		mainPane.setCenter(center);

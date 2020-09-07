@@ -2,7 +2,6 @@ package com.axokoi.BandurriaJ.views;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,8 @@ public class DiscView extends VBox {
 
 	@Autowired
 	DiscService discService;
+	@Autowired
+	BandService bandService;
 
 	private final Label discName = new Label("Disc Name:");
 	private final Label bandName = new Label("Group :");
@@ -53,17 +54,15 @@ public class DiscView extends VBox {
 				.map(x -> new Label(x.getName()))
 				.collect(Collectors.toList()));
 
-		Optional<Band> optionalBand = BandService.findById(disc.getBand().getId());
-		if (optionalBand.isPresent()) {
-			Band band = optionalBand.get();
-			bandName.setText("Group :" + band.getName());
-			List<Artist> artistList = band.getArtists();
+		Band band = bandService.findById(disc.getBand().getId());
 
-			artistList = artistList.stream().map(x -> ArtistService.getById(x.getId()).get()).collect(Collectors.toList());
+		bandName.setText("Group :" + band.getName());
+		List<Artist> artistList = band.getArtists();
 
-			artists = artistList.stream().map(x -> new Label(x.getName() + ":" + x.getRole()))
-					.collect(Collectors.toList());
-		}
+		artistList = artistList.stream().map(x -> ArtistService.getById(x.getId()).get()).collect(Collectors.toList());
+
+		artists = artistList.stream().map(x -> new Label(x.getName() + ":" + x.getRole()))
+				.collect(Collectors.toList());
 
 		this.getChildren().clear();
 		this.getChildren().add(discName);

@@ -18,7 +18,7 @@ public class DiscService {
 		//todo should probably replace this with a jpql query someday
 		Disc disc = discRepository.findById(id).orElseThrow();
 		// Fetch lazy data
-		disc.getTracks().size();
+		disc.getTracks();
 		disc.getBand();
 		return disc;
 	}

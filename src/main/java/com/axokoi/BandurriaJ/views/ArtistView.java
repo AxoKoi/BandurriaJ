@@ -18,11 +18,10 @@ import javafx.scene.layout.VBox;
 
 @Component
 public class ArtistView extends VBox {
-	private Label name = new Label("Artist Name: ");
-
-	private Label role = new Label("Role: ");
-	private Label comment = new Label("Comments: ");
-	private ListView<Disc> discs = new ListView<>();
+	private final Label name = new Label("Artist Name: ");
+	private final Label role = new Label("Role: ");
+	private final Label comment = new Label("Comments: ");
+	private final ListView<Disc> discs = new ListView<>();
 
 	@Autowired
 	ArtistController artistController;

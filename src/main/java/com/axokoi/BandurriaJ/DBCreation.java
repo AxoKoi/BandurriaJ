@@ -50,7 +50,7 @@ public class DBCreation {
 		testDisc.setName("test disc Name:" + value);
 
 		Band band = new Band();
-		band.setName("group name:" + value);
+		band.setName("Band name:" + value);
 		band.setComment("");
 		Artist artist = new Artist();
 		artist.setName("this is the artist name:" + value);

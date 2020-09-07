@@ -1,6 +1,6 @@
 package com.axokoi.BandurriaJ.model;
 
-import java.util.Optional;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,12 @@ public class BandService {
 	}
 
 	//todo these services can be probably be removed, to decide
-	public static Optional<Band> findById(Long id) {
-		return bandRepository.findById(id);
+	@Transactional
+	public Band findById(Long id) {
+		Band band = bandRepository.findById(id).orElseThrow();
+		//Fetch Lazy
+		band.getDiscs().size();
+		band.getArtists();
+		return band;
 	}
 }

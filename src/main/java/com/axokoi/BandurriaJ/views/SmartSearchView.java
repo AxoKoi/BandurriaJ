@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.axokoi.BandurriaJ.Controllers.ArtistController;
+import com.axokoi.BandurriaJ.Controllers.BandController;
 import com.axokoi.BandurriaJ.Controllers.DiscController;
 import com.axokoi.BandurriaJ.Controllers.SmartSearchController;
 import com.axokoi.BandurriaJ.model.Artist;
+import com.axokoi.BandurriaJ.model.Band;
 import com.axokoi.BandurriaJ.model.Disc;
 import com.axokoi.BandurriaJ.model.Searchable;
 
@@ -31,6 +33,8 @@ public class SmartSearchView extends VBox {
 	DiscController discController;
 	@Autowired
 	ArtistController artistController;
+	@Autowired
+	BandController bandController;
 
 /*
 	@Autowired
@@ -74,6 +78,8 @@ public class SmartSearchView extends VBox {
 			discController.refreshView((Disc) selectedItem);
 		} else if (selectedItem instanceof Artist) {
 			artistController.refreshView((Artist) selectedItem);
+		} else if (selectedItem instanceof Band) {
+			bandController.refreshView((Band) selectedItem);
 		}
 
 	}
