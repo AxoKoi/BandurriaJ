@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 
 import com.axokoi.BandurriaJ.model.Artist;
 import com.axokoi.BandurriaJ.model.Band;
+import com.axokoi.BandurriaJ.model.BandRepository;
 import com.axokoi.BandurriaJ.model.Catalogue;
 import com.axokoi.BandurriaJ.model.CatalogueRepository;
 import com.axokoi.BandurriaJ.model.Disc;
 import com.axokoi.BandurriaJ.model.DiscRepository;
-import com.axokoi.BandurriaJ.model.GroupRepository;
 import com.axokoi.BandurriaJ.model.Track;
 
 @Component
@@ -21,7 +21,7 @@ public class DBCreation {
 	@Autowired
 	private DiscRepository discRepository;
 	@Autowired
-	private GroupRepository groupRepository;
+	private BandRepository bandRepository;
 
 	@Autowired
 	private CatalogueRepository catalogueRepository;
@@ -67,7 +67,7 @@ public class DBCreation {
 		tracks.add(track);
 		testDisc.setTracks(tracks);
 
-		groupRepository.save(band);
+		bandRepository.save(band);
 		discRepository.save(testDisc);
 		return testDisc;
 	}

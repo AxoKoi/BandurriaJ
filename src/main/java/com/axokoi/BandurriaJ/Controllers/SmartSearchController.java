@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.axokoi.BandurriaJ.model.ArtistRepository;
+import com.axokoi.BandurriaJ.model.ArtistService;
 import com.axokoi.BandurriaJ.model.BandRepository;
 import com.axokoi.BandurriaJ.model.DiscRepository;
 import com.axokoi.BandurriaJ.model.Searchable;
@@ -22,7 +22,7 @@ public class SmartSearchController {
 	@Autowired
 	DiscRepository discRepository;
 	@Autowired
-	ArtistRepository artistRepository;
+	ArtistService artistService;
 	@Autowired
 	BandRepository bandRepository;
 
@@ -34,7 +34,7 @@ public class SmartSearchController {
 		//search discs
 		results.addAll(discRepository.findByNameContainingIgnoreCase(inputSearch));
 		//search artist
-		results.addAll(artistRepository.findByNameContainingIgnoreCase(inputSearch));
+		results.addAll(artistService.smartSearch(inputSearch));
 		//search Band
 		results.addAll(bandRepository.findByNameContainingIgnoreCase(inputSearch));
 
