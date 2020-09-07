@@ -1,11 +1,13 @@
 package com.axokoi.BandurriaJ.model;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class BandService {
+public class BandService implements SmartSearchService<Band>{
 	private static BandRepository bandRepository;
 
 	public BandService(BandRepository bandRepository) {
@@ -21,4 +23,12 @@ public class BandService {
 		band.getArtists();
 		return band;
 	}
+
+	@Override
+	public List<Band> smartSearch(String inputSearch) {
+		List<Band> bands = bandRepository.findByNameContainingIgnoreCase(inputSearch);
+		bands.addAll(bandRepository.findByCommentContainingIgnoreCase(inputSearch));
+		return bands;
+	}
+
 }

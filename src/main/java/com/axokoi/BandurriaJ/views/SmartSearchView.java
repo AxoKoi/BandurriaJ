@@ -7,12 +7,16 @@ import org.springframework.stereotype.Component;
 
 import com.axokoi.BandurriaJ.Controllers.ArtistController;
 import com.axokoi.BandurriaJ.Controllers.BandController;
+import com.axokoi.BandurriaJ.Controllers.CatalogueController;
 import com.axokoi.BandurriaJ.Controllers.DiscController;
 import com.axokoi.BandurriaJ.Controllers.SmartSearchController;
 import com.axokoi.BandurriaJ.model.Artist;
 import com.axokoi.BandurriaJ.model.Band;
+import com.axokoi.BandurriaJ.model.Catalogue;
 import com.axokoi.BandurriaJ.model.Disc;
+import com.axokoi.BandurriaJ.model.DiscService;
 import com.axokoi.BandurriaJ.model.Searchable;
+import com.axokoi.BandurriaJ.model.Track;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,6 +39,11 @@ public class SmartSearchView extends VBox {
 	ArtistController artistController;
 	@Autowired
 	BandController bandController;
+	@Autowired
+	CatalogueController catalogueController;
+
+	@Autowired
+	DiscService discService;
 
 /*
 	@Autowired
@@ -80,6 +89,10 @@ public class SmartSearchView extends VBox {
 			artistController.refreshView((Artist) selectedItem);
 		} else if (selectedItem instanceof Band) {
 			bandController.refreshView((Band) selectedItem);
+		} else if (selectedItem instanceof Track) {
+			discController.refreshView(discService.findCdByTrack((Track) selectedItem));
+		} else if (selectedItem instanceof Catalogue) {
+			catalogueController.focus((Catalogue) selectedItem);
 		}
 
 	}

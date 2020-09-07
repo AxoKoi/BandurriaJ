@@ -12,7 +12,6 @@ import com.axokoi.BandurriaJ.model.Catalogue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
@@ -167,4 +166,7 @@ public class CatalogueView extends VBox {
 		popUpStage.show();
 	}
 
+	public void focus(Catalogue catalogue) {
+//todo implement this when we fix this view
+	}
 }
