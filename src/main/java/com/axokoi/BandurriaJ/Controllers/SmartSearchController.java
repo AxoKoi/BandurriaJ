@@ -2,12 +2,11 @@ package com.axokoi.BandurriaJ.Controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.axokoi.BandurriaJ.model.Disc;
+import com.axokoi.BandurriaJ.model.ArtistRepository;
 import com.axokoi.BandurriaJ.model.DiscRepository;
 import com.axokoi.BandurriaJ.model.Searchable;
 import com.axokoi.BandurriaJ.views.SmartSearchView;
@@ -19,15 +18,17 @@ public class SmartSearchController {
 
 	@Autowired
 	DiscRepository discRepository;
+	@Autowired
+	ArtistRepository artistRepository;
 
 	public void smartSearch(String inputSearch) {
-
+		List<Searchable> results = new ArrayList<>();
 		//search catalogues
 
 		//search discs
-		List<Searchable> results = new ArrayList<>(discRepository.findByNameContaining(inputSearch));
+		results.addAll(discRepository.findByNameContaining(inputSearch));
 		//search artist
-
+		results.addAll(artistRepository.findByNameContaining(inputSearch));
 		//search Band
 
 		smartSearchView.refresh(results);

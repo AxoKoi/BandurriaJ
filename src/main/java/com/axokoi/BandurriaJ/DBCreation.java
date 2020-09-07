@@ -57,6 +57,8 @@ public class DBCreation {
 		List<Artist> artists = new ArrayList<>();
 		artists.add(artist);
 		band.setArtists(artists);
+		band.setDiscs(new ArrayList<>());
+		band.getDiscs().add(testDisc);
 		testDisc.setBand(band);
 
 		Track track = new Track();

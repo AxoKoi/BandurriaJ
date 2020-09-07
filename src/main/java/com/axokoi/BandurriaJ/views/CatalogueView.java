@@ -40,7 +40,6 @@ public class CatalogueView extends VBox {
 		this.catalogueController = catalogueController;
 		this.setPadding(new Insets(10));
 		this.setSpacing(8);
-
 	}
 
 	public void refresh() {
