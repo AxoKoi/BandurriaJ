@@ -21,11 +21,15 @@ public class DiscController {
 	}
 
 	@Transactional
-	public void refreshView(String discName) {
+	public void refreshView(Disc disc) {
+		Disc discToDisplay = discRepository.findById(disc.getId()).get();
+		discView.refresh(discToDisplay);
+	}
+
+	public void refreshViewWithName(String discName) {
 		Disc discToDisplay = discRepository.findByName(discName);
 		if (discToDisplay != null) {
 			discView.refresh(discToDisplay);
 		}
 	}
-
 }

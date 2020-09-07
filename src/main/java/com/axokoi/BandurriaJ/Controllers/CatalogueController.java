@@ -41,4 +41,8 @@ public class CatalogueController {
 		catalogueRepository.deleteByName(catalogueName);
 		catalogueView.refresh();
 	}
+
+	public void focus(Catalogue catalogue) {
+		catalogueView.focus(catalogue);
+	}
 }

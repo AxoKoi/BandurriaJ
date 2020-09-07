@@ -1,0 +1,21 @@
+@startuml
+(*)  --> "Smart search result"
+If "Type of selectetion" then
+--> [Track] "Track"
+--> "Display CDView"
+else
+--> [CD] "Display CDView"
+--> "Replace Current center View"
+else
+--> [Artist] "Display ArtistView"
+--> "Replace Current center View"
+else
+--> [Band] "Display BandView"
+--> "Replace Current center View"
+else
+--> [Catalogue] "Select Catalogue"
+-->(*)
+Endif
+"Replace Current center View"-->(*)
+
+@enduml

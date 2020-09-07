@@ -14,7 +14,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Catalogue {
+public class Catalogue implements Searchable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -23,4 +23,5 @@ public class Catalogue {
 	@OneToMany(targetEntity = Disc.class, fetch = FetchType.EAGER)
 	private List<Disc> discs;
 
+	private String comment;
 }

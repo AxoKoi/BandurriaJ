@@ -1,0 +1,32 @@
+@startuml
+allowmixing
+
+database DB[
+  Searchable entities
+]
+actor User
+
+package "Smart Search" as SSEngine {
+  agent "Smart search Facade" as SSFacade
+  interface Search {
+    + searchByNameLike
+    + searchByCommentLike
+  }
+}
+
+Search --> DB
+User --> SSFacade: calls
+SSFacade --> User: results
+SSFacade --> Search
+
+abstract Searchable {
+  - name
+  - comments
+  - Id
+}
+
+class SearchableEntity {
+}
+DB *- Searchable
+Searchable <|- SearchableEntity
+@enduml

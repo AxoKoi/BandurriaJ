@@ -9,11 +9,12 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Track {
+public class Track implements Searchable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
 	private String duration;
+	private String comment;
 
 }

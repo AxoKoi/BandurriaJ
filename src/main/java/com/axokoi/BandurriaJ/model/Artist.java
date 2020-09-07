@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Artist implements ArtistInterface {
+public class Artist implements Searchable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
