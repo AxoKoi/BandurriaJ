@@ -60,3 +60,10 @@ which could include the history of the CD, the context of the band, etc.
 First, this text may be long, thus, for a big collection, this may be a bottle neck.
 We can delegate the decision on what to include to each repository, which would implement
 a SmartSearch Interface.  
+
+## GUI flow
+
+This point is still to be determined. Whenever an user selects a result from the smart search,
+the central view will be replaced depending on which kind of entity has been selected.
+If it's a band, then a band view will be displayed. If it's an artist, then the artist. Etc.
+![](../images/SmartSearchFlow.svg)
