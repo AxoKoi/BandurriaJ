@@ -14,7 +14,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Band {
+public class Band implements Searchable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

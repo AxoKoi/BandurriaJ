@@ -5,6 +5,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import com.axokoi.BandurriaJ.model.DiscRepository;
+import com.axokoi.BandurriaJ.views.ArtistView;
+import com.axokoi.BandurriaJ.views.BandView;
 import com.axokoi.BandurriaJ.views.CatalogueView;
 import com.axokoi.BandurriaJ.views.DiscView;
 import com.axokoi.BandurriaJ.views.SmartSearchView;
@@ -15,6 +17,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -29,6 +32,11 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 
 	@Autowired
 	private DiscView discView;
+	@Autowired
+	private ArtistView artistView;
+
+	@Autowired
+	BandView bandView;
 
 	@Autowired
 	private SmartSearchView smartSearchView;
@@ -47,9 +55,10 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 
 		MenuBar menuBar = getMenuBar();
 
+		VBox center = new VBox(discView,artistView, bandView);
 		mainPane.setTop(menuBar);
 		mainPane.setLeft(catalogueView);
-		mainPane.setCenter(discView);
+		mainPane.setCenter(center);
 		mainPane.setRight(smartSearchView);
 
 		HBox footerView = new HBox();

@@ -33,3 +33,37 @@ The mvc scheme is the following:
 You can check the Gui archetype and it's diferent views here:
 
 ![](../images/Gui.svg)
+
+# Smart search
+
+The smart search feature will allow to the user to query its catalogues only by writing a word
+that may be present in its collection. For instance, imagine that the user would like to 
+find an item that has the text TIM. The smart search would allow to find results for:
+* The track One more Time by Daft Punk
+* Tee artis Justin Timberlake
+* The catalogue named CATIM_123.
+
+The overview of the solution can be found here:
+![](../images/SmartSearch.svg)
+
+## Important points
+As for the moment, this won't allow the user to search for instance, 
+every song that has JAZZ in it's title or all the songs belonging JAZZ genre. 
+
+## To do
+Study the posibility to use Lucene as the search Engine
+
+### solution
+Each of our entities have a series of attributes that may be selected to enter into the search.
+For instance, CD may have, for instance, it's title, its genre and also the comments,
+which could include the history of the CD, the context of the band, etc.
+First, this text may be long, thus, for a big collection, this may be a bottle neck.
+We can delegate the decision on what to include to each repository, which would implement
+a SmartSearch Interface.  
+
+## GUI flow
+
+This point is still to be determined. Whenever an user selects a result from the smart search,
+the central view will be replaced depending on which kind of entity has been selected.
+If it's a band, then a band view will be displayed. If it's an artist, then the artist. Etc.
+![](../images/SmartSearchFlow.svg)
