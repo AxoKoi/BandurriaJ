@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import com.axokoi.BandurriaJ.Controllers.CatalogueController;
 import com.axokoi.BandurriaJ.Controllers.DiscController;
 import com.axokoi.BandurriaJ.model.Catalogue;
+import com.axokoi.BandurriaJ.model.Disc;
+import com.axokoi.BandurriaJ.model.Searchable;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,6 +20,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
@@ -34,6 +37,7 @@ public class CatalogueView extends VBox {
 	DiscController discController;
 
 	private final CatalogueController catalogueController;
+	private TreeView<Searchable> treeView = new TreeView<>();
 
 	public CatalogueView(CatalogueController catalogueController) {
 		this.catalogueController = catalogueController;
@@ -42,57 +46,60 @@ public class CatalogueView extends VBox {
 	}
 
 	public void refresh() {
-		TreeView<String> treeView = cataloguesToTreeView();
+		treeView = cataloguesToTreeView();
+		treeView.setCellFactory(x -> new SearchableCell());
 		this.getChildren().clear();
 		this.getChildren().add(treeView);
 	}
 
-	private TreeView<String> cataloguesToTreeView() {
-		TreeView<String> treeView = new TreeView<>();
-		TreeItem<String> rootItem = new TreeItem<>("Catalogues");
+	private TreeView<Searchable> cataloguesToTreeView() {
+		TreeView<Searchable> treeViewToBuild = new TreeView<>();
+		TreeItem<Searchable> rootItem = new TreeItem<>(() -> "Catalogues");
 		List<Catalogue> catalogues = catalogueController.getCatalogues();
 		catalogues.forEach(catalogue -> {
-					TreeItem<String> catalogueItem = new TreeItem<>(catalogue.getName());
-					catalogue.getDiscs().forEach(disc -> catalogueItem.getChildren().add(new TreeItem<>(disc.getName())));
+					TreeItem<Searchable> catalogueItem = new TreeItem<>(catalogue);
+					catalogue.getDiscs().forEach(disc -> catalogueItem.getChildren().add(new TreeItem<>(disc)));
 					rootItem.getChildren().add(catalogueItem);
 				}
 		);
 
-		treeView.addEventHandler(KeyEvent.KEY_PRESSED, getCatalogueKeyEventEventHandler(treeView));
-		treeView.addEventHandler(MouseEvent.MOUSE_CLICKED,
+		treeViewToBuild.addEventHandler(KeyEvent.KEY_PRESSED, getCatalogueKeyEventEventHandler(treeViewToBuild));
+		treeViewToBuild.addEventHandler(MouseEvent.MOUSE_CLICKED,
 				event -> {
-					if (treeView.getSelectionModel().getSelectedItem() != null) {
-						discController.refreshViewWithName(treeView.getSelectionModel().getSelectedItem().getValue());
+					if (treeViewToBuild.getSelectionModel().getSelectedItem() != null &&
+							treeViewToBuild.getSelectionModel().getSelectedItem().getValue() instanceof Disc) {
+						discController.refreshView((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
 					}
+
 				});
-		treeView.setRoot(rootItem);
-		addContextMenu(treeView);
+		treeViewToBuild.setRoot(rootItem);
+		addContextMenu(treeViewToBuild);
 		rootItem.setExpanded(true);
-		return treeView;
+		return treeViewToBuild;
 	}
 
-	private EventHandler<KeyEvent> getCatalogueKeyEventEventHandler(TreeView<String> treeView) {
+	private EventHandler<KeyEvent> getCatalogueKeyEventEventHandler(TreeView<Searchable> treeViewToBuild) {
 		return event -> {
 			if (!(event.getSource() instanceof TreeView)) {
 				return;
 			}
-			boolean isCD = ((TreeView<String>) event.getSource()).getSelectionModel().getSelectedItem().isLeaf();
+			boolean isCD = ((TreeView<Searchable>) event.getSource()).getSelectionModel().getSelectedItem().getValue() instanceof Disc;
+			boolean isCatalogue = ((TreeView<Searchable>) event.getSource()).getSelectionModel().getSelectedItem().getValue() instanceof Catalogue;
 
 			if (isCD) {
 				switch (event.getCode()) {
 				case ENTER:
 				case UP:
 				case DOWN:
-					discController.refreshViewWithName(
-							treeView.getSelectionModel().getSelectedItems().get(0).getValue());
+					discController.refreshView((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
 					break;
 				default:
 					break;
 				}
-			} else {
+			} else if (isCatalogue) {
 				switch (event.getCode()) {
 				case DELETE:
-					displayDeleteCatalogue(treeView.getSelectionModel().getSelectedItems().get(0).getValue());
+					displayDeleteCatalogue(treeViewToBuild.getSelectionModel().getSelectedItem().getValue().getName());
 					break;
 				case INSERT:
 					displayAddNewCataloguePopUp();
@@ -104,14 +111,14 @@ public class CatalogueView extends VBox {
 		};
 	}
 
-	private void addContextMenu(TreeView<String> treeView) {
+	private void addContextMenu(TreeView<Searchable> treeViewToBuild) {
 		ContextMenu catalogueContextMenu = new ContextMenu();
 		MenuItem addNewCatalogueItem = new MenuItem("add a new Catalogue");
 		addNewCatalogueItem.setOnAction(displayAddNewCataloguePopupHandler());
 
 		catalogueContextMenu.getItems().addAll(addNewCatalogueItem);
 
-		treeView.setContextMenu(catalogueContextMenu);
+		treeViewToBuild.setContextMenu(catalogueContextMenu);
 	}
 
 	private EventHandler<ActionEvent> displayAddNewCataloguePopupHandler() {
@@ -167,6 +174,18 @@ public class CatalogueView extends VBox {
 	}
 
 	public void focus(Catalogue catalogue) {
-//todo implement this when we fix this view
+		treeView.getRoot().getChildren().stream()
+				.filter(x -> x.getValue().getName().equals(catalogue.getName())).findFirst()
+				.ifPresent(searchableTreeItem -> treeView.getSelectionModel().select(treeView.getRow(searchableTreeItem)));
+
+	}
+
+	static class SearchableCell extends TreeCell<Searchable> {
+		@Override
+		protected void updateItem(Searchable searchable, boolean empty) {
+			super.updateItem(searchable, empty);
+
+			setText(searchable == null ? "" : searchable.getName());
+		}
 	}
 }
