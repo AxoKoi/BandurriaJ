@@ -24,8 +24,7 @@ to the repositories are done. The Gui is composed by mixing diferent views.
 Upon the user interaction, the views request actions to its own controller, who may call other controllers
  if an action on other view is needed.
 
-The controller will modify the data or perform other actions, as calling a service for information retrieval. 
-One controller is responsible for managing one view.
+The controller  may call a DataAccess service which are responsible of providing methods to expose and modify the model.
 
 The mvc scheme is the following:
 ![](../images/MVC.svg)
