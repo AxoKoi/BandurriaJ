@@ -46,6 +46,7 @@ public class CatalogueView extends VBox {
 	}
 
 	public void refresh() {
+		//todo doing this for every refresh, every disc may be too heavy. To check
 		treeView = cataloguesToTreeView();
 		treeView.setCellFactory(x -> new SearchableCell());
 		this.getChildren().clear();

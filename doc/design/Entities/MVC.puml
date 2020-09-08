@@ -15,11 +15,17 @@ class Controller_A{}
 class Controller_B{}
 }
 
-
-view-->controller: requests actions
-view-->model: Read
+package DataService:@Transactional as service {
+class service_X
+class service_Y
+}
+Controller_A<-->Controller_B: "if needed"
 Controller_A-->View_A : manages
 Controller_B-->View_B : manages
-controller-->model: modify
+View_A-->Controller_A: requests actions
+View_B-->Controller_B: requests actions
 
+controller<-->service: fetch/save
+service_X <--> Model_X
+service_Y <--> Model_Y
 @enduml
