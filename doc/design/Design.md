@@ -64,3 +64,14 @@ the central view will be replaced depending on which kind of entity has been sel
 If it's a band, then a band view will be displayed. If it's an artist, then the artist. Etc.
 ![](../images/SmartSearchFlow.svg)
 
+## Tagging service
+
+One of the core feature of BandurriaJ is that not only will allow to store the information
+a user has from his collection, but it should allow fetching additional information
+from other external services, such as MusicBrainz API or Discogs API.   In order to do this,
+we will create a Tagging service which will expose a facade to interact with external services,
+decoupling completely the client of the service with the implementation. 
+We should aim to make the number of external services configurable. 
+
+The basic design would be:
+![](../images/taggingService.svg)
