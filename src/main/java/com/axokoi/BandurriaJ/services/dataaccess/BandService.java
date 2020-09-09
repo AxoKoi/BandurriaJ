@@ -1,4 +1,4 @@
-package com.axokoi.BandurriaJ.model;
+package com.axokoi.BandurriaJ.services.dataaccess;
 
 import java.util.List;
 
@@ -6,8 +6,11 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
+import com.axokoi.BandurriaJ.model.Band;
+import com.axokoi.BandurriaJ.model.BandRepository;
+
 @Component
-public class BandService implements SmartSearchService<Band>{
+public class BandService implements SmartSearchService<Band> {
 	private static BandRepository bandRepository;
 
 	public BandService(BandRepository bandRepository) {

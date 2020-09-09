@@ -1,4 +1,4 @@
-package com.axokoi.BandurriaJ.model;
+package com.axokoi.BandurriaJ.services.dataaccess;
 
 import java.util.List;
 

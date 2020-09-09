@@ -8,16 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.axokoi.BandurriaJ.model.Artist;
-import com.axokoi.BandurriaJ.model.ArtistRepository;
+import com.axokoi.BandurriaJ.services.dataaccess.ArtistService;
 import com.axokoi.BandurriaJ.model.Disc;
-import com.axokoi.BandurriaJ.model.DiscService;
+import com.axokoi.BandurriaJ.services.dataaccess.DiscService;
 import com.axokoi.BandurriaJ.views.ArtistView;
 
 @Component
 public class ArtistController {
 
 	@Autowired
-	ArtistRepository artistRepository;
+	ArtistService artistService;
 
 	@Autowired
 	DiscService discService;
@@ -26,7 +26,7 @@ public class ArtistController {
 	ArtistView artistView;
 
 	public void refreshView(Artist artist) {
-		artistView.refresh(artistRepository.findById(artist.getId()).orElseThrow());
+		artistView.refresh(artistService.findById(artist.getId()));
 	}
 
 	@Transactional

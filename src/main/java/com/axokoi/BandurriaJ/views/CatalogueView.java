@@ -33,9 +33,6 @@ import javafx.stage.Stage;
 @Component
 public class CatalogueView extends VBox {
 
-	@Autowired
-	DiscController discController;
-
 	private final CatalogueController catalogueController;
 	private TreeView<Searchable> treeView = new TreeView<>();
 
@@ -69,7 +66,7 @@ public class CatalogueView extends VBox {
 				event -> {
 					if (treeViewToBuild.getSelectionModel().getSelectedItem() != null &&
 							treeViewToBuild.getSelectionModel().getSelectedItem().getValue() instanceof Disc) {
-						discController.refreshView((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
+						catalogueController.dispatchRefreshDiscView((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
 					}
 
 				});
@@ -92,7 +89,7 @@ public class CatalogueView extends VBox {
 				case ENTER:
 				case UP:
 				case DOWN:
-					discController.refreshView((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
+					catalogueController.dispatchRefreshDiscView((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
 					break;
 				default:
 					break;

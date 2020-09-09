@@ -8,31 +8,44 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.axokoi.BandurriaJ.model.ArtistService;
-import com.axokoi.BandurriaJ.model.BandService;
-import com.axokoi.BandurriaJ.model.CatalogueService;
-import com.axokoi.BandurriaJ.model.DiscService;
+import com.axokoi.BandurriaJ.model.Artist;
+import com.axokoi.BandurriaJ.services.dataaccess.ArtistService;
+import com.axokoi.BandurriaJ.model.Band;
+import com.axokoi.BandurriaJ.services.dataaccess.BandService;
+import com.axokoi.BandurriaJ.model.Catalogue;
+import com.axokoi.BandurriaJ.services.dataaccess.CatalogueService;
+import com.axokoi.BandurriaJ.model.Disc;
+import com.axokoi.BandurriaJ.services.dataaccess.DiscService;
 import com.axokoi.BandurriaJ.model.Searchable;
-import com.axokoi.BandurriaJ.model.TrackService;
+import com.axokoi.BandurriaJ.model.Track;
+import com.axokoi.BandurriaJ.services.dataaccess.TrackService;
 import com.axokoi.BandurriaJ.views.SmartSearchView;
 
 @Component
 public class SmartSearchController {
 	@Autowired
-	SmartSearchView smartSearchView;
+	private SmartSearchView smartSearchView;
 
 	@Autowired
-	DiscService discService;
+	private ArtistController artistController;
 	@Autowired
-	ArtistService artistService;
+	private BandController bandController;
 	@Autowired
-	BandService bandService;
+	private CatalogueController catalogueController;
+	@Autowired
+	private DiscController discController;
 
 	@Autowired
-	CatalogueService catalogueService;
-
+	private TrackService trackService;
 	@Autowired
-	TrackService trackService ;
+	private DiscService discService;
+	@Autowired
+	private ArtistService artistService;
+	@Autowired
+	private BandService bandService;
+	@Autowired
+	private CatalogueService catalogueService;
+
 
 	@Transactional
 	public void smartSearch(String inputSearch) {
@@ -49,4 +62,21 @@ public class SmartSearchController {
 		results.addAll(trackService.smartSearch(inputSearch));
 		smartSearchView.refresh(results);
 	}
+
+	public void dispatchRefreshToController(Searchable selectedItem) {
+
+		if (selectedItem instanceof Disc) {
+			discController.refreshView((Disc) selectedItem);
+		} else if (selectedItem instanceof Artist) {
+			artistController.refreshView((Artist) selectedItem);
+		} else if (selectedItem instanceof Band) {
+			bandController.refreshView((Band) selectedItem);
+		} else if (selectedItem instanceof Track) {
+			discController.refreshView(discService.findCdByTrack((Track) selectedItem));
+		} else if (selectedItem instanceof Catalogue) {
+			catalogueController.focus((Catalogue) selectedItem);
+		}
+
+	}
+
 }

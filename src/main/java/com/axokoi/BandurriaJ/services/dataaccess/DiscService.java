@@ -1,4 +1,4 @@
-package com.axokoi.BandurriaJ.model;
+package com.axokoi.BandurriaJ.services.dataaccess;
 
 import java.util.Collection;
 import java.util.List;
@@ -8,6 +8,13 @@ import javax.transaction.Transactional;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.stereotype.Component;
+
+import com.axokoi.BandurriaJ.model.Artist;
+import com.axokoi.BandurriaJ.model.Band;
+import com.axokoi.BandurriaJ.model.BandRepository;
+import com.axokoi.BandurriaJ.model.Disc;
+import com.axokoi.BandurriaJ.model.DiscRepository;
+import com.axokoi.BandurriaJ.model.Track;
 
 @Component
 public class DiscService implements SmartSearchService<Disc> {

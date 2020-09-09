@@ -7,12 +7,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.axokoi.BandurriaJ.Controllers.DiscController;
 import com.axokoi.BandurriaJ.model.Artist;
-import com.axokoi.BandurriaJ.model.ArtistService;
+import com.axokoi.BandurriaJ.services.dataaccess.ArtistService;
 import com.axokoi.BandurriaJ.model.Band;
-import com.axokoi.BandurriaJ.model.BandService;
 import com.axokoi.BandurriaJ.model.Disc;
-import com.axokoi.BandurriaJ.model.DiscService;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -22,9 +21,7 @@ import javafx.scene.layout.VBox;
 public class DiscView extends VBox {
 
 	@Autowired
-	DiscService discService;
-	@Autowired
-	BandService bandService;
+	DiscController discController;
 
 	private final Label discName = new Label("Disc Name:");
 	private final Label bandName = new Label("Group :");
@@ -44,7 +41,7 @@ public class DiscView extends VBox {
 	}
 
 	public void refresh(Disc discToDisplay) {
-		Disc disc = discService.findById(discToDisplay.getId());
+		Disc disc = discController.fetchDiscToDisplay(discToDisplay);
 
 		discName.setText("Name:" + disc.getName());
 		tracks.clear();
@@ -54,7 +51,7 @@ public class DiscView extends VBox {
 				.map(x -> new Label(x.getName()))
 				.collect(Collectors.toList()));
 
-		Band band = bandService.findById(disc.getBand().getId());
+		Band band = discController.fetchBandToDisplay(disc.getBand());
 
 		bandName.setText("Group :" + band.getName());
 		List<Artist> artistList = band.getArtists();
