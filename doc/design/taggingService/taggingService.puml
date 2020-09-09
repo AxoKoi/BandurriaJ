@@ -1,0 +1,29 @@
+@startuml
+allowmixing
+
+object "External provider" as external
+actor client
+package taggingService as TagS{
+  object TaggingFacade
+  interface QueryFacade
+
+  package MusicBrainzService as MBTagS {
+    object MBQueryFacade
+    object MBQueryArtist
+  }
+
+  package DiscOgsService as DTagS {
+    object DiscogsQueryFacade
+    object DiscogsQueryArtist
+  }
+
+   QueryFacade <|- MBQueryFacade
+   QueryFacade <|- DiscogsQueryFacade
+
+}
+
+DiscogsQueryArtist --> external
+MBQueryArtist --> external
+client-->TaggingFacade
+TaggingFacade --> QueryFacade
+@enduml

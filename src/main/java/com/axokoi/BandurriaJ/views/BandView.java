@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import com.axokoi.BandurriaJ.Controllers.BandController;
 import com.axokoi.BandurriaJ.model.Artist;
 import com.axokoi.BandurriaJ.model.Band;
-import com.axokoi.BandurriaJ.model.BandService;
 import com.axokoi.BandurriaJ.model.Disc;
 
 import javafx.collections.FXCollections;
@@ -20,8 +19,6 @@ import javafx.scene.layout.VBox;
 public class BandView extends VBox {
 	@Autowired
 	BandController bandController;
-	@Autowired
-	BandService bandService;
 
 	private final Label name = new Label("Band Name: ");
 	private final Label comment = new Label("Comments: ");
@@ -42,7 +39,7 @@ public class BandView extends VBox {
 	}
 
 	public void refresh(Band band) {
-		Band bandToDisplay = bandService.findById(band.getId());
+		Band bandToDisplay = bandController.fetchBandToDisplay(band);
 		name.setText("Band name: " + bandToDisplay.getName());
 		comment.setText("Comments: " + bandToDisplay.getComment());
 

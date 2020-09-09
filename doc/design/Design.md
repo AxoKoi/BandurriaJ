@@ -18,14 +18,13 @@ Here is the class diagram:
 ![](../images/Entities.svg)
 
 We use the following MVC Model. First of all, the user interacts with the views, which
-obtains its data from the model. We still need to decide if we will put a service data access layer or
-if views will have access directly to the repositories. The Gui is composed by mixing diferent views.
+obtains its data through the controller. The controller will call a service data access layer, where all requests
+to the repositories are done. The Gui is composed by mixing diferent views.
 
-Upon the user interaction, the views request actions to its own controller, or to the controller governing
-the other views, depending if an action on other view is needed.
+Upon the user interaction, the views request actions to its own controller, who may call other controllers
+ if an action on other view is needed.
 
-The controller will modify the data or perform other actions, as calling a service for information retrieval. 
-One controller is responsible of managing one view.
+The controller  may call a DataAccess service which are responsible of providing methods to expose and modify the model.
 
 The mvc scheme is the following:
 ![](../images/MVC.svg)
@@ -50,9 +49,6 @@ The overview of the solution can be found here:
 As for the moment, this won't allow the user to search for instance, 
 every song that has JAZZ in it's title or all the songs belonging JAZZ genre. 
 
-## To do
-Study the posibility to use Lucene as the search Engine
-
 ### solution
 Each of our entities have a series of attributes that may be selected to enter into the search.
 For instance, CD may have, for instance, it's title, its genre and also the comments,
@@ -67,3 +63,15 @@ This point is still to be determined. Whenever an user selects a result from the
 the central view will be replaced depending on which kind of entity has been selected.
 If it's a band, then a band view will be displayed. If it's an artist, then the artist. Etc.
 ![](../images/SmartSearchFlow.svg)
+
+## Tagging service
+
+One of the core feature of BandurriaJ is that not only will allow to store the information
+a user has from his collection, but it should allow fetching additional information
+from other external services, such as MusicBrainz API or Discogs API.   In order to do this,
+we will create a Tagging service which will expose a facade to interact with external services,
+decoupling completely the client of the service with the implementation. 
+We should aim to make the number of external services configurable. 
+
+The basic design would be:
+![](../images/taggingService.svg)

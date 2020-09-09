@@ -10,20 +10,17 @@ import org.springframework.stereotype.Component;
 
 import com.axokoi.BandurriaJ.model.Catalogue;
 import com.axokoi.BandurriaJ.model.CatalogueRepository;
+import com.axokoi.BandurriaJ.model.Disc;
 import com.axokoi.BandurriaJ.views.CatalogueView;
 
 @Component
 public class CatalogueController {
-	private final CatalogueRepository catalogueRepository;
-
 	@Autowired
-	CatalogueView catalogueView;
-
-
-
-	public CatalogueController(CatalogueRepository catalogueRepository) {
-		this.catalogueRepository = catalogueRepository;
-	}
+	private CatalogueRepository catalogueRepository;
+	@Autowired
+	private CatalogueView catalogueView;
+	@Autowired
+	private DiscController discController;
 
 	public List<Catalogue> getCatalogues() {
 		return IterableUtils.toList(catalogueRepository.findAll());
@@ -44,5 +41,9 @@ public class CatalogueController {
 
 	public void focus(Catalogue catalogue) {
 		catalogueView.focus(catalogue);
+	}
+
+	public void dispatchRefreshDiscView(Disc disc) {
+		discController.refreshView(disc);
 	}
 }

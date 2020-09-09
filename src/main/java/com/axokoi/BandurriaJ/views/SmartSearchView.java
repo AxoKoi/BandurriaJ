@@ -5,18 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.axokoi.BandurriaJ.Controllers.ArtistController;
-import com.axokoi.BandurriaJ.Controllers.BandController;
-import com.axokoi.BandurriaJ.Controllers.CatalogueController;
-import com.axokoi.BandurriaJ.Controllers.DiscController;
 import com.axokoi.BandurriaJ.Controllers.SmartSearchController;
-import com.axokoi.BandurriaJ.model.Artist;
-import com.axokoi.BandurriaJ.model.Band;
-import com.axokoi.BandurriaJ.model.Catalogue;
-import com.axokoi.BandurriaJ.model.Disc;
-import com.axokoi.BandurriaJ.model.DiscService;
 import com.axokoi.BandurriaJ.model.Searchable;
-import com.axokoi.BandurriaJ.model.Track;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,23 +22,6 @@ public class SmartSearchView extends VBox {
 
 	@Autowired
 	SmartSearchController smartSearchController;
-
-	@Autowired
-	DiscController discController;
-	@Autowired
-	ArtistController artistController;
-	@Autowired
-	BandController bandController;
-	@Autowired
-	CatalogueController catalogueController;
-
-	@Autowired
-	DiscService discService;
-
-/*
-	@Autowired
-	BandController bandController;
-*/
 
 	private final Label search = new Label("Enter your search");
 	private final TextField inputSearch = new TextField();
@@ -74,26 +47,8 @@ public class SmartSearchView extends VBox {
 		this.results.setCellFactory(list -> new SearchableCell());
 
 		this.results.setOnMouseClicked(event -> {
-			//needs to handle all possible results: Artist, CD, catalogues, bands.
-			dispatchRefreshToController();
+			smartSearchController.dispatchRefreshToController(this.results.getSelectionModel().getSelectedItem());
 		});
-
-	}
-
-	private void dispatchRefreshToController() {
-
-		Searchable selectedItem = this.results.getSelectionModel().getSelectedItem();
-		if (selectedItem instanceof Disc) {
-			discController.refreshView((Disc) selectedItem);
-		} else if (selectedItem instanceof Artist) {
-			artistController.refreshView((Artist) selectedItem);
-		} else if (selectedItem instanceof Band) {
-			bandController.refreshView((Band) selectedItem);
-		} else if (selectedItem instanceof Track) {
-			discController.refreshView(discService.findCdByTrack((Track) selectedItem));
-		} else if (selectedItem instanceof Catalogue) {
-			catalogueController.focus((Catalogue) selectedItem);
-		}
 
 	}
 
