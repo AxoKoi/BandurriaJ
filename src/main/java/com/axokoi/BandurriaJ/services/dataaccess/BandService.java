@@ -17,7 +17,6 @@ public class BandService implements SmartSearchService<Band> {
 		this.bandRepository = bandRepository;
 	}
 
-	//todo these services can be probably be removed, to decide
 	@Transactional
 	public Band findById(Long id) {
 		Band band = bandRepository.findById(id).orElseThrow();
