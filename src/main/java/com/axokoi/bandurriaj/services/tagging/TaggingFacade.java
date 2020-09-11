@@ -2,10 +2,13 @@ package com.axokoi.bandurriaj.services.tagging;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.axokoi.bandurriaj.model.Disc;
 
 public class TaggingFacade {
 
+	@Autowired
 	List<ProviderFacade> taggingProviders;
 
 	public Disc getDisc(String discID) {
