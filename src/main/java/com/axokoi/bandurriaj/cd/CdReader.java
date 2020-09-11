@@ -18,10 +18,7 @@ public class CdReader {
 
 		try (InputStream stream = CdReader.class.getResourceAsStream("test.doc")) {
 			return tika.parseToString(stream);
-		} catch (TikaException e) {
-			e.printStackTrace();
-			throw new RuntimeException();
-		} catch (IOException e) {
+		} catch (TikaException | IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException();
 		}
@@ -37,13 +34,7 @@ public class CdReader {
 			ParseContext context = new ParseContext();
 			parser.parse(stream, contentHandler, metadata, context);
 			return metadata;
-		} catch (TikaException e) {
-			e.printStackTrace();
-			throw new RuntimeException();
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException();
-		} catch (SAXException e) {
+		} catch (TikaException | SAXException | IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException();
 		}

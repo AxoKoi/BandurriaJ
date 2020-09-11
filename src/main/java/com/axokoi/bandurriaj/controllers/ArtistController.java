@@ -1,4 +1,4 @@
-package com.axokoi.bandurriaj.Controllers;
+package com.axokoi.bandurriaj.controllers;
 
 import java.util.List;
 

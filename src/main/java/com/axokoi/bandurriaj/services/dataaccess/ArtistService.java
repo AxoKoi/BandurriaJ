@@ -11,13 +11,13 @@ import com.axokoi.bandurriaj.model.ArtistRepository;
 @Component
 public class ArtistService implements SmartSearchService<Artist> {
 
-	private static ArtistRepository artistRepository;
+	private ArtistRepository artistRepository;
 
 	public ArtistService(ArtistRepository artistRepository) {
 		this.artistRepository = artistRepository;
 	}
 
-	public static Optional<Artist> getById(Long id) {
+	public  Optional<Artist> getById(Long id) {
 		return artistRepository.findById(id);
 	}
 

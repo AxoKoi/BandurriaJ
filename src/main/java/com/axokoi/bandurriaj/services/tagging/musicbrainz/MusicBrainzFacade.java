@@ -9,7 +9,7 @@ import com.axokoi.bandurriaj.services.tagging.ProviderFacade;
 public class MusicBrainzFacade implements ProviderFacade {
 
 	@Override
-	public Disc getDiscInfo(String discID) {
-		return CdQuery.getDiscInfo(discID);
+	public Disc getDiscInfo(String discName) {
+		return CdQuery.getDiscInfo(discName);
 	}
 }

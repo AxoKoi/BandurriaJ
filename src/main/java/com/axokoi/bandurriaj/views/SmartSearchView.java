@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.axokoi.bandurriaj.Controllers.SmartSearchController;
+import com.axokoi.bandurriaj.controllers.SmartSearchController;
 import com.axokoi.bandurriaj.model.Searchable;
 
 import javafx.collections.FXCollections;

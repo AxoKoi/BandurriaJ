@@ -11,7 +11,7 @@ import com.axokoi.bandurriaj.model.BandRepository;
 
 @Component
 public class BandService implements SmartSearchService<Band> {
-	private static BandRepository bandRepository;
+	private BandRepository bandRepository;
 
 	public BandService(BandRepository bandRepository) {
 		this.bandRepository = bandRepository;

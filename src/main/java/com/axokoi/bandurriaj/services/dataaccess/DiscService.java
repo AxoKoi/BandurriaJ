@@ -19,9 +19,9 @@ import com.axokoi.bandurriaj.model.Track;
 @Component
 public class DiscService implements SmartSearchService<Disc> {
 
-	private static DiscRepository discRepository;
+	private DiscRepository discRepository;
 
-	private static BandRepository bandRepository;
+	private BandRepository bandRepository;
 
 	public DiscService(DiscRepository discRepository, BandRepository bandRepository) {
 		this.discRepository = discRepository;

@@ -3,7 +3,7 @@ package com.axokoi.bandurriaj.views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.axokoi.bandurriaj.Controllers.BandController;
+import com.axokoi.bandurriaj.controllers.BandController;
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Band;
 import com.axokoi.bandurriaj.model.Disc;

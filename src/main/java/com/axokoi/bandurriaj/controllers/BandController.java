@@ -1,4 +1,4 @@
-package com.axokoi.bandurriaj.Controllers;
+package com.axokoi.bandurriaj.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

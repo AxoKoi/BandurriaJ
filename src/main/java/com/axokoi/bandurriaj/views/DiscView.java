@@ -7,9 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.axokoi.bandurriaj.Controllers.DiscController;
+import com.axokoi.bandurriaj.controllers.DiscController;
 import com.axokoi.bandurriaj.model.Artist;
-import com.axokoi.bandurriaj.services.dataaccess.ArtistService;
 import com.axokoi.bandurriaj.model.Band;
 import com.axokoi.bandurriaj.model.Disc;
 
@@ -56,7 +55,9 @@ public class DiscView extends VBox {
 		bandName.setText("Group :" + band.getName());
 		List<Artist> artistList = band.getArtists();
 
-		artistList = artistList.stream().map(x -> ArtistService.getById(x.getId()).get()).collect(Collectors.toList());
+		artistList = artistList.stream()
+				.map(x -> discController.fetchArtistToDisplay(x))
+				.collect(Collectors.toList());
 
 		artists = artistList.stream().map(x -> new Label(x.getName() + ":" + x.getRole()))
 				.collect(Collectors.toList());
