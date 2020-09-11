@@ -1,11 +1,8 @@
 package com.axokoi.bandurriaj;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
-
-import com.axokoi.bandurriaj.model.DiscRepository;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -22,9 +19,6 @@ public class MainApplication extends Application {
 			return (Stage) getSource();
 		}
 	}
-
-	@Autowired
-	DiscRepository discRepository;
 
 	private ConfigurableApplicationContext applicationContext;
 
