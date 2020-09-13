@@ -40,6 +40,7 @@ public class CatalogueView extends VBox {
 
 		this.setPadding(new Insets(14));
 		this.setSpacing(8);
+		this.getStyleClass().add("left-pane");
 	}
 
 	public void refresh() {

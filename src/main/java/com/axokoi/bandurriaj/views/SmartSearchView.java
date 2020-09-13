@@ -18,7 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 @Component
-public class SmartSearchView extends VBox {
+public final class SmartSearchView extends VBox {
 
 	@Autowired
 	SmartSearchController smartSearchController;
@@ -32,7 +32,7 @@ public class SmartSearchView extends VBox {
 		getChildren().addAll(search, inputSearch, results);
 		this.setPadding(new Insets(14));
 		this.setSpacing(8);
-
+		this.getStyleClass().add("right-pane");
 	}
 
 	public void refresh(List<Searchable> smartSearchResult) {

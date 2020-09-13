@@ -1,4 +1,16 @@
 .root {
   -fx-font-size: 10pt ;
   -fx-font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+   -fx-background-color: #FFDEDE;
+}
+
+.left-pane{
+
+}
+
+.center-pane{
+
+}
+.right-pane{
+
 }

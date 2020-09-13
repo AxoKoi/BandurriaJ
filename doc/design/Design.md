@@ -75,3 +75,10 @@ We should aim to make the number of external services configurable.
 
 The basic design would be:
 ![](../images/taggingService.svg)
+
+## CDReader service
+
+BandurriaJ allows to read from a CD and transform it into an internal Disc, which can be stored in a catalogue.
+It's only the metadata corresponding to the CD that's kept in BandurriaJ.
+There should be the possibility to combine this service with the Tagging service so a user can
+save the full information in its catalogue.
