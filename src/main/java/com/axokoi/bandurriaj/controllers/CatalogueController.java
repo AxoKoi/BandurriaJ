@@ -45,8 +45,8 @@ public class CatalogueController extends GuiController<Catalogue> {
 		catalogueView.focus(catalogue);
 	}
 
-	public void dispatchRefreshDiscView(Disc disc) {
-		discController.refreshView(disc);
+	public void dispatchRefreshToController(Disc disc) {
+		discController.displayViewCenter(disc);
 	}
 
 	@Override

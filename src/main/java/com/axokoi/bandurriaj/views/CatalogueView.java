@@ -66,7 +66,7 @@ public class CatalogueView extends VBox {
 				event -> {
 					if (treeViewToBuild.getSelectionModel().getSelectedItem() != null &&
 							treeViewToBuild.getSelectionModel().getSelectedItem().getValue() instanceof Disc) {
-						catalogueController.dispatchRefreshDiscView((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
+						catalogueController.dispatchRefreshToController((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
 					}
 
 				});
@@ -89,7 +89,7 @@ public class CatalogueView extends VBox {
 				case ENTER:
 				case UP:
 				case DOWN:
-					catalogueController.dispatchRefreshDiscView((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
+					catalogueController.dispatchRefreshToController((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
 					break;
 				default:
 					break;
