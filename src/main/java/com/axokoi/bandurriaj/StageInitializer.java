@@ -65,6 +65,7 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 		mainPane.setLeft(catalogueView);
 		mainPane.setCenter(center);
 		mainPane.setRight(smartSearchView);
+		mainPane.getStyleClass().add("root");
 
 		HBox footerView = new HBox();
 		footerView.getChildren().add(new Text("BandurriaJ by Axokoi"));
@@ -73,6 +74,7 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 		stage.setTitle("BandurriaJ");
 		stage.setScene(new Scene(mainPane, 1000, 350));
 		stage.sizeToScene();
+		stage.getScene().getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
 		viewDispatcher.setBorderPane(mainPane);
 		stage.show();

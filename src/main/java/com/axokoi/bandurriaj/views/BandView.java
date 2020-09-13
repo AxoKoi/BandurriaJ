@@ -49,7 +49,7 @@ public class BandView extends VBox {
 				bandController.dispatchRefreshToController(artists.getSelectionModel().getSelectedItem());
 			}
 		});
-		this.setPadding(new Insets(10));
+		this.setPadding(new Insets(14));
 		this.setSpacing(8);
 	}
 

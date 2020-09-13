@@ -25,7 +25,7 @@ public class DiscView extends VBox {
 	private final Label discName = new Label("Disc Name:");
 	private final Label bandName = new Label("Group :");
 	private List<Label> artists = new ArrayList<>();
-	private List<Label> tracks = new ArrayList<>();
+	private final List<Label> tracks = new ArrayList<>();
 
 	public DiscView() {
 
@@ -34,7 +34,7 @@ public class DiscView extends VBox {
 		getChildren().addAll(artists);
 		getChildren().addAll(tracks);
 
-		this.setPadding(new Insets(10));
+		this.setPadding(new Insets(14));
 		this.setSpacing(8);
 
 	}
@@ -44,7 +44,7 @@ public class DiscView extends VBox {
 
 		discName.setText("Name:" + disc.getName());
 		tracks.clear();
-
+// todo we can change this to a list with a specific cell view!
 		tracks.addAll(disc.getTracks().stream()
 				//		.map(x -> trackRepository.findById(x.getId()))
 				.map(x -> new Label(x.getName()))

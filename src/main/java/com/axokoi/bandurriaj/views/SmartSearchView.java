@@ -30,7 +30,7 @@ public class SmartSearchView extends VBox {
 	public SmartSearchView() {
 		inputSearch.setOnAction(x -> smartSearchController.smartSearch(inputSearch.getText().trim()));
 		getChildren().addAll(search, inputSearch, results);
-		this.setPadding(new Insets(10));
+		this.setPadding(new Insets(14));
 		this.setSpacing(8);
 
 	}
