@@ -13,6 +13,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
 @Component
@@ -33,10 +35,24 @@ public class BandView extends VBox {
 		getChildren().addAll(discs);
 
 		discs.setCellFactory(list -> new DiscCell());
+		discs.addEventHandler(KeyEvent.KEY_PRESSED,event->{
+
+			if(event.getCode()== KeyCode.ENTER){
+				bandController.dispatchRefreshToController(discs.getSelectionModel().getSelectedItem());
+			}
+		});
+		
 		artists.setCellFactory(list -> new ArtistCell());
+		artists.addEventHandler(KeyEvent.KEY_PRESSED,event->{
+
+			if(event.getCode()== KeyCode.ENTER){
+				bandController.dispatchRefreshToController(artists.getSelectionModel().getSelectedItem());
+			}
+		});
 		this.setPadding(new Insets(10));
 		this.setSpacing(8);
 	}
+
 
 	public void refresh(Band band) {
 		Band bandToDisplay = bandController.fetchBandToDisplay(band);

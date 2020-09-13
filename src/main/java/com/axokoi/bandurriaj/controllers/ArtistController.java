@@ -25,6 +25,9 @@ public class ArtistController extends GuiController<Artist> {
 	@Autowired
 	ArtistView artistView;
 
+	@Autowired
+	DiscController discController;
+
 	@Override
 	public void refreshView(Artist artist) {
 		artistView.refresh(artistService.findById(artist.getId()));
@@ -40,4 +43,9 @@ public class ArtistController extends GuiController<Artist> {
 		return discService.findAllDiscByArtist(artist);
 
 	}
+
+	public void dispatchRefreshToController(Disc selectedItem) {
+		discController.displayViewCenter(selectedItem);
+	}
+
 }

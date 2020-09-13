@@ -22,4 +22,5 @@ public abstract class GuiController<S extends Searchable> {
 	abstract Node getView();
 
 	abstract void refreshView(S searchable);
+
 }

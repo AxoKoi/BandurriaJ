@@ -59,7 +59,7 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 
 		MenuBar menuBar = getMenuBar();
 
-		VBox center = new VBox(discView,artistView, bandView);
+		VBox center = new VBox();
 		center.setPadding(new Insets(5));
 		mainPane.setTop(menuBar);
 		mainPane.setLeft(catalogueView);
