@@ -33,7 +33,7 @@ public class DiscService implements SmartSearchService<Disc> {
 		//todo should probably replace this with a jpql query someday
 		Disc disc = discRepository.findById(id).orElseThrow();
 		// Fetch lazy data
-		disc.getTracks();
+		disc.getTracks().size();
 		disc.getBand();
 		return disc;
 	}
