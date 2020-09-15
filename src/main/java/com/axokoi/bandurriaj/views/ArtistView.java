@@ -14,10 +14,11 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
 @Component
-public class ArtistView extends VBox {
+public final class ArtistView extends VBox {
 	private final Label name = new Label("Artist Name: ");
 	private final Label role = new Label("Role: ");
 	private final Label comment = new Label("Comments: ");
@@ -34,9 +35,12 @@ public class ArtistView extends VBox {
 		getChildren().addAll(discs);
 
 		discs.setCellFactory(list -> new DiscCell());
-		this.setPadding(new Insets(10));
-		this.setSpacing(8);
 
+		discs.addEventHandler(KeyEvent.KEY_PRESSED,event->{
+			artistController.dispatchRefreshToController(discs.getSelectionModel().getSelectedItem());
+		});
+		this.setPadding(new Insets(14));
+		this.setSpacing(8);
 	}
 
 	public void refresh(Artist artist) {

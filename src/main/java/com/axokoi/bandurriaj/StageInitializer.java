@@ -11,6 +11,7 @@ import com.axokoi.bandurriaj.views.CatalogueView;
 import com.axokoi.bandurriaj.views.DiscView;
 import com.axokoi.bandurriaj.views.SmartSearchView;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -44,6 +45,9 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 	@Autowired
 	private DBCreation dbCreation;
 
+	@Autowired
+	ViewDispatcher viewDispatcher;
+
 	@Override
 	public void onApplicationEvent(MainApplication.StageReadyEvent event) {
 
@@ -55,11 +59,13 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 
 		MenuBar menuBar = getMenuBar();
 
-		VBox center = new VBox(discView,artistView, bandView);
+		VBox center = new VBox();
+		center.setPadding(new Insets(5));
 		mainPane.setTop(menuBar);
 		mainPane.setLeft(catalogueView);
 		mainPane.setCenter(center);
 		mainPane.setRight(smartSearchView);
+		mainPane.getStyleClass().add("root");
 
 		HBox footerView = new HBox();
 		footerView.getChildren().add(new Text("BandurriaJ by Axokoi"));
@@ -67,8 +73,10 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 
 		stage.setTitle("BandurriaJ");
 		stage.setScene(new Scene(mainPane, 1000, 350));
-		stage.getScene().getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
 		stage.sizeToScene();
+		stage.getScene().getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+
+		viewDispatcher.setBorderPane(mainPane);
 		stage.show();
 
 	}

@@ -66,13 +66,13 @@ public class SmartSearchController {
 	public void dispatchRefreshToController(Searchable selectedItem) {
 
 		if (selectedItem instanceof Disc) {
-			discController.refreshView((Disc) selectedItem);
+			discController.displayViewCenter((Disc) selectedItem);
 		} else if (selectedItem instanceof Artist) {
-			artistController.refreshView((Artist) selectedItem);
+			artistController.displayViewCenter((Artist) selectedItem);
 		} else if (selectedItem instanceof Band) {
-			bandController.refreshView((Band) selectedItem);
+			bandController.displayViewCenter((Band) selectedItem);
 		} else if (selectedItem instanceof Track) {
-			discController.refreshView(discService.findCdByTrack((Track) selectedItem));
+			discController.displayViewCenter(discService.findCdByTrack((Track) selectedItem));
 		} else if (selectedItem instanceof Catalogue) {
 			catalogueController.focus((Catalogue) selectedItem);
 		}

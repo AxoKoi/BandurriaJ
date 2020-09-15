@@ -13,8 +13,10 @@ import com.axokoi.bandurriaj.services.dataaccess.BandService;
 import com.axokoi.bandurriaj.services.dataaccess.DiscService;
 import com.axokoi.bandurriaj.views.DiscView;
 
+import javafx.scene.Node;
+
 @Component
-public class DiscController {
+public class DiscController extends GuiController<Disc> {
 
 	@Autowired
 	private DiscView discView;
@@ -25,12 +27,17 @@ public class DiscController {
 	@Autowired
 	private ArtistService artistService;
 
-	@Transactional
-	public void refreshView(Disc disc) {
-		Disc discToDisplay = discService.findById(disc.getId());
-		discView.refresh(discToDisplay);
+	@Override
+	Node getView() {
+		return this.discView;
 	}
 
+	@Override
+	public void refreshView(Disc disc) {
+		discView.refresh(disc);
+	}
+
+	@Transactional
 	public Disc fetchDiscToDisplay(Disc discToDisplay) {
 		return discService.findById(discToDisplay.getId());
 	}
