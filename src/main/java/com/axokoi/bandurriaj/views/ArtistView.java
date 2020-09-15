@@ -41,7 +41,6 @@ public final class ArtistView extends VBox {
 		});
 		this.setPadding(new Insets(14));
 		this.setSpacing(8);
-		this.setStyle("-fx-font-size: 12;");
 	}
 
 	public void refresh(Artist artist) {

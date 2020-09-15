@@ -30,7 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 @Component
-public class CatalogueView extends VBox {
+public final class CatalogueView extends VBox {
 	@Autowired
 	private CatalogueController catalogueController;
 
