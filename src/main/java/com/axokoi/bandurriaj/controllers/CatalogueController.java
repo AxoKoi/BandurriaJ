@@ -13,8 +13,10 @@ import com.axokoi.bandurriaj.model.CatalogueRepository;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.views.CatalogueView;
 
+import javafx.scene.Node;
+
 @Component
-public class CatalogueController {
+public class CatalogueController extends GuiController<Catalogue> {
 	@Autowired
 	private CatalogueRepository catalogueRepository;
 	@Autowired
@@ -43,7 +45,17 @@ public class CatalogueController {
 		catalogueView.focus(catalogue);
 	}
 
-	public void dispatchRefreshDiscView(Disc disc) {
-		discController.refreshView(disc);
+	public void dispatchRefreshToController(Disc disc) {
+		discController.displayViewCenter(disc);
+	}
+
+	@Override
+	Node getView() {
+		return this.catalogueView;
+	}
+
+	@Override
+	void refreshView(Catalogue searchable) {
+		//No need to refresh anything for the moment
 	}
 }
