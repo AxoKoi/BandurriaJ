@@ -31,6 +31,7 @@ public class CdQuery {
         return apiResult.get(0).getReleaseGroup();
     }
 
+    //todo actually this can return a list of Disc!
     public Disc getDiscInfoById(String id) {
         org.musicbrainz.controller.Disc controller = new org.musicbrainz.controller.Disc();
         try {
