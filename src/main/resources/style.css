@@ -1,7 +1,7 @@
 .root {
   -fx-font-size: 10pt ;
   -fx-font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-   -fx-background-color: #FFDEDE;
+  /* -fx-background-color: #98f055;*/
 }
 
 .left-pane{

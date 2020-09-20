@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.axokoi.bandurriaj.services.tagging.musicbrainz.MusicBrainzFacade;
 
+//todo do we need this finally?
 @Configuration
 public class ProvidersConfiguration {
 	@Bean
