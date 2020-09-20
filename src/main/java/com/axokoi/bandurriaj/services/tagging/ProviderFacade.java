@@ -5,4 +5,6 @@ import com.axokoi.bandurriaj.model.Disc;
 public interface ProviderFacade {
 
 	Disc getDiscInfo(String discName);
+
+	Disc getDiscInfoFromDiscId(String id);
 }
