@@ -1,99 +1,77 @@
 package com.axokoi.bandurriaj;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Component;
-
 import com.axokoi.bandurriaj.model.DiscRepository;
-import com.axokoi.bandurriaj.views.ArtistView;
-import com.axokoi.bandurriaj.views.BandView;
-import com.axokoi.bandurriaj.views.CatalogueView;
-import com.axokoi.bandurriaj.views.DiscView;
-import com.axokoi.bandurriaj.views.SmartSearchView;
-
+import com.axokoi.bandurriaj.views.*;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Component;
 
 @Component
 public class StageInitializer implements ApplicationListener<MainApplication.StageReadyEvent> {
 
-	@Autowired
-	private DiscRepository discRepository;
+    @Autowired
+    private DiscRepository discRepository;
 
-	@Autowired
-	private CatalogueView catalogueView;
+    @Autowired
+    private CatalogueView catalogueView;
 
-	@Autowired
-	private DiscView discView;
-	@Autowired
-	private ArtistView artistView;
+    @Autowired
+    private DiscView discView;
+    @Autowired
+    private ArtistView artistView;
 
-	@Autowired
-	BandView bandView;
+    @Autowired
+    BandView bandView;
 
-	@Autowired
-	private SmartSearchView smartSearchView;
+    @Autowired
+    private SmartSearchView smartSearchView;
 
-	@Autowired
-	private DBCreation dbCreation;
+    @Autowired
+    private DBCreation dbCreation;
 
-	@Autowired
-	ViewDispatcher viewDispatcher;
+    @Autowired
+    ViewDispatcher viewDispatcher;
 
-	@Override
-	public void onApplicationEvent(MainApplication.StageReadyEvent event) {
+    @Autowired
+    MenuBarView menuBarView;
 
-		dbCreation.init();
-		catalogueView.refresh();
+    @Override
+    public void onApplicationEvent(MainApplication.StageReadyEvent event) {
 
-		Stage stage = event.getStage();
-		BorderPane mainPane = new BorderPane();
+        dbCreation.init();
+        catalogueView.refresh();
 
-		MenuBar menuBar = getMenuBar();
+        Stage stage = event.getStage();
+        BorderPane mainPane = new BorderPane();
+        menuBarView.build(stage);
 
-		VBox center = new VBox();
-		center.setPadding(new Insets(5));
-		mainPane.setTop(menuBar);
-		mainPane.setLeft(catalogueView);
-		mainPane.setCenter(center);
-		mainPane.setRight(smartSearchView);
-		mainPane.getStyleClass().add("root");
+        VBox center = new VBox();
+        center.setPadding(new Insets(5));
+        mainPane.setTop(menuBarView);
+        mainPane.setLeft(catalogueView);
+        mainPane.setCenter(center);
+        mainPane.setRight(smartSearchView);
+        mainPane.getStyleClass().add("root");
 
-		HBox footerView = new HBox();
-		footerView.getChildren().add(new Text("BandurriaJ by Axokoi"));
-		mainPane.setBottom(footerView);
+        HBox footerView = new HBox();
+        footerView.getChildren().add(new Text("BandurriaJ by Axokoi"));
+        mainPane.setBottom(footerView);
 
-		stage.setTitle("BandurriaJ");
-		stage.setScene(new Scene(mainPane, 1000, 350));
-		stage.sizeToScene();
-		stage.getScene().getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        stage.setTitle("BandurriaJ");
+        stage.setScene(new Scene(mainPane, 1000, 350));
+        stage.sizeToScene();
+        stage.getScene().getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
-		viewDispatcher.setBorderPane(mainPane);
-		stage.show();
+        viewDispatcher.setBorderPane(mainPane);
+        stage.show();
 
-	}
-
-	private MenuBar getMenuBar() {
-		MenuBar menuBar = new MenuBar();
-		Menu menu1 = new Menu("File");
-		MenuItem menuItem1 = new MenuItem("save");
-		menu1.getItems().add(menuItem1);
-
-		Menu menu2 = new Menu("Import");
-		MenuItem menu2Item1 = new MenuItem("from CD");
-		menu2.getItems().add(menu2Item1);
-
-		menuBar.getMenus().add(menu1);
-		menuBar.getMenus().add(menu2);
-		return menuBar;
-	}
+    }
 
 }

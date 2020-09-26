@@ -18,9 +18,10 @@ public class Disc implements Searchable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
 	private String name;
 
-	@ManyToOne(targetEntity = Band.class, cascade = CascadeType.REFRESH)
+	@ManyToOne(targetEntity = Band.class)
 	private Band band;
 
 	@OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL)
