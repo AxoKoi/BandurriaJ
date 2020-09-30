@@ -79,7 +79,7 @@ public class LoadedCdView extends VBox {
 
             @Override
             public String toString(Catalogue catalogue) {
-                if(catalogue ==null){
+                if (catalogue == null) {
                     return "";
                 }
                 return catalogue.getName();
@@ -98,7 +98,7 @@ public class LoadedCdView extends VBox {
 
             @Override
             public String toString(Disc disc) {
-                if(disc == null){
+                if (disc == null) {
                     return "";
                 }
                 return disc.getName();
@@ -110,8 +110,10 @@ public class LoadedCdView extends VBox {
             }
         });
         Stage popUpStage = new Stage();
-        Scene popUpScene = new Scene(this, 500, 300);
-        popUpStage.setScene(popUpScene);
+        if (this.getScene() == null) {
+            new Scene(this, 500, 300);
+        }
+        popUpStage.setScene(this.getScene());
         popUpStage.show();
 
     }
