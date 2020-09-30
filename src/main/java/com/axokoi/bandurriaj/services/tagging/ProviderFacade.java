@@ -2,9 +2,11 @@ package com.axokoi.bandurriaj.services.tagging;
 
 import com.axokoi.bandurriaj.model.Disc;
 
+import java.util.List;
+
 public interface ProviderFacade {
 
 	Disc getDiscInfo(String discName);
 
-	Disc getDiscInfoFromDiscId(String id);
+	List<Disc> getDiscInfoFromDiscId(String id);
 }

@@ -7,11 +7,13 @@ import org.musicbrainz.MBWS2Exception;
 import org.musicbrainz.controller.ReleaseGroup;
 import org.musicbrainz.model.entity.DiscWs2;
 import org.musicbrainz.model.entity.ReleaseGroupWs2;
+import org.musicbrainz.model.entity.ReleaseWs2;
 import org.musicbrainz.model.searchresult.ReleaseGroupResultWs2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -31,12 +33,15 @@ public class CdQuery {
         return apiResult.get(0).getReleaseGroup();
     }
 
-    //todo actually this can return a list of Disc!
-    public Disc getDiscInfoById(String id) {
+    public List<Disc> getDiscInfoById(String id) {
         org.musicbrainz.controller.Disc controller = new org.musicbrainz.controller.Disc();
         try {
             DiscWs2 disc = controller.lookUp(id, null);
-            return cdConverter.convert(disc.getReleases().get(0).getReleaseGroup());
+            return disc.getReleases().stream()
+                    .map(ReleaseWs2::getReleaseGroup)
+                    .map(x -> cdConverter.convert(x))
+                    .collect(Collectors.toList());
+
         } catch (MBWS2Exception e) {
             log.info("Error when looking for disc id: {}", id, e);
         }

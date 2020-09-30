@@ -25,7 +25,7 @@ class CdQueryTest {
     void findCd() throws MBWS2Exception {
 
         String id = ".p4ZJ206p8mpaTvnG8.ZG9_qagE-";
-        Disc disc = cdQuery.getDiscInfoById(id);
+        Disc disc = cdQuery.getDiscInfoById(id).get(0);
         assertThat(disc).isNotNull();
 
 

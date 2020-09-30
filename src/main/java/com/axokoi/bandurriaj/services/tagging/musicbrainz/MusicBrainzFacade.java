@@ -5,6 +5,8 @@ import com.axokoi.bandurriaj.services.tagging.ProviderFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class MusicBrainzFacade implements ProviderFacade {
 
@@ -17,8 +19,7 @@ public class MusicBrainzFacade implements ProviderFacade {
     }
 
     @Override
-    public Disc
-    getDiscInfoFromDiscId(String id) {
+    public List<Disc> getDiscInfoFromDiscId(String id) {
         return cdQuery.getDiscInfoById(id);
     }
 }

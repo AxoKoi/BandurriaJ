@@ -48,14 +48,12 @@ class MusicBrainzFacadeTest {
         band.setArtists(artists);
         disc.setBand(band);
 
-        doReturn(disc).when(cdQuery).getDiscInfoById(".p4ZJ206p8mpaTvnG8.ZG9_qagE-");
+        doReturn(List.of(disc)).when(cdQuery).getDiscInfoById(".p4ZJ206p8mpaTvnG8.ZG9_qagE-");
 
-        Disc discResult = musicBrainzFacade.getDiscInfoFromDiscId(".p4ZJ206p8mpaTvnG8.ZG9_qagE-");
+        Disc discResult = musicBrainzFacade.getDiscInfoFromDiscId(".p4ZJ206p8mpaTvnG8.ZG9_qagE-").get(0);
         assertThat(discResult.getName()).containsIgnoringCase("Morrison Hotel");
         assertThat(discResult.getBand().getName()).containsIgnoringCase("Doors");
         assertThat(discResult.getBand().getArtists().get(0).getName()).containsIgnoringCase("Jim");
-        DiscWs2 discWs2;
-        //todo continue with this
     }
 
 }

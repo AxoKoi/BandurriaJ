@@ -11,6 +11,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -22,14 +23,16 @@ public class MenuBarController {
     private final DiscController discController;
     private final DiscRepository discRepository;
     private final BandRepository bandRepository;
+    private final LoadedCdController loadedCdController;
 
-    public MenuBarController(MenuBarView menuBarView, CdReadingFacade cdReadingFacade, TaggingFacade taggingFacade, DiscController discController, DiscRepository discRepository, BandRepository bandRepository) {
+    public MenuBarController(MenuBarView menuBarView, CdReadingFacade cdReadingFacade, TaggingFacade taggingFacade, DiscController discController, DiscRepository discRepository, BandRepository bandRepository, LoadedCdController loadedCdController) {
         this.menuBarView = menuBarView;
         this.cdReadingFacade = cdReadingFacade;
         this.taggingFacade = taggingFacade;
         this.discController = discController;
         this.discRepository = discRepository;
         this.bandRepository = bandRepository;
+        this.loadedCdController = loadedCdController;
     }
 
 
@@ -39,28 +42,23 @@ public class MenuBarController {
         String cdId = cdReadingFacade.readCdId(FileToCDPathConverter.convert(selectedFile));
         log.info("Read cdId: {}", cdId);
         //todo here we should also see if the band already exists in the repo
-        Disc disc = taggingFacade.getDisc(cdId);
-        log.info("Cd tagged was: {}", disc);
-        bandRepository.save(disc.getBand());
-        discRepository.save(disc);
-        //todo display select one from the list
-        discController.displayViewCenter(disc);
+        List<Disc> loadedCds = taggingFacade.getDisc(cdId);
+        log.info("Cd tagged was: {}", loadedCds);
+        loadedCdController.refreshView(loadedCds);
     }
-    ///run/user/1000/gvfs/cdda:host=sr0
-    static class FileToCDPathConverter{
 
-        static String convert(File file){
+    static class FileToCDPathConverter {
+
+        static String convert(File file) {
             String rawPath = file.getPath();
             //todo we need to figure it out how can we better handle this.
             //maybe take the last sr0?for linux
-            if(SystemUtils.IS_OS_WINDOWS){
+            if (SystemUtils.IS_OS_WINDOWS) {
                 throw new UnsupportedOperationException("Windows not yet supported");
 
-            }
-            else if(SystemUtils.IS_OS_LINUX){
+            } else if (SystemUtils.IS_OS_LINUX) {
                 return "/dev/cdrom";
-            }
-            else{
+            } else {
                 throw new UnsupportedOperationException("Other SO not yet supported");
             }
         }
