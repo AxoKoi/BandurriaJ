@@ -4,6 +4,6 @@ If you want to participate in this project we would be happy! You can take a loo
 
 You can also help us to identify next features to include or suscribe as a beta tester once we'll have a first version.
 
-In order to participate, you can fork the repository and create a pull request with your changes.
+In order to participate, you can fork the repository and create a pull request with your changes. We accept pull requests to the develop branch.
 
-We wait for you!
+We are waiting for you!
