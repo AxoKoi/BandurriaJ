@@ -1,15 +1,25 @@
 package com.axokoi.bandurriaj.services.tagging.musicbrainz;
 
-import org.springframework.stereotype.Component;
-
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.services.tagging.ProviderFacade;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class MusicBrainzFacade implements ProviderFacade {
 
-	@Override
-	public Disc getDiscInfo(String discName) {
-		return CdQuery.getDiscInfo(discName);
-	}
+    @Autowired
+    CdQuery cdQuery;
+
+    @Override
+    public Disc getDiscInfo(String discName) {
+        return cdQuery.getDiscInfo(discName);
+    }
+
+    @Override
+    public List<Disc> getDiscInfoFromDiscId(String id) {
+        return cdQuery.getDiscInfoById(id);
+    }
 }
