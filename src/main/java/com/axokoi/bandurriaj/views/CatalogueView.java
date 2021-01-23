@@ -30,7 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 @Component
-public class CatalogueView extends VBox {
+public final class CatalogueView extends VBox {
 	@Autowired
 	private CatalogueController catalogueController;
 
@@ -38,8 +38,9 @@ public class CatalogueView extends VBox {
 
 	public CatalogueView() {
 
-		this.setPadding(new Insets(10));
+		this.setPadding(new Insets(14));
 		this.setSpacing(8);
+		this.getStyleClass().add("left-pane");
 	}
 
 	public void refresh() {
@@ -66,7 +67,7 @@ public class CatalogueView extends VBox {
 				event -> {
 					if (treeViewToBuild.getSelectionModel().getSelectedItem() != null &&
 							treeViewToBuild.getSelectionModel().getSelectedItem().getValue() instanceof Disc) {
-						catalogueController.dispatchRefreshDiscView((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
+						catalogueController.dispatchRefreshToController((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
 					}
 
 				});
@@ -89,7 +90,7 @@ public class CatalogueView extends VBox {
 				case ENTER:
 				case UP:
 				case DOWN:
-					catalogueController.dispatchRefreshDiscView((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
+					catalogueController.dispatchRefreshToController((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
 					break;
 				default:
 					break;

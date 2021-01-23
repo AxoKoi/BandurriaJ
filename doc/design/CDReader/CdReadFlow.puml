@@ -1,0 +1,14 @@
+@startuml
+(*)  --> "Click load CD"
+--> "Open file chooser"
+--> "Select Load from"
+--> "Dispatch to Controller"
+--> "Service read CD"
+If "input is verbose" then
+--> [Yes] "turn on verbosity"
+--> "run command"
+else
+--> "run command"
+Endif
+-->(*)
+@enduml

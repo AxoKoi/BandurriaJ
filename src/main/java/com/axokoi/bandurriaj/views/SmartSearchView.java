@@ -18,7 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 @Component
-public class SmartSearchView extends VBox {
+public final class SmartSearchView extends VBox {
 
 	@Autowired
 	SmartSearchController smartSearchController;
@@ -30,9 +30,9 @@ public class SmartSearchView extends VBox {
 	public SmartSearchView() {
 		inputSearch.setOnAction(x -> smartSearchController.smartSearch(inputSearch.getText().trim()));
 		getChildren().addAll(search, inputSearch, results);
-		this.setPadding(new Insets(10));
+		this.setPadding(new Insets(14));
 		this.setSpacing(8);
-
+		this.getStyleClass().add("right-pane");
 	}
 
 	public void refresh(List<Searchable> smartSearchResult) {
@@ -46,17 +46,14 @@ public class SmartSearchView extends VBox {
 		this.results.getItems().addAll(items);
 		this.results.setCellFactory(list -> new SearchableCell());
 
-		this.results.setOnMouseClicked(event -> {
-			smartSearchController.dispatchRefreshToController(this.results.getSelectionModel().getSelectedItem());
-		});
+		this.results.setOnMouseClicked(event -> smartSearchController.dispatchRefreshToController(this.results.getSelectionModel().getSelectedItem()));
 
 	}
 
-	static class SearchableCell extends ListCell<Searchable> {
+	public static class SearchableCell extends ListCell<Searchable> {
 		@Override
 		protected void updateItem(Searchable searchable, boolean empty) {
 			super.updateItem(searchable, empty);
-
 			setText(searchable == null ? "" : searchable.getName());
 		}
 	}

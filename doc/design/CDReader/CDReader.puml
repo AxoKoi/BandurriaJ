@@ -1,0 +1,22 @@
+@startuml
+allowmixing
+left to right direction
+actor client
+package CDReader as CdReader{
+  object CDReaderFacade{
+  + readCd()
+  }
+
+  object reader
+  object converter
+}
+
+client-->CDReaderFacade: read
+client<--CDReaderFacade: Disc
+storage Cd
+
+reader --> Cd
+CDReaderFacade-->reader
+reader-->converter
+converter-->CDReaderFacade
+@enduml

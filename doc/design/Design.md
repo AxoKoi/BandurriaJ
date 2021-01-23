@@ -75,3 +75,22 @@ We should aim to make the number of external services configurable.
 
 The basic design would be:
 ![](../images/taggingService.svg)
+
+## CDReader service
+
+BandurriaJ allows to read from a CD and transform it into an internal Disc, which can be stored in a catalogue.
+It's only the metadata corresponding to the CD that's kept in BandurriaJ.
+There should be the possibility to combine this service with the Tagging service so a user can
+save the full information in its catalogue.
+
+### CD audio look up
+
+One of the main features from BandurriaJ, it's to being able to recognize a CD Audio from a CD reader. 
+However, this is not a simple task and it's platform dependent. So what we are planning is to use the Metabrainz library 
+https://github.com/metabrainz/libdiscid which can be built for different platforms. As an interface, we are using the interface from
+https://github.com/dietmar-steiner/JMBDiscId which works correctly with the former library.
+
+However, this will imply that we will need to support different platforms, so, we should create a way to pick the correct library. 
+Probably this can be done once, when "installing" the application. The code will work with the Java interface, so no need to create diferent 
+codes for different platforms.
+ 
