@@ -11,15 +11,15 @@ import java.util.List;
 public class MusicBrainzFacade implements ProviderFacade {
 
     @Autowired
-    CdQueryImpl cdQueryImpl;
+    CdQuery cdQuery;
 
     @Override
     public Disc getDiscInfo(String discName) {
-        return cdQueryImpl.getDiscInfo(discName);
+        return cdQuery.getDiscInfo(discName);
     }
 
     @Override
     public List<Disc> getDiscInfoFromDiscId(String id) {
-        return cdQueryImpl.getDiscInfoById(id);
+        return cdQuery.getDiscInfoById(id);
     }
 }

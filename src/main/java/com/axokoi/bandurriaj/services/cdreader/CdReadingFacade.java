@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class CdReadingFacade {
 
     @Autowired
-    CdReaderImpl reader;
+    CdReader reader;
 
     public String readCdId(String driverPath) {
         return reader.readId(driverPath);
