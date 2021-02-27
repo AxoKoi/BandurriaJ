@@ -9,6 +9,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import jfxtras.styles.jmetro.JMetro;
+import jfxtras.styles.jmetro.Style;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -67,8 +69,7 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
         stage.setTitle("BandurriaJ");
         stage.setScene(new Scene(mainPane, 1000, 350));
         stage.sizeToScene();
-        stage.getScene().getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
-
+        new JMetro(stage.getScene(), Style.LIGHT);
         viewDispatcher.setBorderPane(mainPane);
         stage.show();
 
