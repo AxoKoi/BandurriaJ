@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.musicbrainz.model.entity.DiscWs2;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 class MusicBrainzFacadeTest {
 
     @Mock
-    CdQuery cdQuery;
+    CdQueryImpl cdQueryImpl;
 
     @InjectMocks
     private MusicBrainzFacade musicBrainzFacade;
@@ -48,7 +47,7 @@ class MusicBrainzFacadeTest {
         band.setArtists(artists);
         disc.setBand(band);
 
-        doReturn(List.of(disc)).when(cdQuery).getDiscInfoById(".p4ZJ206p8mpaTvnG8.ZG9_qagE-");
+        doReturn(List.of(disc)).when(cdQueryImpl).getDiscInfoById(".p4ZJ206p8mpaTvnG8.ZG9_qagE-");
 
         Disc discResult = musicBrainzFacade.getDiscInfoFromDiscId(".p4ZJ206p8mpaTvnG8.ZG9_qagE-").get(0);
         assertThat(discResult.getName()).containsIgnoringCase("Morrison Hotel");

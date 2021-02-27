@@ -1,6 +1,6 @@
 package com.axokoi.bandurriaj.services;
 
-import com.axokoi.bandurriaj.services.tagging.musicbrainz.CdQuery;
+import com.axokoi.bandurriaj.services.tagging.musicbrainz.CdQueryImpl;
 import com.axokoi.bandurriaj.services.tagging.musicbrainz.converter.CdConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
@@ -10,8 +10,8 @@ import org.springframework.context.annotation.PropertySource;
 public class TestConfiguration {
 
     @Bean
-    CdQuery cdQuery() {
-        return new CdQuery();
+    CdQueryImpl cdQuery() {
+        return new CdQueryImpl();
     }
 
     @Bean
