@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfiguration.class)
-class CdReaderTest {
+class CdReaderImplTest {
     //todo only for linux, we should generify this
     private final static String DRIVE = "/dev/cdrom";
 
