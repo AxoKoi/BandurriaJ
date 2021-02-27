@@ -10,6 +10,7 @@ import org.musicbrainz.model.entity.ReleaseGroupWs2;
 import org.musicbrainz.model.entity.ReleaseWs2;
 import org.musicbrainz.model.searchresult.ReleaseGroupResultWs2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
+@Profile("prod")
 @Component
 public class CdQueryImpl implements CdQuery {
     @Autowired

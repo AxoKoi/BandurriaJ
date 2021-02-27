@@ -5,11 +5,13 @@ import com.axokoi.bandurriaj.model.Band;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.Track;
 import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Profile("isolated")
+@Component
 public class CdQueryMock implements CdQuery {
 
 
