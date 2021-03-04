@@ -93,6 +93,7 @@
 			<artifactId>musicbrainzws2-java</artifactId>
 			<version>3.0.15</version>
 		</dependency>
+		<!--Others-->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -103,5 +104,11 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- For mocking names-->
+		<dependency>
+		<groupId>com.github.javafaker</groupId>
+		<artifactId>javafaker</artifactId>
+		<version>1.0.2</version>
+	</dependency>
 	</dependencies>
 </project>

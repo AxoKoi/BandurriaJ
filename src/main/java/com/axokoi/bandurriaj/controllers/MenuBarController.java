@@ -54,9 +54,9 @@ public class MenuBarController {
             //todo we need to figure it out how can we better handle this.
             //maybe take the last sr0?for linux
             if (SystemUtils.IS_OS_WINDOWS) {
-                return "D:";
+                return "";
                 //todo we have the spring profiles,
-                // todo Maybe add a detection if profile is isolated throw new UnsupportedOperationException("Windows not yet supported");
+                // todo Maybe add a detection if profile is isolated not throw new UnsupportedOperationException("Windows not yet supported");
 
             } else if (SystemUtils.IS_OS_LINUX) {
                 return "/dev/cdrom";
