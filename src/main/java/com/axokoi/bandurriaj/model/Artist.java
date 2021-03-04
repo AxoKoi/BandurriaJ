@@ -1,9 +1,6 @@
 package com.axokoi.bandurriaj.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 
 @Entity
@@ -14,6 +11,7 @@ public class Artist implements Searchable {
 	private Long id;
 	private String name;
 	private String role;
+	@Lob
 	private String comment;
 
 	public Long getId() {

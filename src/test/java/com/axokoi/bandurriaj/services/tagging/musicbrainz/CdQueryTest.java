@@ -16,16 +16,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CdQueryTest {
 
     @Autowired
-    private CdQuery cdQuery;
+    private CdQueryImpl cdQueryImpl;
 
     //Non unitary test, as it's really trying to connect to the API.
     // We use it mainly for development purpose.
     // you can supress it.
     @Test
-    void findCd() throws MBWS2Exception {
+    void findCd() {
 
         String id = ".p4ZJ206p8mpaTvnG8.ZG9_qagE-";
-        Disc disc = cdQuery.getDiscInfoById(id).get(0);
+        Disc disc = cdQueryImpl.getDiscInfoById(id).get(0);
         assertThat(disc).isNotNull();
 
 
