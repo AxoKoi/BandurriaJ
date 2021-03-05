@@ -47,7 +47,7 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
     @Override
     public void onApplicationEvent(MainApplication.StageReadyEvent event) {
 
-        dbCreation.init();
+       // dbCreation.init();
         catalogueView.refresh();
 
         Stage stage = event.getStage();
@@ -74,5 +74,6 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
         stage.show();
 
     }
+
 
 }
