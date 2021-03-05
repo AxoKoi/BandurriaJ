@@ -31,9 +31,6 @@ public class MainApplication extends Application {
 		}
 		//IRO Do we need the Stage?
 
-		public Stage getStage() {
-			return (Stage) getSource();
-		}
 	}
 
 	private ConfigurableApplicationContext applicationContext;
@@ -45,6 +42,7 @@ public class MainApplication extends Application {
 
 	@Override
 	public void stop() {
+		System.out.println("stopping");
       applicationContext.publishEvent(new FXApplicationClosedEvent(""));
 		applicationContext.close();
 		Platform.exit();
