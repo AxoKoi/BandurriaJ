@@ -1,16 +1,11 @@
 package com.axokoi.bandurriaj;
 
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ConfigurableApplicationContext;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ConfigurableApplicationContext;
 
 public class MainApplication extends Application {
 
@@ -29,7 +24,6 @@ public class MainApplication extends Application {
 		public FXApplicationClosedEvent(Object source) {
 			super(source);
 		}
-		//IRO Do we need the Stage?
 
 	}
 

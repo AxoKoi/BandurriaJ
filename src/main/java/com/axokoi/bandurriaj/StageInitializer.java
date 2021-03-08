@@ -1,7 +1,8 @@
 package com.axokoi.bandurriaj;
 
-import com.axokoi.bandurriaj.model.DiscRepository;
-import com.axokoi.bandurriaj.views.*;
+import com.axokoi.bandurriaj.views.CatalogueView;
+import com.axokoi.bandurriaj.views.MenuBarView;
+import com.axokoi.bandurriaj.views.SmartSearchView;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -11,43 +12,30 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.Style;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StageInitializer implements ApplicationListener<MainApplication.StageReadyEvent> {
 
-    @Autowired
-    private DiscRepository discRepository;
+    private final CatalogueView catalogueView;
 
-    @Autowired
-    private CatalogueView catalogueView;
+    private final SmartSearchView smartSearchView;
 
-    @Autowired
-    private DiscView discView;
-    @Autowired
-    private ArtistView artistView;
+    final ViewDispatcher viewDispatcher;
 
-    @Autowired
-    BandView bandView;
+    final MenuBarView menuBarView;
 
-    @Autowired
-    private SmartSearchView smartSearchView;
-
-    @Autowired
-    private DBCreation dbCreation;
-
-    @Autowired
-    ViewDispatcher viewDispatcher;
-
-    @Autowired
-    MenuBarView menuBarView;
+    public StageInitializer(CatalogueView catalogueView, SmartSearchView smartSearchView, ViewDispatcher viewDispatcher, MenuBarView menuBarView) {
+        this.catalogueView = catalogueView;
+        this.smartSearchView = smartSearchView;
+        this.viewDispatcher = viewDispatcher;
+        this.menuBarView = menuBarView;
+    }
 
     @Override
     public void onApplicationEvent(MainApplication.StageReadyEvent event) {
 
-       // dbCreation.init();
         catalogueView.refresh();
 
         Stage stage = event.getStage();
@@ -74,6 +62,4 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
         stage.show();
 
     }
-
-
 }
