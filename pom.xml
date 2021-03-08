@@ -129,7 +129,7 @@
 						<configuration>
 							<headerType>gui</headerType>
 							<outfile>target/BandurriaJ.exe</outfile>
-							<jar>target/${artifactId}-${version}.jar</jar>
+							<jar>target/${project.artifactId}-${project.version}.jar</jar>
 							<errTitle>Bandurria J</errTitle>
 							<jre>
 								<path>${jre.path}</path>
