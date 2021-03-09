@@ -36,9 +36,7 @@ public final class ArtistView extends VBox {
 
 		discs.setCellFactory(list -> new DiscCell());
 
-		discs.addEventHandler(KeyEvent.KEY_PRESSED,event->{
-			artistController.dispatchRefreshToController(discs.getSelectionModel().getSelectedItem());
-		});
+		discs.addEventHandler(KeyEvent.KEY_PRESSED,event-> artistController.dispatchRefreshToController(discs.getSelectionModel().getSelectedItem()));
 		this.setPadding(new Insets(14));
 		this.setSpacing(8);
 	}

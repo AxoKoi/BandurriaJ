@@ -3,10 +3,12 @@ package com.axokoi.bandurriaj;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 
+@Slf4j
 public class MainApplication extends Application {
 
 	public static class StageReadyEvent extends ApplicationEvent {
@@ -36,8 +38,8 @@ public class MainApplication extends Application {
 
 	@Override
 	public void stop() {
-		System.out.println("stopping");
-      applicationContext.publishEvent(new FXApplicationClosedEvent(""));
+      log.info("Stopping application. Publishing event.");
+		applicationContext.publishEvent(new FXApplicationClosedEvent(""));
 		applicationContext.close();
 		Platform.exit();
 	}

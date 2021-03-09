@@ -1,15 +1,20 @@
 package com.axokoi.bandurriaj.services.cdreader;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class CdReadingFacade {
 
-    @Autowired
-    CdReader reader;
+    private final CdReader reader;
+
+    public CdReadingFacade(CdReader reader) {
+        this.reader = reader;
+    }
 
     public String readCdId(String driverPath) {
+        log.info("Reading from driverPath:[" + driverPath +"]");
         return reader.readId(driverPath);
     }
 }

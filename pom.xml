@@ -117,7 +117,6 @@
 			</plugin>
 
 		<!--Launch4J-->
-
 			<plugin>
 				<groupId>com.akathist.maven.plugins.launch4j</groupId>
 				<artifactId>launch4j-maven-plugin</artifactId>

@@ -2,16 +2,20 @@ package com.axokoi.bandurriaj.services.tagging.musicbrainz;
 
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.services.tagging.ProviderFacade;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Slf4j
 @Component
 public class MusicBrainzFacade implements ProviderFacade {
 
-    @Autowired
-    CdQuery cdQuery;
+    private final CdQuery cdQuery;
+
+    public MusicBrainzFacade(CdQuery cdQuery) {
+        this.cdQuery = cdQuery;
+    }
 
     @Override
     public Disc getDiscInfo(String discName) {
@@ -20,6 +24,7 @@ public class MusicBrainzFacade implements ProviderFacade {
 
     @Override
     public List<Disc> getDiscInfoFromDiscId(String id) {
+        log.info("Retrieving disc information with MusicBrainz");
         return cdQuery.getDiscInfoById(id);
     }
 }

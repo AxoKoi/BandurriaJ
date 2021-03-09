@@ -1,5 +1,6 @@
 package com.axokoi.bandurriaj;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+@Slf4j
 @Component
 public final class BackupDB implements ApplicationListener<MainApplication.FXApplicationClosedEvent> {
 
@@ -27,13 +29,13 @@ private final String datasourceUrl;
    @Override
    public void onApplicationEvent(MainApplication.FXApplicationClosedEvent event) {
 
-      System.out.println("Creating backup");
+      log.info("Creating backup");
       try (Connection con = DriverManager.getConnection(datasourceUrl, username, password)) {
          try (var statement = con.prepareStatement(BACKUP_TO_BACKUP_ZIP)) {
             statement.executeUpdate();
          }
       } catch (Exception ex) {
-         System.out.println(ex);
+         log.error("Error when creating backup for DB", ex);
       }
    }
 }

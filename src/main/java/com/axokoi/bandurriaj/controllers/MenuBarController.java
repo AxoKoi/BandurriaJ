@@ -17,21 +17,13 @@ import java.util.List;
 @Component
 public class MenuBarController {
 
-    private final MenuBarView menuBarView;
     private final CdReadingFacade cdReadingFacade;
     private final TaggingFacade taggingFacade;
-    private final DiscController discController;
-    private final DiscRepository discRepository;
-    private final BandRepository bandRepository;
     private final LoadedCdController loadedCdController;
 
-    public MenuBarController(MenuBarView menuBarView, CdReadingFacade cdReadingFacade, TaggingFacade taggingFacade, DiscController discController, DiscRepository discRepository, BandRepository bandRepository, LoadedCdController loadedCdController) {
-        this.menuBarView = menuBarView;
+    public MenuBarController(CdReadingFacade cdReadingFacade, TaggingFacade taggingFacade, LoadedCdController loadedCdController) {
         this.cdReadingFacade = cdReadingFacade;
         this.taggingFacade = taggingFacade;
-        this.discController = discController;
-        this.discRepository = discRepository;
-        this.bandRepository = bandRepository;
         this.loadedCdController = loadedCdController;
     }
 
@@ -48,6 +40,8 @@ public class MenuBarController {
     }
 
     static class FileToCDPathConverter {
+
+        private FileToCDPathConverter(){}
 
         static String convert(File file) {
             String rawPath = file.getPath();
