@@ -24,7 +24,7 @@ public class MusicBrainzFacade implements ProviderFacade {
 
     @Override
     public List<Disc> getDiscInfoFromDiscId(String id) {
-        log.info("Retrieving disc information with MusicBrainz");
+        log.info("Retrieving disc information with MusicBrainz. Id=" + id);
         return cdQuery.getDiscInfoById(id);
     }
 }

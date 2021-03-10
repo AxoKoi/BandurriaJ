@@ -2,13 +2,10 @@ package com.axokoi.bandurriaj.services.tagging.musicbrainz;
 
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.services.tagging.musicbrainz.converter.CdConverter;
+import com.axokoi.bandurriaj.services.tagging.musicbrainz.converter.TrackConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.musicbrainz.MBWS2Exception;
-import org.musicbrainz.controller.ReleaseGroup;
 import org.musicbrainz.model.entity.DiscWs2;
-import org.musicbrainz.model.entity.ReleaseGroupWs2;
-import org.musicbrainz.model.entity.ReleaseWs2;
-import org.musicbrainz.model.searchresult.ReleaseGroupResultWs2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -23,17 +20,11 @@ import java.util.stream.Collectors;
 public class CdQueryImpl implements CdQuery {
     @Autowired
     CdConverter cdConverter;
+    @Autowired
+    private TrackConverter trackConverter;
 
     public Disc getDiscInfo(String discName) {
-        ReleaseGroupWs2 resultFromMBapi = callMB(discName);//= use the api
-        return cdConverter.convert(resultFromMBapi);
-    }
-
-    private ReleaseGroupWs2 callMB(String discID) {
-        ReleaseGroup releaseGroup = new ReleaseGroup();
-        releaseGroup.search(discID);
-        List<ReleaseGroupResultWs2> apiResult = releaseGroup.getFullSearchResultList();
-        return apiResult.get(0).getReleaseGroup();
+        throw new UnsupportedOperationException("Not possible to search a disc by its name yet");
     }
 
     public List<Disc> getDiscInfoById(String id) {
@@ -41,7 +32,6 @@ public class CdQueryImpl implements CdQuery {
         try {
             DiscWs2 disc = controller.lookUp(id, null);
             return disc.getReleases().stream()
-                    .map(ReleaseWs2::getReleaseGroup)
                     .map(x -> cdConverter.convert(x))
                     .collect(Collectors.toList());
 
