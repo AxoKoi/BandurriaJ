@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Profile("isolated")
+@Profile("noInternet")
 @Component
 public class CdQueryMock implements CdQuery {
 

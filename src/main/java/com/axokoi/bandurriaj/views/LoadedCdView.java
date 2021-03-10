@@ -66,6 +66,7 @@ public class LoadedCdView extends VBox {
 
     public void refresh(List<Disc> loadedCds) {
 
+        //todo handle if loadedCds is empty!
         if (loadedCds.size() > 1) {
             warningLabel.setVisible(true);
         }

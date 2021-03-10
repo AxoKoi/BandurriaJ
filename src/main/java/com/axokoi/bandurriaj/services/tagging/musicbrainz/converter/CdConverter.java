@@ -29,6 +29,7 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
         disc.setComment(release.getYear());
 
         List<TrackWs2> tracks = release.getMediumList().getCompleteTrackList();
+
         disc.setTracks(tracks.stream().map(trackConverter::convert).collect(Collectors.toList()));
 
         return disc;
