@@ -5,11 +5,7 @@ import com.axokoi.bandurriaj.services.tagging.musicbrainz.converter.CdConverter;
 import com.axokoi.bandurriaj.services.tagging.musicbrainz.converter.TrackConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.musicbrainz.MBWS2Exception;
-import org.musicbrainz.controller.Recording;
-import org.musicbrainz.model.PuidWs2;
 import org.musicbrainz.model.entity.DiscWs2;
-import org.musicbrainz.model.entity.RecordingWs2;
-import org.musicbrainz.model.searchresult.RecordingResultWs2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -35,6 +31,8 @@ public class CdQueryImpl implements CdQuery {
         org.musicbrainz.controller.Disc controller = new org.musicbrainz.controller.Disc();
         try {
             controller.getIncludes().setRecordings(true);
+            controller.getIncludes().setArtistCredits(true);
+            controller.getIncludes().setArtistRelations(true);
             DiscWs2 disc = controller.lookUp(id, null);
 
             return disc.getReleases().stream()

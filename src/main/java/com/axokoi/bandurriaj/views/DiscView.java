@@ -22,6 +22,8 @@ public class DiscView extends VBox {
 
     private final Label discName = new Label("Disc Name:");
     private final Label bandName = new Label("Group :");
+    private final Label artistLabel = new Label("-- Artist --");
+    private final Label tracksLabel = new Label("-- Tracks --");
     private List<Label> artists = new ArrayList<>();
     private final List<Label> tracks = new ArrayList<>();
 
@@ -29,7 +31,9 @@ public class DiscView extends VBox {
 
         getChildren().add(discName);
         getChildren().add(bandName);
+        getChildren().add(artistLabel);
         getChildren().addAll(artists);
+        getChildren().add(tracksLabel);
         getChildren().addAll(tracks);
 
         this.setPadding(new Insets(14));
@@ -63,7 +67,9 @@ public class DiscView extends VBox {
         this.getChildren().clear();
         this.getChildren().add(discName);
         this.getChildren().add(bandName);
-        this.getChildren().addAll(artists);
+        getChildren().add(artistLabel);
+        getChildren().addAll(artists);
+        getChildren().add(tracksLabel);
         this.getChildren().addAll(tracks);
 
     }
