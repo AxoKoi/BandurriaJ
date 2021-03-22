@@ -1,14 +1,12 @@
 package com.axokoi.bandurriaj.services.tagging.musicbrainz.converter;
 
-import com.axokoi.bandurriaj.model.Artist;
-import com.axokoi.bandurriaj.model.Band;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.Track;
+import org.musicbrainz.model.NameCreditWs2;
 import org.musicbrainz.model.TrackWs2;
 import org.musicbrainz.model.entity.ReleaseWs2;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,9 +14,11 @@ import java.util.stream.Collectors;
 public class CdConverter implements Converter<ReleaseWs2, Disc> {
 
     private final TrackConverter trackConverter;
+private final ArtistConverter artistConverter;
 
-    public CdConverter(TrackConverter trackConverter) {
+    public CdConverter(TrackConverter trackConverter, ArtistConverter artistConverter) {
         this.trackConverter = trackConverter;
+        this.artistConverter = artistConverter;
     }
 
     @Override
@@ -33,8 +33,10 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
     private Disc buildDisc(ReleaseWs2 release) {
         Disc disc = new Disc();
         disc.setName(release.getTitle());
-        disc.setBand(new Band());
-        disc.getBand().setName(release.getArtistCreditString());
+
+        disc.setArtists(release.getArtistCredit().getNameCredits().stream().map(NameCreditWs2::getArtist)
+                .map(artistConverter::convert).collect(Collectors.toList()));
+        disc.getArtists().forEach(x->x.addDisc(disc));
         disc.setComment(release.getYear());
         return disc;
     }

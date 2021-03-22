@@ -3,6 +3,8 @@ package com.axokoi.bandurriaj.services.dataaccess;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.stereotype.Component;
 
 import com.axokoi.bandurriaj.model.Artist;
@@ -26,6 +28,10 @@ public class ArtistService implements SmartSearchService<Artist> {
 		List<Artist> result = artistRepository.findByNameContainingIgnoreCase(inputSearch);
 		result.addAll(artistRepository.findByCommentContainingIgnoreCase(inputSearch));
 		return result;
+	}
+
+	public List<Artist> findAll(){
+		return IterableUtils.toList(artistRepository.findAll());
 	}
 
 	public Artist findById(Long id) {

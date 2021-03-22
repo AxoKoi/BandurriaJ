@@ -2,7 +2,6 @@ package com.axokoi.bandurriaj.views;
 
 import com.axokoi.bandurriaj.controllers.DiscController;
 import com.axokoi.bandurriaj.model.Artist;
-import com.axokoi.bandurriaj.model.Band;
 import com.axokoi.bandurriaj.model.Disc;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -52,10 +51,7 @@ public class DiscView extends VBox {
                 .map(x -> new Label(x.getName()))
                 .collect(Collectors.toList()));
 
-        Band band = discController.fetchBandToDisplay(disc.getBand());
-
-        bandName.setText("Group : " + band.getName());
-        List<Artist> artistList = band.getArtists();
+        List<Artist> artistList = discToDisplay.getArtists();
 
         artistList = artistList.stream()
                 .map(x -> discController.fetchArtistToDisplay(x))

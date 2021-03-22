@@ -1,7 +1,6 @@
 package com.axokoi.bandurriaj.services.tagging.musicbrainz;
 
 import com.axokoi.bandurriaj.model.Artist;
-import com.axokoi.bandurriaj.model.Band;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.Track;
 import com.github.javafaker.Faker;
@@ -34,22 +33,15 @@ public class CdQueryMock implements CdQuery {
       Disc disc = new Disc();
       disc.setName(discName);
 
-      Band band = buildBand(disc);
-      disc.setBand(band);
+
+      disc.setArtists(buildArtist());
       disc.setComment(facker.hobbit().quote());
 
       disc.setTracks(buildTracks());
       return disc;
    }
 
-   private Band buildBand(Disc disc) {
-      Band band = new Band();
-      band.setName(facker.rockBand().name());
-      band.setDiscs(List.of(disc));
-      band.setArtists(buildArtist());
-      band.setComment(facker.yoda().quote());
-      return band;
-   }
+
 
    private List<Artist> buildArtist() {
       List<Artist> artists = new ArrayList<>();

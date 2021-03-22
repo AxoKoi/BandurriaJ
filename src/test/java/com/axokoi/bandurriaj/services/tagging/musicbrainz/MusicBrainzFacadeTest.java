@@ -1,7 +1,6 @@
 package com.axokoi.bandurriaj.services.tagging.musicbrainz;
 
 import com.axokoi.bandurriaj.model.Artist;
-import com.axokoi.bandurriaj.model.Band;
 import com.axokoi.bandurriaj.model.Disc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,22 +36,22 @@ class MusicBrainzFacadeTest {
         Disc disc = new Disc();
         disc.setName("Morrison Hotel");
 
-        Band band = new Band();
+        Artist band = new Artist();
         band.setName("The Doors");
         List<Artist> artists = new ArrayList<>();
         Artist jimMorrison = new Artist();
         jimMorrison.setName("Jim Morrison");
         jimMorrison.setRole("Vocals");
         artists.add(jimMorrison);
-        band.setArtists(artists);
-        disc.setBand(band);
+        band.setComposingArtists(artists);
+        disc.setArtists(List.of(band));
 
         doReturn(List.of(disc)).when(cdQueryImpl).getDiscInfoById(".p4ZJ206p8mpaTvnG8.ZG9_qagE-");
 
         Disc discResult = musicBrainzFacade.getDiscInfoFromDiscId(".p4ZJ206p8mpaTvnG8.ZG9_qagE-").get(0);
         assertThat(discResult.getName()).containsIgnoringCase("Morrison Hotel");
-        assertThat(discResult.getBand().getName()).containsIgnoringCase("Doors");
-        assertThat(discResult.getBand().getArtists().get(0).getName()).containsIgnoringCase("Jim");
+        assertThat(discResult.getArtists().get(0).getName()).containsIgnoringCase("Doors");
+        assertThat(discResult.getArtists().get(0).getComposingArtists().get(0).getName()).containsIgnoringCase("Jim");
     }
 
 }

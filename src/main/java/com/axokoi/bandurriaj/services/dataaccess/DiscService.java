@@ -1,6 +1,7 @@
 package com.axokoi.bandurriaj.services.dataaccess;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,8 +11,6 @@ import org.apache.commons.collections4.IterableUtils;
 import org.springframework.stereotype.Component;
 
 import com.axokoi.bandurriaj.model.Artist;
-import com.axokoi.bandurriaj.model.Band;
-import com.axokoi.bandurriaj.model.BandRepository;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.DiscRepository;
 import com.axokoi.bandurriaj.model.Track;
@@ -19,13 +18,12 @@ import com.axokoi.bandurriaj.model.Track;
 @Component
 public class DiscService implements SmartSearchService<Disc> {
 
-	private DiscRepository discRepository;
+	private final DiscRepository discRepository;
+	private final ArtistService artistService;
 
-	private BandRepository bandRepository;
-
-	public DiscService(DiscRepository discRepository, BandRepository bandRepository) {
+	public DiscService(DiscRepository discRepository, ArtistService artistService) {
 		this.discRepository = discRepository;
-		this.bandRepository = bandRepository;
+		this.artistService = artistService;
 	}
 
 	@Transactional
@@ -34,7 +32,7 @@ public class DiscService implements SmartSearchService<Disc> {
 		Disc disc = discRepository.findById(id).orElseThrow();
 		// Fetch lazy data
 		disc.getTracks().size();
-		disc.getBand();
+		disc.getArtists();
 		return disc;
 	}
 
@@ -55,10 +53,23 @@ public class DiscService implements SmartSearchService<Disc> {
 	@Transactional
 	public List<Disc> findAllDiscByArtist(Artist artist) {
 
-		return IterableUtils.toList(bandRepository.findAll()).stream()
-				.filter(band -> band.getArtists().stream().map(Artist::getId).anyMatch(x -> x.equals(artist.getId())))
-				.map(Band::getDiscs)
-				.flatMap(Collection::stream)
-				.collect(Collectors.toList());
+		if(artist.getType() == Artist.Type.GROUP){
+			return artistService.findById(artist.getId()).getDiscs();
+		}
+		if(artist.getType()==Artist.Type.SINGLE){
+			//Find disc where the artist is principal artist
+			List<Disc> discs = artistService.findById(artist.getId()).getDiscs();
+
+			//IRO maybe add artistservice find all groups
+			List<Disc> participatedDisc = artistService.findAll().stream().filter(a -> a.getType() == Artist.Type.GROUP)
+					.filter(a -> a.getComposingArtists()
+							.stream()
+							.map(Artist::getMbIdentifier)
+							.collect(Collectors.toList())
+							.contains(artist.getMbIdentifier())).flatMap(x -> x.getDiscs().stream()).collect(Collectors.toList());
+		discs.addAll(participatedDisc);
+		return discs;
+		}
+		return Collections.emptyList();
 	}
 }

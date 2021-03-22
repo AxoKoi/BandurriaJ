@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.services.dataaccess.ArtistService;
-import com.axokoi.bandurriaj.model.Band;
-import com.axokoi.bandurriaj.services.dataaccess.BandService;
 import com.axokoi.bandurriaj.model.Catalogue;
 import com.axokoi.bandurriaj.services.dataaccess.CatalogueService;
 import com.axokoi.bandurriaj.model.Disc;
@@ -29,8 +27,6 @@ public class SmartSearchController {
 	@Autowired
 	private ArtistController artistController;
 	@Autowired
-	private BandController bandController;
-	@Autowired
 	private CatalogueController catalogueController;
 	@Autowired
 	private DiscController discController;
@@ -41,8 +37,6 @@ public class SmartSearchController {
 	private DiscService discService;
 	@Autowired
 	private ArtistService artistService;
-	@Autowired
-	private BandService bandService;
 	@Autowired
 	private CatalogueService catalogueService;
 
@@ -56,8 +50,6 @@ public class SmartSearchController {
 		results.addAll(discService.smartSearch(inputSearch));
 		//search artist
 		results.addAll(artistService.smartSearch(inputSearch));
-		//search Band
-		results.addAll(bandService.smartSearch(inputSearch));
 		//search Track
 		results.addAll(trackService.smartSearch(inputSearch));
 		smartSearchView.refresh(results);
@@ -69,8 +61,6 @@ public class SmartSearchController {
 			discController.displayViewCenter((Disc) selectedItem);
 		} else if (selectedItem instanceof Artist) {
 			artistController.displayViewCenter((Artist) selectedItem);
-		} else if (selectedItem instanceof Band) {
-			bandController.displayViewCenter((Band) selectedItem);
 		} else if (selectedItem instanceof Track) {
 			discController.displayViewCenter(discService.findCdByTrack((Track) selectedItem));
 		} else if (selectedItem instanceof Catalogue) {
