@@ -36,7 +36,6 @@ private final ArtistConverter artistConverter;
 
         disc.setArtists(release.getArtistCredit().getNameCredits().stream().map(NameCreditWs2::getArtist)
                 .map(artistConverter::convert).collect(Collectors.toList()));
-        disc.getArtists().forEach(x->x.addDisc(disc));
         disc.setComment(release.getYear());
         return disc;
     }

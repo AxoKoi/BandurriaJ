@@ -10,10 +10,13 @@ import org.springframework.stereotype.Component;
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.ArtistRepository;
 
+import javax.transaction.Transactional;
+
 @Component
+@Transactional
 public class ArtistService implements SmartSearchService<Artist> {
 
-	private ArtistRepository artistRepository;
+	private final ArtistRepository artistRepository;
 
 	public ArtistService(ArtistRepository artistRepository) {
 		this.artistRepository = artistRepository;
@@ -36,5 +39,13 @@ public class ArtistService implements SmartSearchService<Artist> {
 
 	public Artist findById(Long id) {
 		return artistRepository.findById(id).orElseThrow();
+	}
+
+	public void save(Artist artist){
+		artistRepository.save(artist);
+	}
+
+	public Optional<Artist> findByMbIdentifier(String mbIdentifier) {
+		return artistRepository.findByMbIdentifier(mbIdentifier);
 	}
 }

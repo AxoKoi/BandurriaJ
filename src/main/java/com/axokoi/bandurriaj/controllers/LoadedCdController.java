@@ -1,12 +1,15 @@
 package com.axokoi.bandurriaj.controllers;
 
 import com.axokoi.bandurriaj.model.*;
+import com.axokoi.bandurriaj.services.dataaccess.ArtistService;
+import com.axokoi.bandurriaj.services.dataaccess.DiscService;
 import com.axokoi.bandurriaj.views.LoadedCdView;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,11 +17,11 @@ import java.util.stream.Collectors;
 @Component
 public class LoadedCdController {
    @Autowired
-   DiscRepository discRepository;
+   DiscService discService;
    @Autowired
    CatalogueRepository catalogueRepository;
    @Autowired
-   ArtistRepository artistRepository;
+   ArtistService artistService;
    @Autowired
    DiscController discController;
    @Autowired
@@ -32,16 +35,19 @@ public class LoadedCdController {
       //Check if artists already exists
       //Quid if MBidentifier is empty?
       artists.forEach(x -> Assert.notNull(x.getMbIdentifier(), "MBIdentifier can't be null"));
-      List<Artist> artistsToPersist = artists.stream().map(x -> artistRepository.findByMbIdentifier(x.getMbIdentifier()).orElse(x)).collect(Collectors.toList());
+      List<Artist> artistsToPersist = artists.stream().map(x -> artistService.findByMbIdentifier(x.getMbIdentifier()).orElse(x)).collect(Collectors.toList());
 
-      Optional<Disc> existingDisc = discRepository.findByNameIgnoreCase(disc.getName());
+      Optional<Disc> existingDisc = discService.findByNameIgnoreCase(disc.getName());
       Disc discToPersist = existingDisc.orElse(disc);
-
-      discToPersist.setArtists(artistsToPersist);
-      artistsToPersist.forEach(x->artistRepository.save(x));
-      discRepository.save(discToPersist);
-
       catalogue.getDiscs().add(discToPersist);
+      discToPersist.setArtists(artistsToPersist);
+      persistsCdOnCatalogue(catalogue, artistsToPersist, discToPersist);
+   }
+
+   @Transactional
+   protected void persistsCdOnCatalogue(Catalogue catalogue, List<Artist> artistsToPersist, Disc discToPersist) {
+      artistsToPersist.forEach(x -> artistService.save(x));
+      discService.save(discToPersist);
       catalogueRepository.save(catalogue);
    }
 

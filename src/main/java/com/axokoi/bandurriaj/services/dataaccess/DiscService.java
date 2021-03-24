@@ -1,8 +1,9 @@
 package com.axokoi.bandurriaj.services.dataaccess;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -16,6 +17,7 @@ import com.axokoi.bandurriaj.model.DiscRepository;
 import com.axokoi.bandurriaj.model.Track;
 
 @Component
+@Transactional
 public class DiscService implements SmartSearchService<Disc> {
 
 	private final DiscRepository discRepository;
@@ -26,7 +28,7 @@ public class DiscService implements SmartSearchService<Disc> {
 		this.artistService = artistService;
 	}
 
-	@Transactional
+
 	public Disc findById(Long id) {
 		//todo should probably replace this with a jpql query someday
 		Disc disc = discRepository.findById(id).orElseThrow();
@@ -43,33 +45,37 @@ public class DiscService implements SmartSearchService<Disc> {
 		return discs;
 	}
 
-	@Transactional
+
 	public Disc findCdByTrack(Track track) {
 		return IterableUtils.toList(discRepository.findAll()).stream()
 				.filter(x -> x.getTracks().stream().anyMatch(t -> t.getId().equals(track.getId())))
 				.findAny().orElseThrow();
 	}
 
-	@Transactional
+//IRO Make test for this.
 	public List<Disc> findAllDiscByArtist(Artist artist) {
+		List<Disc> allDiscs = IterableUtils.toList(discRepository.findAll());
+		List<Disc> mainArtist = allDiscs.stream()
+				.filter(disc -> disc.getArtists().stream().map(Artist::getMbIdentifier).collect(Collectors.toList()).contains(artist.getMbIdentifier()))
+				.collect(Collectors.toList());
 
-		if(artist.getType() == Artist.Type.GROUP){
-			return artistService.findById(artist.getId()).getDiscs();
-		}
-		if(artist.getType()==Artist.Type.SINGLE){
-			//Find disc where the artist is principal artist
-			List<Disc> discs = artistService.findById(artist.getId()).getDiscs();
+		List<Disc> secondaryArtist = allDiscs.stream().filter(
+				disc -> disc.getArtists().stream().flatMap(x -> x.getComposingArtists().stream())
+						.map(Artist::getMbIdentifier).collect(Collectors.toList()).contains(artist.getMbIdentifier())
+		).collect(Collectors.toList());
 
-			//IRO maybe add artistservice find all groups
-			List<Disc> participatedDisc = artistService.findAll().stream().filter(a -> a.getType() == Artist.Type.GROUP)
-					.filter(a -> a.getComposingArtists()
-							.stream()
-							.map(Artist::getMbIdentifier)
-							.collect(Collectors.toList())
-							.contains(artist.getMbIdentifier())).flatMap(x -> x.getDiscs().stream()).collect(Collectors.toList());
-		discs.addAll(participatedDisc);
-		return discs;
-		}
-		return Collections.emptyList();
+		List<Disc> results = new ArrayList<>();
+		results.addAll(mainArtist);
+		results.addAll(secondaryArtist);
+		return results;
+	}
+
+
+	public void save(Disc disc){
+		discRepository.save(disc);
+	}
+
+	public Optional<Disc> findByNameIgnoreCase(String name) {
+		return discRepository.findByNameIgnoreCase(name);
 	}
 }

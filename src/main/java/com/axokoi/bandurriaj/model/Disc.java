@@ -1,5 +1,7 @@
 package com.axokoi.bandurriaj.model;
 
+import org.springframework.data.repository.cdi.Eager;
+
 import java.util.List;
 
 import javax.persistence.*;
@@ -12,7 +14,7 @@ public class Disc implements Searchable {
 
    private String name;
 
-   @ManyToMany(targetEntity = Artist.class)
+   @ManyToMany(targetEntity = Artist.class, fetch = FetchType.EAGER)
    private List<Artist> artists;
 
    @OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL)

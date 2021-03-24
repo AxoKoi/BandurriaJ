@@ -13,8 +13,11 @@ public class ArtistConverter implements Converter<ArtistWs2, Artist> {
       }
       Artist artist = new Artist();
       artist.setName(artistWs2.getUniqueName());
-      //IRO type can be null?
-      artist.setType(artistWs2.getType().contains("Person") ? Artist.Type.SINGLE : Artist.Type.GROUP);
+      if (artistWs2.getType() == null) {
+         artist.setType(Artist.Type.UNKNOWN);
+      } else {
+         artist.setType(artistWs2.getType().contains("Person") ? Artist.Type.SINGLE : Artist.Type.COMPOSITE);
+      }
       //IRO check if this is the id
       artist.setMbIdentifier(artistWs2.getId());
       return artist;
