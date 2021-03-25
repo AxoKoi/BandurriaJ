@@ -1,8 +1,7 @@
 package com.axokoi.bandurriaj.model;
 
-import java.util.List;
-
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Disc implements Searchable {
@@ -12,8 +11,8 @@ public class Disc implements Searchable {
 
    private String name;
 
-   @ManyToOne(targetEntity = Band.class)
-   private Band band;
+   @ManyToMany(targetEntity = Artist.class, fetch = FetchType.EAGER)
+   private List<Artist> artists;
 
    @OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL)
    private List<Track> tracks;
@@ -29,12 +28,12 @@ public class Disc implements Searchable {
       this.name = name;
    }
 
-   public Band getBand() {
-      return band;
+   public List<Artist> getArtists() {
+      return artists;
    }
 
-   public void setBand(Band band) {
-      this.band = band;
+   public void setArtists(List<Artist> artists) {
+      this.artists = artists;
    }
 
    public List<Track> getTracks() {

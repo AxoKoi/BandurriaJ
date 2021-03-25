@@ -54,7 +54,7 @@ public final class SmartSearchView extends VBox {
 		@Override
 		protected void updateItem(Searchable searchable, boolean empty) {
 			super.updateItem(searchable, empty);
-			setText(searchable == null ? "" : searchable.getName());
+			setText(searchable == null ? "" : searchable.getName() );
 		}
 	}
 }

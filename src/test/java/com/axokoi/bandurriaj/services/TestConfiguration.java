@@ -1,6 +1,7 @@
 package com.axokoi.bandurriaj.services;
 
 import com.axokoi.bandurriaj.services.tagging.musicbrainz.CdQueryImpl;
+import com.axokoi.bandurriaj.services.tagging.musicbrainz.converter.ArtistConverter;
 import com.axokoi.bandurriaj.services.tagging.musicbrainz.converter.CdConverter;
 import com.axokoi.bandurriaj.services.tagging.musicbrainz.converter.TrackConverter;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +21,14 @@ public class TestConfiguration {
     TrackConverter trackConverter(){
         return new TrackConverter();
     }
+
     @Bean
-    CdConverter cdConverter(TrackConverter trackConverter) {
-        return new CdConverter(trackConverter);
+    ArtistConverter artistConverter(){
+        return new ArtistConverter();
+    }
+
+    @Bean
+    CdConverter cdConverter(TrackConverter trackConverter, ArtistConverter artistConverter) {
+        return new CdConverter(trackConverter, artistConverter);
     }
 }

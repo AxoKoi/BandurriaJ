@@ -2,7 +2,6 @@ package com.axokoi.bandurriaj.views;
 
 import com.axokoi.bandurriaj.controllers.DiscController;
 import com.axokoi.bandurriaj.model.Artist;
-import com.axokoi.bandurriaj.model.Band;
 import com.axokoi.bandurriaj.model.Disc;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -21,7 +20,6 @@ public class DiscView extends VBox {
     DiscController discController;
 
     private final Label discName = new Label("Disc Name:");
-    private final Label bandName = new Label("Group :");
     private final Label artistLabel = new Label("-- Artist --");
     private final Label tracksLabel = new Label("-- Tracks --");
     private List<Label> artists = new ArrayList<>();
@@ -30,7 +28,6 @@ public class DiscView extends VBox {
     public DiscView() {
 
         getChildren().add(discName);
-        getChildren().add(bandName);
         getChildren().add(artistLabel);
         getChildren().addAll(artists);
         getChildren().add(tracksLabel);
@@ -52,21 +49,17 @@ public class DiscView extends VBox {
                 .map(x -> new Label(x.getName()))
                 .collect(Collectors.toList()));
 
-        Band band = discController.fetchBandToDisplay(disc.getBand());
-
-        bandName.setText("Group : " + band.getName());
-        List<Artist> artistList = band.getArtists();
+        List<Artist> artistList = discToDisplay.getArtists();
 
         artistList = artistList.stream()
                 .map(x -> discController.fetchArtistToDisplay(x))
                 .collect(Collectors.toList());
 
-        artists = artistList.stream().map(x -> new Label(x.getName() + ":" + x.getRole()))
+        artists = artistList.stream().map(x -> new Label(x.getName()))
                 .collect(Collectors.toList());
 
         this.getChildren().clear();
         this.getChildren().add(discName);
-        this.getChildren().add(bandName);
         getChildren().add(artistLabel);
         getChildren().addAll(artists);
         getChildren().add(tracksLabel);
