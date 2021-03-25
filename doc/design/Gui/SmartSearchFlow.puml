@@ -10,9 +10,6 @@ else
 --> [Artist] "Display ArtistView"
 --> "Replace Current center View"
 else
---> [Band] "Display BandView"
---> "Replace Current center View"
-else
 --> [Catalogue] "Select Catalogue"
 -->(*)
 Endif

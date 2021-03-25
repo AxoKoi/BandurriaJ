@@ -10,13 +10,12 @@ package "Model" as Model{
  class Disc
  class Catalogue
  class Artist
- class Band
  class Track
 
 'Relationships
   Disc }o- Catalogue
-  Disc }o- Band
-  Band -o{ Artist
+  Disc }o- Artist
+  Artist -o{ Artist
   Disc -|{ Track
 }
 

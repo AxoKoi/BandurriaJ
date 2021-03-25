@@ -10,21 +10,21 @@ the label 1002. So you can now check in your collection for the CD #1002 and len
 
 ---
 
-First of all, you can see the main use cases:
+First, you can see the main use cases:
 ![](../images/useCases.svg)
 
 Here is the class diagram:
 
 ![](../images/Entities.svg)
 
-We use the following MVC Model. First of all, the user interacts with the views, which
+We use the following "MVC" Model. First of all, the user interacts with the views, which
 obtains its data through the controller. The controller will call a service data access layer, where all requests
-to the repositories are done. The Gui is composed by mixing diferent views.
+to the repositories are done. The Gui is composed by mixing different views.
 
 Upon the user interaction, the views request actions to its own controller, who may call other controllers
  if an action on other view is needed.
 
-The controller  may call a DataAccess service which are responsible of providing methods to expose and modify the model.
+The controller  may call a DataAccess service which are responsible for providing methods to expose and modify the model.
 
 The mvc scheme is the following:
 ![](../images/MVC.svg)
@@ -51,7 +51,7 @@ every song that has JAZZ in it's title or all the songs belonging JAZZ genre.
 
 ### solution
 Each of our entities have a series of attributes that may be selected to enter into the search.
-For instance, CD may have, for instance, it's title, its genre and also the comments,
+CD may have, for instance, it's title, its genre and also the comments,
 which could include the history of the CD, the context of the band, etc.
 First, this text may be long, thus, for a big collection, this may be a bottle neck.
 We can delegate the decision on what to include to each repository, which would implement
@@ -59,9 +59,9 @@ a SmartSearch Interface.
 
 ## GUI flow
 
-This point is still to be determined. Whenever an user selects a result from the smart search,
+This point is still to be determined. Whenever a user selects a result from the smart search,
 the central view will be replaced depending on which kind of entity has been selected.
-If it's a band, then a band view will be displayed. If it's an artist, then the artist. Etc.
+If it's an artist, then an artist view will be displayed. If it's a disc, then the disc view will be displayed. Etc.
 ![](../images/SmartSearchFlow.svg)
 
 ## Tagging service
