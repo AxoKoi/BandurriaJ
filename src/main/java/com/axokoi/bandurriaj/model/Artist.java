@@ -1,7 +1,6 @@
 package com.axokoi.bandurriaj.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,7 +17,7 @@ public class Artist implements Searchable {
    private String mbIdentifier;
    private Artist.Type type;
 
-   @ManyToMany(targetEntity = Artist.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+   @ManyToMany(targetEntity = Artist.class, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
    private List<Artist> composingArtists;
 
 

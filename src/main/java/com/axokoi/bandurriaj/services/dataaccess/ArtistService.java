@@ -1,16 +1,13 @@
 package com.axokoi.bandurriaj.services.dataaccess;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.commons.collections4.IterableUtils;
-import org.apache.commons.collections4.IteratorUtils;
-import org.springframework.stereotype.Component;
-
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.ArtistRepository;
+import org.apache.commons.collections4.IterableUtils;
+import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 @Transactional

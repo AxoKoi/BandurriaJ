@@ -1,10 +1,7 @@
 package com.axokoi.bandurriaj.model;
 
-import org.springframework.data.repository.cdi.Eager;
-
-import java.util.List;
-
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Disc implements Searchable {

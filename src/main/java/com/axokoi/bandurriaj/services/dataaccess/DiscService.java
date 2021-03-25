@@ -1,31 +1,26 @@
 package com.axokoi.bandurriaj.services.dataaccess;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
-
-import org.apache.commons.collections4.IterableUtils;
-import org.springframework.stereotype.Component;
-
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.DiscRepository;
 import com.axokoi.bandurriaj.model.Track;
+import org.apache.commons.collections4.IterableUtils;
+import org.springframework.stereotype.Component;
+
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @Transactional
 public class DiscService implements SmartSearchService<Disc> {
 
 	private final DiscRepository discRepository;
-	private final ArtistService artistService;
 
-	public DiscService(DiscRepository discRepository, ArtistService artistService) {
+	public DiscService(DiscRepository discRepository) {
 		this.discRepository = discRepository;
-		this.artistService = artistService;
 	}
 
 
