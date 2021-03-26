@@ -18,12 +18,7 @@ import java.util.List;
 @Component
 public class LoadedCdView extends VBox {
 
-    /*todo continue with this. Once the cd has been loaded, we can
-    put this popup to make sur that that's the one that the user want's to load.
-    preferably before saving it into DB!
-    Also, maybe ask to select which catalogue to save to it. :)
 
-     */
     private static final String WARNING = "Warning! you have more than one result! please select the CD";
     private static final Label warningLabel = new Label(WARNING);
     private final Label cdName = new Label("Your Cd is:");

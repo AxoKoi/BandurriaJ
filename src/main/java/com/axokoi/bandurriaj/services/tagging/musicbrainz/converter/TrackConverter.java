@@ -12,6 +12,7 @@ public class TrackConverter implements Converter<TrackWs2, Track> {
 		Track newTrack = new Track();
 		newTrack.setName(trackWs2.getRecording().getTitle());
 		newTrack.setDuration(trackWs2.getDuration());
+		newTrack.setNumber(trackWs2.getPosition());
 
 		return newTrack;
 	}

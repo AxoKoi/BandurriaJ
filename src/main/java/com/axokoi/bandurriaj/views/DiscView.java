@@ -16,23 +16,22 @@ import java.util.stream.Collectors;
 @Component
 public class DiscView extends VBox {
 
-    @Autowired
-    DiscController discController;
+
+    private final DiscController discController;
+    private final TrackListView trackListView;
 
     private final Label discName = new Label("Disc Name:");
     private final Label artistLabel = new Label("-- Artist --");
-    private final Label tracksLabel = new Label("-- Tracks --");
     private List<Label> artists = new ArrayList<>();
-    private final List<Label> tracks = new ArrayList<>();
 
-    public DiscView() {
 
+    public DiscView(DiscController discController, TrackListView trackListView){
+        this.discController = discController;
+        this.trackListView = trackListView;
         getChildren().add(discName);
         getChildren().add(artistLabel);
         getChildren().addAll(artists);
-        getChildren().add(tracksLabel);
-        getChildren().addAll(tracks);
-
+        getChildren().add(this.trackListView);
         this.setPadding(new Insets(14));
         this.setSpacing(8);
 
@@ -42,12 +41,7 @@ public class DiscView extends VBox {
         Disc disc = discController.fetchDiscToDisplay(discToDisplay);
 
         discName.setText("Name : " + disc.getName());
-        tracks.clear();
-// todo we can change this to a list with a specific cell view!
-        tracks.addAll(disc.getTracks().stream()
-                //		.map(x -> trackRepository.findById(x.getId()))
-                .map(x -> new Label(x.getName()))
-                .collect(Collectors.toList()));
+        trackListView.refresh(discToDisplay.getTracks());
 
         List<Artist> artistList = discToDisplay.getArtists();
 
@@ -62,8 +56,6 @@ public class DiscView extends VBox {
         this.getChildren().add(discName);
         getChildren().add(artistLabel);
         getChildren().addAll(artists);
-        getChildren().add(tracksLabel);
-        this.getChildren().addAll(tracks);
-
+        getChildren().add(trackListView);
     }
 }
