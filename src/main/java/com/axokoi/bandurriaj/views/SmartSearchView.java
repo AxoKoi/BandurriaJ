@@ -2,6 +2,7 @@ package com.axokoi.bandurriaj.views;
 
 import java.util.List;
 
+import javafx.scene.layout.Priority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,9 +31,12 @@ public final class SmartSearchView extends VBox {
 	public SmartSearchView() {
 		inputSearch.setOnAction(x -> smartSearchController.smartSearch(inputSearch.getText().trim()));
 		getChildren().addAll(search, inputSearch, results);
+
+		//this.setPrefHeight(Double.MAX_VALUE);
+		VBox.setVgrow(results, Priority.ALWAYS);
+
 		this.setPadding(new Insets(14));
 		this.setSpacing(8);
-		this.getStyleClass().add("right-pane");
 	}
 
 	public void refresh(List<Searchable> smartSearchResult) {

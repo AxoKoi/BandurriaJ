@@ -2,6 +2,8 @@ package com.axokoi.bandurriaj.views;
 
 import java.util.List;
 
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,14 +27,13 @@ import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 @Component
 public final class CatalogueView extends VBox {
+
 	@Autowired
-	private CatalogueController catalogueController;
+	private  CatalogueController catalogueController;
 
 	private TreeView<Searchable> treeView = new TreeView<>();
 
@@ -40,13 +41,17 @@ public final class CatalogueView extends VBox {
 
 		this.setPadding(new Insets(14));
 		this.setSpacing(8);
-		this.getStyleClass().add("left-pane");
+
+		this.prefHeight(Double.MAX_VALUE);
+		VBox.setVgrow(treeView, Priority.ALWAYS);
+		this.getChildren().add(treeView);
 	}
 
 	public void refresh() {
 		//todo doing this for every refresh, every disc may be too heavy. To check
 		treeView = cataloguesToTreeView();
 		treeView.setCellFactory(x -> new SearchableCell());
+		VBox.setVgrow(treeView, Priority.ALWAYS);
 		this.getChildren().clear();
 		this.getChildren().add(treeView);
 	}

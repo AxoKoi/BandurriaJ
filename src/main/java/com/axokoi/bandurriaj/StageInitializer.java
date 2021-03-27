@@ -4,11 +4,13 @@ import com.axokoi.bandurriaj.views.CatalogueView;
 import com.axokoi.bandurriaj.views.MenuBarView;
 import com.axokoi.bandurriaj.views.SmartSearchView;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.Style;
@@ -37,6 +39,7 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
     public void onApplicationEvent(MainApplication.StageReadyEvent event) {
 
         catalogueView.refresh();
+catalogueView.setPrefHeight(5);
 
         Stage stage = event.getStage();
         BorderPane mainPane = new BorderPane();
@@ -55,11 +58,14 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
         mainPane.setBottom(footerView);
 
         stage.setTitle("BandurriaJ");
-        stage.setScene(new Scene(mainPane, 1000, 350));
+
+        stage.setScene(new Scene(mainPane));
         stage.sizeToScene();
         new JMetro(stage.getScene(), Style.LIGHT);
         viewDispatcher.setBorderPane(mainPane);
+
         stage.show();
+        stage.setMaximized(true);
 
     }
 }

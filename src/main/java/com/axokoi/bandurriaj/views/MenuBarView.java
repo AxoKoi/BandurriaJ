@@ -14,8 +14,11 @@ import java.io.File;
 @Component
 public class MenuBarView extends MenuBar {
 
-    @Autowired
-    private MenuBarController menuBarController;
+    private final MenuBarController menuBarController;
+
+    public MenuBarView(MenuBarController menuBarController) {
+        this.menuBarController = menuBarController;
+    }
 
     public void build(Stage stage) {
         Menu menu1 = new Menu("File");
