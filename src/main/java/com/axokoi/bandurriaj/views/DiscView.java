@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -43,11 +44,11 @@ public class DiscView extends VBox {
         discName.setText("Name : " + disc.getName());
         trackListView.refresh(discToDisplay.getTracks());
 
-        List<Artist> artistList = discToDisplay.getArtists();
+        Set<Artist> artistList = discToDisplay.getArtists();
 
         artistList = artistList.stream()
-                .map(x -> discController.fetchArtistToDisplay(x))
-                .collect(Collectors.toList());
+                .map(discController::fetchArtistToDisplay)
+                .collect(Collectors.toSet());
 
         artists = artistList.stream().map(x -> new Label(x.getName()))
                 .collect(Collectors.toList());

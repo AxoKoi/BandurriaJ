@@ -11,6 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
@@ -44,14 +45,14 @@ class MusicBrainzFacadeTest {
         jimMorrison.setRole("Vocals");
         artists.add(jimMorrison);
         band.setComposingArtists(artists);
-        disc.setArtists(List.of(band));
+        disc.setArtists(Set.of(band));
 
         doReturn(List.of(disc)).when(cdQueryImpl).getDiscInfoById(".p4ZJ206p8mpaTvnG8.ZG9_qagE-");
 
         Disc discResult = musicBrainzFacade.getDiscInfoFromDiscId(".p4ZJ206p8mpaTvnG8.ZG9_qagE-").get(0);
         assertThat(discResult.getName()).containsIgnoringCase("Morrison Hotel");
-        assertThat(discResult.getArtists().get(0).getName()).containsIgnoringCase("Doors");
-        assertThat(discResult.getArtists().get(0).getComposingArtists().get(0).getName()).containsIgnoringCase("Jim");
+        assertThat(discResult.getArtists().toArray(new Artist[0])[0].getName()).containsIgnoringCase("Doors");
+        assertThat(discResult.getArtists().toArray(new Artist[0])[0].getComposingArtists().get(0).getName()).containsIgnoringCase("Jim");
     }
 
 }

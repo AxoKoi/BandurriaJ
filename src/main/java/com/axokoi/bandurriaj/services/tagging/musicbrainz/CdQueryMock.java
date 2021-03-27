@@ -7,9 +7,7 @@ import com.github.javafaker.Faker;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Profile("noInternet")
 @Component
@@ -43,8 +41,8 @@ public class CdQueryMock implements CdQuery {
 
 
 
-   private List<Artist> buildArtist() {
-      List<Artist> artists = new ArrayList<>();
+   private Set<Artist> buildArtist() {
+      Set<Artist> artists = new HashSet<>();
       int numberOfArtist=random.nextInt(6);
 
       for(int i =0; i < numberOfArtist; i++){

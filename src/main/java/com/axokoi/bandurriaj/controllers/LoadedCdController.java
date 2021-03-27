@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -30,12 +31,12 @@ public class LoadedCdController {
    LoadedCdView loadedCdView;
 
    public void saveCdOnCatalogue(Disc disc, Catalogue catalogue) {
-      List<Artist> artists = disc.getArtists();
+      Set<Artist> artists = disc.getArtists();
 
       //Check if artists already exists
       //Quid if MBidentifier is empty?
       artists.forEach(x -> Assert.notNull(x.getMbIdentifier(), "MBIdentifier can't be null"));
-      List<Artist> artistsToPersist = artists.stream().map(x -> artistService.findByMbIdentifier(x.getMbIdentifier()).orElse(x)).collect(Collectors.toList());
+      Set<Artist> artistsToPersist = artists.stream().map(x -> artistService.findByMbIdentifier(x.getMbIdentifier()).orElse(x)).collect(Collectors.toSet());
 
       Optional<Disc> existingDisc = discService.findByNameIgnoreCase(disc.getName());
       Disc discToPersist = existingDisc.orElse(disc);
@@ -45,7 +46,7 @@ public class LoadedCdController {
    }
 
    @Transactional
-   protected void persistsCdOnCatalogue(Catalogue catalogue, List<Artist> artistsToPersist, Disc discToPersist) {
+   protected void persistsCdOnCatalogue(Catalogue catalogue, Set<Artist> artistsToPersist, Disc discToPersist) {
       artistsToPersist.forEach(x -> artistService.save(x));
       discService.save(discToPersist);
       catalogueRepository.save(catalogue);

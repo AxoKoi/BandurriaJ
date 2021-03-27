@@ -2,6 +2,7 @@ package com.axokoi.bandurriaj.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Disc implements Searchable {
@@ -12,9 +13,9 @@ public class Disc implements Searchable {
    private String name;
 
    @ManyToMany(targetEntity = Artist.class, fetch = FetchType.EAGER)
-   private List<Artist> artists;
+   private Set<Artist> artists;
 
-   @OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL)
+   @OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
    private List<Track> tracks;
 
    @Lob
@@ -28,11 +29,11 @@ public class Disc implements Searchable {
       this.name = name;
    }
 
-   public List<Artist> getArtists() {
+   public Set<Artist> getArtists() {
       return artists;
    }
 
-   public void setArtists(List<Artist> artists) {
+   public void setArtists(Set<Artist> artists) {
       this.artists = artists;
    }
 

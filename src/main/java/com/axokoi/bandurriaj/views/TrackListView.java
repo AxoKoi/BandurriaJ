@@ -42,7 +42,7 @@ public class TrackListView extends VBox {
       if(items.isEmpty()){
          return;
       }
-      items.forEach(x->x.setId((long) items.indexOf(x)));
+
       this.tracks.getItems().addAll(items);
    }
 
