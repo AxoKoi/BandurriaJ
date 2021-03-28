@@ -6,15 +6,16 @@ import com.axokoi.bandurriaj.model.Disc;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.TreeCell;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,8 +26,8 @@ public class DiscView extends VBox {
     private final TrackListView trackListView;
 
     private final Label discName = new Label();
-    private final Label artistLabel = new Label("-- Artist --");
-    private List<Label> artists = new ArrayList<>();
+    private final Label artistLabel = new Label("Artists");
+    private TreeView<Artist> artists = new TreeView<>();
 
 
     public DiscView(DiscController discController, TrackListView trackListView){
@@ -34,6 +35,7 @@ public class DiscView extends VBox {
         this.trackListView = trackListView;
 
         discName.setFont(new Font(discName.getFont().getFamily(),40));
+
 
         VBox.setVgrow(trackListView, Priority.ALWAYS);
         this.setAlignment(Pos.CENTER);
@@ -50,21 +52,42 @@ public class DiscView extends VBox {
         Disc disc = discController.fetchDiscToDisplay(discToDisplay);
 
         discName.setText(disc.getName());
-        trackListView.refresh(discToDisplay.getTracks());
+        trackListView.refresh(disc.getTracks());
 
-        Set<Artist> artistList = discToDisplay.getArtists();
-
-        artistList = artistList.stream()
-                .map(discController::fetchArtistToDisplay)
-                .collect(Collectors.toSet());
-
-        artists = artistList.stream().map(x -> new Label(x.getName()))
-                .collect(Collectors.toList());
-
+        artists = buildArtistsView(disc);
+        VBox.setVgrow(artists,Priority.SOMETIMES);
         this.getChildren().clear();
         this.getChildren().add(discName);
-        getChildren().add(artistLabel);
-        getChildren().addAll(artists);
-        getChildren().add(trackListView);
+        this.getChildren().add(artistLabel);
+        this.getChildren().addAll(artists);
+        this.getChildren().add(trackListView);
+    }
+
+    private TreeView<Artist> buildArtistsView(Disc disc) {
+        //Todo Can't we avoid to create a new treeview each time? Maybe extract this to a listArtistView
+        artists = new TreeView<>();
+        artists.setCellFactory(x-> new TreeCell<>(){
+            @Override
+            protected void updateItem(Artist artist, boolean empty){
+                super.updateItem(artist, empty);
+                if(artist!= null) {
+                    this.setText(artist.getName());
+                }
+            }
+        });
+        List<TreeItem<Artist>> rootArtists = disc.getArtists().stream().map(TreeItem::new).collect(Collectors.toList());
+
+        rootArtists.stream()
+                .filter(artist->artist.getValue().getType()== Artist.Type.COMPOSITE)
+                .forEach(rootArtistItem->
+                        rootArtistItem.getValue().getComposingArtists().stream().filter(Objects::nonNull)
+                                .forEach(childArtist-> rootArtistItem.getChildren().add(new TreeItem<>(childArtist)))
+                );
+
+        TreeItem<Artist> root = new TreeItem<>();
+        root.getChildren().addAll(rootArtists);
+        artists.setRoot(root);
+        artists.setShowRoot(false);
+        return artists;
     }
 }
