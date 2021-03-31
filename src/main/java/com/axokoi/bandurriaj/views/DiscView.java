@@ -24,7 +24,7 @@ public class DiscView extends VBox {
 
     private final Label discName = new Label();
     private final Label byLabel = new Label("By");
-    private final Label creditedArtistlabel = new Label();
+    private final Label creditedArtistLabel = new Label();
     private ListView<Artist> artists = new ListView<>();
 
 
@@ -34,14 +34,14 @@ public class DiscView extends VBox {
 
         discName.setFont(new Font(discName.getFont().getFamily(),40));
         byLabel.setFont(new Font(discName.getFont().getFamily(),30));
-        creditedArtistlabel.setFont(new Font(creditedArtistlabel.getFont().getFamily(),40));
+        creditedArtistLabel.setFont(new Font(creditedArtistLabel.getFont().getFamily(),40));
 
 
         VBox.setVgrow(trackListView, Priority.ALWAYS);
         this.setAlignment(Pos.CENTER);
         getChildren().add(discName);
         getChildren().add(byLabel);
-        getChildren().add(creditedArtistlabel);
+        getChildren().add(creditedArtistLabel);
         getChildren().addAll(artists);
         getChildren().add(this.trackListView);
         this.setPadding(new Insets(14));
@@ -54,23 +54,25 @@ public class DiscView extends VBox {
 
         discName.setText(disc.getName());
 
-        creditedArtistlabel.setText(disc.getCreditedArtists().stream().map(Artist::getName).reduce("", (x, y) -> x + " " + y));
+        creditedArtistLabel.setText(disc.getCreditedArtists().stream().map(Artist::getName).reduce("", (x, y) -> x + " " + y));
         trackListView.refresh(disc.getTracks());
+        artists = refreshArtistsView(disc);
 
-        refreshArtistsView(disc);
         VBox.setVgrow(artists,Priority.SOMETIMES);
         this.getChildren().clear();
         this.getChildren().add(discName);
         this.getChildren().add(byLabel);
-        this.getChildren().add(creditedArtistlabel);
+        this.getChildren().add(creditedArtistLabel);
+
         this.getChildren().addAll(artists);
         this.getChildren().add(trackListView);
     }
 
-    private void refreshArtistsView(Disc disc) {
+    private ListView<Artist> refreshArtistsView(Disc disc) {
 
-        artists.getItems().clear();
-        artists.setCellFactory(x-> new ListCell<>(){
+        ListView<Artist> newArtistsToDisplay = new ListView<>();
+        newArtistsToDisplay.getItems().clear();
+        newArtistsToDisplay.setCellFactory(x-> new ListCell<>(){
             @Override
             protected void updateItem(Artist artist, boolean empty){
                 super.updateItem(artist, empty);
@@ -80,6 +82,7 @@ public class DiscView extends VBox {
             }
         });
         ObservableList<Artist> artistsToDisplay = FXCollections.observableArrayList(disc.getAllArtist());
-        artists.getItems().addAll(artistsToDisplay);
+        newArtistsToDisplay.getItems().addAll(artistsToDisplay);
+        return newArtistsToDisplay;
     }
 }
