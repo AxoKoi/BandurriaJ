@@ -32,7 +32,6 @@ public final class SmartSearchView extends VBox {
 		inputSearch.setOnAction(x -> smartSearchController.smartSearch(inputSearch.getText().trim()));
 		getChildren().addAll(search, inputSearch, results);
 
-		//this.setPrefHeight(Double.MAX_VALUE);
 		VBox.setVgrow(results, Priority.ALWAYS);
 
 		this.setPadding(new Insets(14));
