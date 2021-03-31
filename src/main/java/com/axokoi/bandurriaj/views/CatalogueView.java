@@ -1,38 +1,31 @@
 package com.axokoi.bandurriaj.views;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.axokoi.bandurriaj.controllers.CatalogueController;
 import com.axokoi.bandurriaj.model.Catalogue;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.Searchable;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public final class CatalogueView extends VBox {
+
 	@Autowired
-	private CatalogueController catalogueController;
+	private  CatalogueController catalogueController;
 
 	private TreeView<Searchable> treeView = new TreeView<>();
 
@@ -40,13 +33,17 @@ public final class CatalogueView extends VBox {
 
 		this.setPadding(new Insets(14));
 		this.setSpacing(8);
-		this.getStyleClass().add("left-pane");
+
+		this.prefHeight(Double.MAX_VALUE);
+		VBox.setVgrow(treeView, Priority.ALWAYS);
+		this.getChildren().add(treeView);
 	}
 
 	public void refresh() {
 		//todo doing this for every refresh, every disc may be too heavy. To check
 		treeView = cataloguesToTreeView();
 		treeView.setCellFactory(x -> new SearchableCell());
+		VBox.setVgrow(treeView, Priority.ALWAYS);
 		this.getChildren().clear();
 		this.getChildren().add(treeView);
 	}

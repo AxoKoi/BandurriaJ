@@ -32,7 +32,7 @@ public class CdQueryImpl implements CdQuery {
         try {
             controller.getIncludes().setRecordings(true);
             controller.getIncludes().setArtistCredits(true);
-            controller.getIncludes().setArtistRelations(true);
+
             DiscWs2 disc = controller.lookUp(id, null);
 
             return disc.getReleases().stream()

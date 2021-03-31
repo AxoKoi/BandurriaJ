@@ -7,6 +7,7 @@ public class Track implements Searchable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	private int number;
 	private String name;
 	private String duration;
 	@Lob
@@ -43,5 +44,13 @@ public class Track implements Searchable{
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
 	}
 }

@@ -7,9 +7,7 @@ import com.github.javafaker.Faker;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Profile("noInternet")
 @Component
@@ -34,7 +32,7 @@ public class CdQueryMock implements CdQuery {
       disc.setName(discName);
 
 
-      disc.setArtists(buildArtist());
+      disc.setCreditedArtists(buildArtist());
       disc.setComment(facker.hobbit().quote());
 
       disc.setTracks(buildTracks());
@@ -43,8 +41,8 @@ public class CdQueryMock implements CdQuery {
 
 
 
-   private List<Artist> buildArtist() {
-      List<Artist> artists = new ArrayList<>();
+   private Set<Artist> buildArtist() {
+      Set<Artist> artists = new HashSet<>();
       int numberOfArtist=random.nextInt(6);
 
       for(int i =0; i < numberOfArtist; i++){
@@ -57,8 +55,8 @@ public class CdQueryMock implements CdQuery {
       return artists;
    }
 
-   private List<Track> buildTracks() {
-      List<Track> tracks = new ArrayList<>();
+   private Set<Track> buildTracks() {
+      Set<Track> tracks = new HashSet<>();
       int numberOfTracks = random.nextInt(12);
 
       for(int i = 0; i< numberOfTracks;i++)

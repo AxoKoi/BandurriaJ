@@ -4,6 +4,7 @@ import com.axokoi.bandurriaj.model.Artist;
 import org.musicbrainz.model.entity.ArtistWs2;
 import org.springframework.stereotype.Component;
 
+//IRO Improve this
 @Component
 public class ArtistConverter implements Converter<ArtistWs2, Artist> {
    @Override

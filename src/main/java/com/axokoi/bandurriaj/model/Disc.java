@@ -1,7 +1,8 @@
 package com.axokoi.bandurriaj.model;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 public class Disc implements Searchable {
@@ -12,10 +13,16 @@ public class Disc implements Searchable {
    private String name;
 
    @ManyToMany(targetEntity = Artist.class, fetch = FetchType.EAGER)
-   private List<Artist> artists;
+   private Set<Artist> creditedArtists;
 
-   @OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL)
-   private List<Track> tracks;
+
+
+   @ManyToMany(targetEntity = Artist.class, fetch = FetchType.EAGER)
+   private Set<Artist> relatedArtist;
+
+
+   @OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+   private Set<Track> tracks;
 
    @Lob
    private String comment;
@@ -28,19 +35,25 @@ public class Disc implements Searchable {
       this.name = name;
    }
 
-   public List<Artist> getArtists() {
-      return artists;
+   public Set<Artist> getCreditedArtists() {
+      return creditedArtists;
+   }
+   public Set<Artist> getRelatedArtist() {
+      return relatedArtist;
    }
 
-   public void setArtists(List<Artist> artists) {
-      this.artists = artists;
+   public void setRelatedArtist(Set<Artist> relatedArtist) {
+      this.relatedArtist = relatedArtist;
+   }
+   public void setCreditedArtists(Set<Artist> artists) {
+      this.creditedArtists = artists;
    }
 
-   public List<Track> getTracks() {
+   public Set<Track> getTracks() {
       return tracks;
    }
 
-   public void setTracks(List<Track> tracks) {
+   public void setTracks(Set<Track> tracks) {
       this.tracks = tracks;
    }
 
@@ -58,5 +71,12 @@ public class Disc implements Searchable {
 
    public void setId(Long id) {
       this.id = id;
+   }
+
+   public Set<Artist> getAllArtist() {
+      Set<Artist> allArtist = new LinkedHashSet<>();
+      allArtist.addAll(this.getCreditedArtists());
+      allArtist.addAll(this.getRelatedArtist());
+      return allArtist;
    }
 }

@@ -37,6 +37,7 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
     public void onApplicationEvent(MainApplication.StageReadyEvent event) {
 
         catalogueView.refresh();
+catalogueView.setPrefHeight(5);
 
         Stage stage = event.getStage();
         BorderPane mainPane = new BorderPane();
@@ -55,11 +56,14 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
         mainPane.setBottom(footerView);
 
         stage.setTitle("BandurriaJ");
-        stage.setScene(new Scene(mainPane, 1000, 350));
+
+        stage.setScene(new Scene(mainPane));
         stage.sizeToScene();
         new JMetro(stage.getScene(), Style.LIGHT);
         viewDispatcher.setBorderPane(mainPane);
+
         stage.show();
+        stage.setMaximized(true);
 
     }
 }
