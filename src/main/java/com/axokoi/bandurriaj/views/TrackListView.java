@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 @Component
 public class TrackListView extends VBox {
@@ -37,7 +38,8 @@ public class TrackListView extends VBox {
 
    public void refresh (Collection <Track> tracksToDisplay){
 
-      ObservableList<Track> items = FXCollections.observableArrayList(tracksToDisplay);
+      ObservableList<Track> items = FXCollections.observableArrayList(tracksToDisplay).sorted(Comparator.comparingInt(Track::getNumber));
+
       this.tracks.getItems().clear();
       if(items.isEmpty()){
          return;

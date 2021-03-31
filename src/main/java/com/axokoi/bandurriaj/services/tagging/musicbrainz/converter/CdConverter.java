@@ -8,6 +8,7 @@ import org.musicbrainz.model.NameCreditWs2;
 import org.musicbrainz.model.RelationWs2;
 import org.musicbrainz.model.TrackWs2;
 import org.musicbrainz.model.entity.ArtistWs2;
+import org.musicbrainz.model.entity.EntityWs2;
 import org.musicbrainz.model.entity.ReleaseWs2;
 import org.springframework.stereotype.Component;
 
@@ -54,14 +55,17 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
             return Collections.emptySet();
         }
 
-        // Set used to filter the repeated artist on the different tracks.
-        Set<String> collectedArtistId = new HashSet<>();
 
             return release.getMediumList().getCompleteTrackList().stream()
                     .flatMap(trackWs2 -> trackWs2.getRecording().getRelationList().getRelations().stream().map(RelationWs2::getTarget))
                     .filter(entityWs2 -> entityWs2 instanceof ArtistWs2)
                     .map(ArtistWs2.class::cast)
-                    .filter(artistWs2 -> collectedArtistId.add(artistWs2.getId()))
+                    //Collect artist with the same id from different tracks
+                    .collect(Collectors.groupingBy(EntityWs2::getId))
+                    .values()
+                    .stream()
+                    //get first element, as all are the same
+                    .map(l->l.get(0))
                     .map(artistConverter::convert).collect(Collectors.toSet());
     }
 
