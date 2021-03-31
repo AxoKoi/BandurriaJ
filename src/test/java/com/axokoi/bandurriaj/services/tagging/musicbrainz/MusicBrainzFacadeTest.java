@@ -44,15 +44,13 @@ class MusicBrainzFacadeTest {
         jimMorrison.setName("Jim Morrison");
         jimMorrison.setRole("Vocals");
         artists.add(jimMorrison);
-        band.setComposingArtists(artists);
-        disc.setArtists(Set.of(band));
+        disc.setCreditedArtists(Set.of(band));
 
         doReturn(List.of(disc)).when(cdQueryImpl).getDiscInfoById(".p4ZJ206p8mpaTvnG8.ZG9_qagE-");
 
         Disc discResult = musicBrainzFacade.getDiscInfoFromDiscId(".p4ZJ206p8mpaTvnG8.ZG9_qagE-").get(0);
         assertThat(discResult.getName()).containsIgnoringCase("Morrison Hotel");
-        assertThat(discResult.getArtists().toArray(new Artist[0])[0].getName()).containsIgnoringCase("Doors");
-        assertThat(discResult.getArtists().toArray(new Artist[0])[0].getComposingArtists().get(0).getName()).containsIgnoringCase("Jim");
+        assertThat(discResult.getCreditedArtists().toArray(new Artist[0])[0].getName()).containsIgnoringCase("Doors");
     }
 
 }

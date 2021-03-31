@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -31,7 +32,7 @@ public class LoadedCdController {
    LoadedCdView loadedCdView;
 
    public void saveCdOnCatalogue(Disc disc, Catalogue catalogue) {
-      Set<Artist> artists = disc.getArtists();
+      Set<Artist> artists = disc.getAllArtist();
 
       //Check if artists already exists
       //Quid if MBidentifier is empty?
@@ -41,13 +42,14 @@ public class LoadedCdController {
       Optional<Disc> existingDisc = discService.findByNameIgnoreCase(disc.getName());
       Disc discToPersist = existingDisc.orElse(disc);
       catalogue.getDiscs().add(discToPersist);
-      discToPersist.setArtists(artistsToPersist);
+      discToPersist.setCreditedArtists(artistsToPersist);
       persistsCdOnCatalogue(catalogue, artistsToPersist, discToPersist);
    }
 
    @Transactional
    protected void persistsCdOnCatalogue(Catalogue catalogue, Set<Artist> artistsToPersist, Disc discToPersist) {
       artistsToPersist.forEach(x -> artistService.save(x));
+
       discService.save(discToPersist);
       catalogueRepository.save(catalogue);
    }

@@ -65,6 +65,7 @@ public class DiscView extends VBox {
 
     private TreeView<Artist> buildArtistsView(Disc disc) {
         //Todo Can't we avoid to create a new treeview each time? Maybe extract this to a listArtistView
+        //IRO Now it's nod needed, Change it to List view instead
         artists = new TreeView<>();
         artists.setCellFactory(x-> new TreeCell<>(){
             @Override
@@ -75,17 +76,11 @@ public class DiscView extends VBox {
                 }
             }
         });
-        List<TreeItem<Artist>> rootArtists = disc.getArtists().stream().map(TreeItem::new).collect(Collectors.toList());
-
-        rootArtists.stream()
-                .filter(artist->artist.getValue().getType()== Artist.Type.COMPOSITE)
-                .forEach(rootArtistItem->
-                        rootArtistItem.getValue().getComposingArtists().stream().filter(Objects::nonNull)
-                                .forEach(childArtist-> rootArtistItem.getChildren().add(new TreeItem<>(childArtist)))
-                );
+        List<TreeItem<Artist>> creditedArtists = disc.getCreditedArtists().stream().map(TreeItem::new).collect(Collectors.toList());
+        creditedArtists.addAll(disc.getRelatedArtist().stream().map(TreeItem::new).collect(Collectors.toList()));
 
         TreeItem<Artist> root = new TreeItem<>();
-        root.getChildren().addAll(rootArtists);
+        root.getChildren().addAll(creditedArtists);
         artists.setRoot(root);
         artists.setShowRoot(false);
         return artists;

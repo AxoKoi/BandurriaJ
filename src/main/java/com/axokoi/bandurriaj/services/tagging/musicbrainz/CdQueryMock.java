@@ -32,7 +32,7 @@ public class CdQueryMock implements CdQuery {
       disc.setName(discName);
 
 
-      disc.setArtists(buildArtist());
+      disc.setCreditedArtists(buildArtist());
       disc.setComment(facker.hobbit().quote());
 
       disc.setTracks(buildTracks());
@@ -55,8 +55,8 @@ public class CdQueryMock implements CdQuery {
       return artists;
    }
 
-   private List<Track> buildTracks() {
-      List<Track> tracks = new ArrayList<>();
+   private Set<Track> buildTracks() {
+      Set<Track> tracks = new HashSet<>();
       int numberOfTracks = random.nextInt(12);
 
       for(int i = 0; i< numberOfTracks;i++)

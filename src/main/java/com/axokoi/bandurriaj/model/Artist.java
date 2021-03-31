@@ -17,10 +17,6 @@ public class Artist implements Searchable {
    private String mbIdentifier;
    private Artist.Type type;
 
-   @ManyToMany(targetEntity = Artist.class, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
-   private List<Artist> composingArtists;
-
-
    public Long getId() {
       return id;
    }
@@ -61,15 +57,6 @@ public class Artist implements Searchable {
    public void setType(Type type) {
       this.type = type;
    }
-
-   public List<Artist> getComposingArtists() {
-      return composingArtists;
-   }
-
-   public void setComposingArtists(List<Artist> composingArtists) {
-      this.composingArtists = composingArtists;
-   }
-
 
    public String getMbIdentifier() {
       return mbIdentifier;
