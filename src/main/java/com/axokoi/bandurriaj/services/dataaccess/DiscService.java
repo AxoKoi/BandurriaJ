@@ -8,8 +8,6 @@ import org.apache.commons.collections4.IterableUtils;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,23 +46,13 @@ public class DiscService implements SmartSearchService<Disc> {
 				.findAny().orElseThrow();
 	}
 
-//IRO Make test for this.
-	public List<Disc> findAllDiscByArtist(Artist artist) {//IRO to change
-		return Collections.emptyList();
-		/*List<Disc> allDiscs = IterableUtils.toList(discRepository.findAll());
-		List<Disc> mainArtist = allDiscs.stream()
-				.filter(disc -> disc.getCreditedArtists().stream().map(Artist::getMbIdentifier).collect(Collectors.toList()).contains(artist.getMbIdentifier()))
+
+	public List<Disc> findAllDiscByArtist(Artist artist) {
+
+		List<Disc> allDiscs = IterableUtils.toList(discRepository.findAll());
+		return allDiscs.stream().
+				filter(disc -> disc.getAllArtist().stream().map(Artist::getMbIdentifier).anyMatch(x -> artist.getMbIdentifier().equals(x)))
 				.collect(Collectors.toList());
-
-		List<Disc> secondaryArtist = allDiscs.stream().filter(
-				disc -> disc.getCreditedArtists().stream().flatMap(x -> x.getComposingArtists().stream())
-						.map(Artist::getMbIdentifier).collect(Collectors.toList()).contains(artist.getMbIdentifier())
-		).collect(Collectors.toList());
-
-		List<Disc> results = new ArrayList<>();
-		results.addAll(mainArtist);
-		results.addAll(secondaryArtist);
-		return results;*/
 	}
 
 
