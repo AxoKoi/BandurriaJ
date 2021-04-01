@@ -27,6 +27,16 @@ public class CdQueryMock implements CdQuery {
       return List.of(buildDisc( facker.elderScrolls().city()), buildDisc(facker.elderScrolls().region()));
    }
 
+   @Override
+   public List<Disc> lookUpFromDiscId(String discId) {
+      return Collections.emptyList();
+   }
+
+   @Override
+   public Optional<Disc> getFullDiscInfoFromUniqueIdentifier(String uniqueId) {
+      return Optional.empty();
+   }
+
    private Disc buildDisc(String discName) {
       Disc disc = new Disc();
       disc.setName(discName);

@@ -28,6 +28,10 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
         this.artistConverter = artistConverter;
     }
 
+    public Disc convertSimple(ReleaseWs2 releaseWs2){
+        return buildDisc(releaseWs2);
+    }
+
     @Override
     public Disc convert(ReleaseWs2 release) {
         Disc disc = buildDisc(release);
@@ -40,7 +44,6 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
         } catch (MBWS2Exception e) {
             e.printStackTrace();//IRO add logger instead
         }
-//IRO add generic popup service
 
         Set<Artist> relatedArtists  = extractRelatedArtistFromRelease(release);
         disc.setRelatedArtist(relatedArtists);
@@ -48,6 +51,7 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
 
         return disc;
     }
+
 
     private Set<Artist> extractRelatedArtistFromRelease(ReleaseWs2 release) {
         if (release == null) {
