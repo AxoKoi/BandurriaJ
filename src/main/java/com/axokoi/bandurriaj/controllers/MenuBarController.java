@@ -31,7 +31,7 @@ public class MenuBarController {
         String cdId = cdReadingFacade.readCdId(FileToCDPathConverter.convert(selectedFile));
         log.info("Read cdId: {}", cdId);
         //todo here we should also see if the band already exists in the repo
-        List<Disc> loadedCds = taggingFacade.getDisc(cdId);
+        List<Disc> loadedCds = taggingFacade.lookupFromDiscId(cdId);
         log.info("Cd tagged was: {}", loadedCds);
         loadedCdController.refreshView(loadedCds);
     }

@@ -2,6 +2,7 @@ package com.axokoi.bandurriaj.services.tagging.musicbrainz.converter;
 
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
+import com.axokoi.bandurriaj.model.ExternalIdentifier;
 import com.axokoi.bandurriaj.model.Track;
 import org.musicbrainz.MBWS2Exception;
 import org.musicbrainz.model.NameCreditWs2;
@@ -13,6 +14,7 @@ import org.musicbrainz.model.entity.ReleaseWs2;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -75,6 +77,13 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
     private Disc buildDisc(ReleaseWs2 release) {
         Disc disc = new Disc();
         disc.setName(release.getTitle());
+
+        Set<ExternalIdentifier> externalIdentifiers = new HashSet<>();
+        ExternalIdentifier identifier = new ExternalIdentifier();
+        identifier.setType(ExternalIdentifier.Type.MUSICBRAINZ);
+        identifier.setIdentifier(release.getId());
+        externalIdentifiers.add(identifier);
+        disc.setExternalIdentifier(externalIdentifiers);
 
         disc.setCreditedArtists(release.getArtistCredit().getNameCredits().stream().map(NameCreditWs2::getArtist)
                 .map(artistConverter::convert).collect(Collectors.toSet()));

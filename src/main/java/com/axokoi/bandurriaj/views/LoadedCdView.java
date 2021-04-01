@@ -30,7 +30,7 @@ public class LoadedCdView extends VBox {
     private final ButtonBar cancelSaveBar = new ButtonBar();
 
     @Autowired
-    LoadedCdController controller;
+    private LoadedCdController controller;
 
     public LoadedCdView() {
         super();
@@ -46,8 +46,10 @@ public class LoadedCdView extends VBox {
     private EventHandler<ActionEvent> getSaveHandler() {
         return e -> {
             Disc selectedCd = cds.getSelectionModel().getSelectedItem();
-            controller.saveCdOnCatalogue(selectedCd,
+
+            selectedCd = controller.saveCdOnCatalogue(selectedCd,
                     catalogues.getSelectionModel().getSelectedItem());
+
             controller.displayCd(selectedCd);
             controller.dispatchRefreshToCatalogue();
             ((Stage) saveButton.getScene().getWindow()).close();
