@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -19,20 +18,23 @@ import java.util.stream.Collectors;
 
 @Component
 public class LoadedCdController {
-   @Autowired
-   DiscService discService;
-   @Autowired
-   CatalogueRepository catalogueRepository;
-   @Autowired
-   ArtistService artistService;
-   @Autowired
-   DiscController discController;
-   @Autowired
-   CatalogueController catalogueController;
-   @Autowired
-   LoadedCdView loadedCdView;
-   @Autowired
-   TaggingFacade taggingFacade;
+   final DiscService discService;
+   final CatalogueRepository catalogueRepository;
+   final ArtistService artistService;
+   final DiscController discController;
+   final CatalogueController catalogueController;
+   final LoadedCdView loadedCdView;
+   final TaggingFacade taggingFacade;
+
+   public LoadedCdController(DiscService discService, CatalogueRepository catalogueRepository, ArtistService artistService, DiscController discController, CatalogueController catalogueController, LoadedCdView loadedCdView, TaggingFacade taggingFacade) {
+      this.discService = discService;
+      this.catalogueRepository = catalogueRepository;
+      this.artistService = artistService;
+      this.discController = discController;
+      this.catalogueController = catalogueController;
+      this.loadedCdView = loadedCdView;
+      this.taggingFacade = taggingFacade;
+   }
 
    public Disc saveCdOnCatalogue(Disc disc, Catalogue catalogue) {
 

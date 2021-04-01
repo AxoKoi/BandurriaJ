@@ -20,12 +20,6 @@ public class TaggingFacade {
 		this.taggingProviders = taggingProviders;
 	}
 
-	public List<Disc> getDisc(String discID) {
-		//this will change some day, as we plan to fetch info from different providers.
-		//It will need to be get well written in the future.
-		log.info("Initiating tagging of discId:" + discID);
-		return taggingProviders.get(0).getDiscInfoFromDiscId(discID);
-	}
 
 	//todo How will we handle the case when there will be more than one provider?
 	public Optional<Disc> getDiscFromUniqueIdentifier(String identifier){
