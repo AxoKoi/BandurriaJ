@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * For the moment this class is just a pass through for the only ProviderFacade we have, which is the MusicBrainzFacade
+ */
 @Slf4j
 @Component
 public class TaggingFacade {

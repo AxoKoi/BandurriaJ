@@ -25,10 +25,6 @@ public class CdQueryImpl implements CdQuery {
     @Autowired
     private TrackConverter trackConverter;
 
-    public Disc getDiscInfo(String discName) {
-        throw new UnsupportedOperationException("Not possible to search a disc by its name yet");
-    }
-
     public List<Disc> getDiscInfoById(String id) {
         org.musicbrainz.controller.Disc controller = new org.musicbrainz.controller.Disc();
         try {

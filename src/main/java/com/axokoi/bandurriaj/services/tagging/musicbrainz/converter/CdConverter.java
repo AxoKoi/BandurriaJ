@@ -54,12 +54,10 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
         return disc;
     }
 
-
     private Set<Artist> extractRelatedArtistFromRelease(ReleaseWs2 release) {
         if (release == null) {
             return Collections.emptySet();
         }
-
 
             return release.getMediumList().getCompleteTrackList().stream()
                     .flatMap(trackWs2 -> trackWs2.getRecording().getRelationList().getRelations().stream().map(RelationWs2::getTarget))
@@ -77,18 +75,20 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
     private Disc buildDisc(ReleaseWs2 release) {
         Disc disc = new Disc();
         disc.setName(release.getTitle());
+        disc.setExternalIdentifier(getExternalIdentifiers(release));
+        disc.setCreditedArtists(release.getArtistCredit().getNameCredits().stream().map(NameCreditWs2::getArtist)
+                .map(artistConverter::convert).collect(Collectors.toSet()));
+        disc.setComment(release.getYear());
+        return disc;
+    }
 
+    private Set<ExternalIdentifier> getExternalIdentifiers(ReleaseWs2 release) {
         Set<ExternalIdentifier> externalIdentifiers = new HashSet<>();
         ExternalIdentifier identifier = new ExternalIdentifier();
         identifier.setType(ExternalIdentifier.Type.MUSICBRAINZ);
         identifier.setIdentifier(release.getId());
         externalIdentifiers.add(identifier);
-        disc.setExternalIdentifier(externalIdentifiers);
-
-        disc.setCreditedArtists(release.getArtistCredit().getNameCredits().stream().map(NameCreditWs2::getArtist)
-                .map(artistConverter::convert).collect(Collectors.toSet()));
-        disc.setComment(release.getYear());
-        return disc;
+        return externalIdentifiers;
     }
 
     private Set<Track> getTrackList(ReleaseWs2 release) {

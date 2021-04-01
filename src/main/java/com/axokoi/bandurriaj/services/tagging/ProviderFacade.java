@@ -7,11 +7,7 @@ import java.util.Optional;
 
 public interface ProviderFacade {
 
-	Disc getDiscInfo(String discName);
-
-	List<Disc> getDiscInfoFromDiscId(String id);
+	List<Disc> lookUpFromDiscId(String discId);
 
 	Optional<Disc> getFullDiscInfoFromUniqueIdentifier(String providerIdentifier);
-
-	List<Disc> lookUpFromDiscId(String discId);
 }
