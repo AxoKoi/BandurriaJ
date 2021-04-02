@@ -16,7 +16,8 @@ public class CdReaderMock implements CdReader {
    "lwHl8fGzJyLXQR33ug60E8jhf4k-",
            "XzPS7vW.HPHsYemQh0HBUGr8vuU-",
            "lEBJIODhbtLhFfWY02.SIfXi4DU-",
-           "yVf8PUpOvtUHGeGvop.qXSsTVUQ-"};
+           "yVf8PUpOvtUHGeGvop.qXSsTVUQ-",
+           "dDZwsvSVNy4YC5Or5htTU5z6NZA-"};
 
    @Override
    public String readId(String driverPath) {

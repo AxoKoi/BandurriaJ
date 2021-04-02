@@ -15,14 +15,14 @@ public class Disc implements Searchable {
    @ManyToMany(targetEntity = Artist.class, fetch = FetchType.EAGER)
    private Set<Artist> creditedArtists;
 
-
-
    @ManyToMany(targetEntity = Artist.class, fetch = FetchType.EAGER)
    private Set<Artist> relatedArtist;
 
-
    @OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
    private Set<Track> tracks;
+
+   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+   private Set<ExternalIdentifier>  externalIdentifier;
 
    @Lob
    private String comment;
@@ -78,5 +78,13 @@ public class Disc implements Searchable {
       allArtist.addAll(this.getCreditedArtists());
       allArtist.addAll(this.getRelatedArtist());
       return allArtist;
+   }
+
+   public Set<ExternalIdentifier> getExternalIdentifier() {
+      return externalIdentifier;
+   }
+
+   public void setExternalIdentifier(Set<ExternalIdentifier> externalIdentifier) {
+      this.externalIdentifier = externalIdentifier;
    }
 }
