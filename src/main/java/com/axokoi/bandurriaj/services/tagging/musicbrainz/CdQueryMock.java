@@ -17,14 +17,13 @@ public class CdQueryMock implements CdQuery {
    private static final Random random = new Random();
 
    @Override
-   public Disc getDiscInfo(String discName) {
-
-      return buildDisc(discName);
+   public List<Disc> lookUpFromDiscId(String discId) {
+      return Collections.emptyList();
    }
 
    @Override
-   public List<Disc> getDiscInfoById(String id) {
-      return List.of(buildDisc( facker.elderScrolls().city()), buildDisc(facker.elderScrolls().region()));
+   public Optional<Disc> getFullDiscInfoFromUniqueIdentifier(String uniqueId) {
+      return Optional.empty();
    }
 
    private Disc buildDisc(String discName) {

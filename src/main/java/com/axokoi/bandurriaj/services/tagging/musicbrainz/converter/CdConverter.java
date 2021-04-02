@@ -2,6 +2,7 @@ package com.axokoi.bandurriaj.services.tagging.musicbrainz.converter;
 
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
+import com.axokoi.bandurriaj.model.ExternalIdentifier;
 import com.axokoi.bandurriaj.model.Track;
 import org.musicbrainz.MBWS2Exception;
 import org.musicbrainz.model.NameCreditWs2;
@@ -13,6 +14,7 @@ import org.musicbrainz.model.entity.ReleaseWs2;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,6 +30,10 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
         this.artistConverter = artistConverter;
     }
 
+    public Disc convertSimple(ReleaseWs2 releaseWs2){
+        return buildDisc(releaseWs2);
+    }
+
     @Override
     public Disc convert(ReleaseWs2 release) {
         Disc disc = buildDisc(release);
@@ -40,7 +46,6 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
         } catch (MBWS2Exception e) {
             e.printStackTrace();//IRO add logger instead
         }
-//IRO add generic popup service
 
         Set<Artist> relatedArtists  = extractRelatedArtistFromRelease(release);
         disc.setRelatedArtist(relatedArtists);
@@ -53,7 +58,6 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
         if (release == null) {
             return Collections.emptySet();
         }
-
 
             return release.getMediumList().getCompleteTrackList().stream()
                     .flatMap(trackWs2 -> trackWs2.getRecording().getRelationList().getRelations().stream().map(RelationWs2::getTarget))
@@ -71,11 +75,20 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
     private Disc buildDisc(ReleaseWs2 release) {
         Disc disc = new Disc();
         disc.setName(release.getTitle());
-
+        disc.setExternalIdentifier(getExternalIdentifiers(release));
         disc.setCreditedArtists(release.getArtistCredit().getNameCredits().stream().map(NameCreditWs2::getArtist)
                 .map(artistConverter::convert).collect(Collectors.toSet()));
         disc.setComment(release.getYear());
         return disc;
+    }
+
+    private Set<ExternalIdentifier> getExternalIdentifiers(ReleaseWs2 release) {
+        Set<ExternalIdentifier> externalIdentifiers = new HashSet<>();
+        ExternalIdentifier identifier = new ExternalIdentifier();
+        identifier.setType(ExternalIdentifier.Type.MUSICBRAINZ);
+        identifier.setIdentifier(release.getId());
+        externalIdentifiers.add(identifier);
+        return externalIdentifiers;
     }
 
     private Set<Track> getTrackList(ReleaseWs2 release) {

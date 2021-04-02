@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -18,13 +19,14 @@ public class MusicBrainzFacade implements ProviderFacade {
     }
 
     @Override
-    public Disc getDiscInfo(String discName) {
-        return cdQuery.getDiscInfo(discName);
+    public Optional<Disc> getFullDiscInfoFromUniqueIdentifier(String providerIdentifier) {
+        return cdQuery.getFullDiscInfoFromUniqueIdentifier(providerIdentifier);
     }
 
     @Override
-    public List<Disc> getDiscInfoFromDiscId(String id) {
-        log.info("Retrieving disc information with MusicBrainz. Id=" + id);
-        return cdQuery.getDiscInfoById(id);
+    public List<Disc> lookUpFromDiscId(String discId) {
+        return cdQuery.lookUpFromDiscId(discId);
     }
+
+
 }
