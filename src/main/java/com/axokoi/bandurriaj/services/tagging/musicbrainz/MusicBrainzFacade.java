@@ -18,11 +18,6 @@ public class MusicBrainzFacade implements ProviderFacade {
         this.cdQuery = cdQuery;
     }
 
-    public List<Disc> getDiscInfoFromDiscId(String id) {
-        log.info("Retrieving disc information with MusicBrainz. Id=" + id);
-        return cdQuery.getDiscInfoById(id);
-    }
-
     @Override
     public Optional<Disc> getFullDiscInfoFromUniqueIdentifier(String providerIdentifier) {
         return cdQuery.getFullDiscInfoFromUniqueIdentifier(providerIdentifier);

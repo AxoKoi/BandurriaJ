@@ -2,7 +2,6 @@ package com.axokoi.bandurriaj.services.tagging.musicbrainz;
 
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.services.tagging.musicbrainz.converter.CdConverter;
-import com.axokoi.bandurriaj.services.tagging.musicbrainz.converter.TrackConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.musicbrainz.MBWS2Exception;
 import org.musicbrainz.model.entity.DiscWs2;
@@ -22,8 +21,6 @@ import java.util.stream.Collectors;
 public class CdQueryImpl implements CdQuery {
     @Autowired
     CdConverter cdConverter;
-    @Autowired
-    private TrackConverter trackConverter;
 
     public List<Disc> getDiscInfoById(String id) {
         org.musicbrainz.controller.Disc controller = new org.musicbrainz.controller.Disc();

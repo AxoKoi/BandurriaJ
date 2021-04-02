@@ -17,11 +17,6 @@ public class CdQueryMock implements CdQuery {
    private static final Random random = new Random();
 
    @Override
-   public List<Disc> getDiscInfoById(String id) {
-      return List.of(buildDisc( facker.elderScrolls().city()), buildDisc(facker.elderScrolls().region()));
-   }
-
-   @Override
    public List<Disc> lookUpFromDiscId(String discId) {
       return Collections.emptyList();
    }

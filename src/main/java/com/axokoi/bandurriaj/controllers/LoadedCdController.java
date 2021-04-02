@@ -41,7 +41,7 @@ public class LoadedCdController {
       //Complete the discinfo
       //For the moment we only have MusicBrainz implemented so we just pick the only one in the set
       ExternalIdentifier externalIdentifier = disc.getExternalIdentifier().stream().findAny().orElseThrow(() -> new RuntimeException("Impossible to find the external indentifier for disc"));
-      disc = taggingFacade.getDiscFromUniqueIdentifier(externalIdentifier.getIdentifier()).orElseThrow(()->new RuntimeException("Impossible to tag cd:"));
+      disc = taggingFacade.getDiscFromUniqueIdentifier(externalIdentifier).orElseThrow(()->new RuntimeException("Impossible to tag cd:"));
 
       Set<Artist> creditedArtistsToPersist = getArtistsToPersists(disc.getCreditedArtists());
       Set<Artist> relatedArtistToPersists = getArtistsToPersists(disc.getRelatedArtist());

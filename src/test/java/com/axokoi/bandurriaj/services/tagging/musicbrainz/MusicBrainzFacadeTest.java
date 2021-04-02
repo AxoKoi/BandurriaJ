@@ -4,10 +4,10 @@ import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +17,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@ExtendWith(SpringExtension.class)
+@RunWith(MockitoJUnitRunner.class)
 class MusicBrainzFacadeTest {
 
     @Mock
-    CdQueryImpl cdQueryImpl;
+    CdQuery cdQuery;
 
     @InjectMocks
     private MusicBrainzFacade musicBrainzFacade;
@@ -46,9 +46,10 @@ class MusicBrainzFacadeTest {
         artists.add(jimMorrison);
         disc.setCreditedArtists(Set.of(band));
 
-        doReturn(List.of(disc)).when(cdQueryImpl).getDiscInfoById(".p4ZJ206p8mpaTvnG8.ZG9_qagE-");
+        doReturn(List.of(disc)).when(cdQuery).lookUpFromDiscId(".p4ZJ206p8mpaTvnG8.ZG9_qagE-");
 
-        Disc discResult = musicBrainzFacade.getDiscInfoFromDiscId(".p4ZJ206p8mpaTvnG8.ZG9_qagE-").get(0);
+
+        Disc discResult = musicBrainzFacade.lookUpFromDiscId(".p4ZJ206p8mpaTvnG8.ZG9_qagE-").get(0);
         assertThat(discResult.getName()).containsIgnoringCase("Morrison Hotel");
         assertThat(discResult.getCreditedArtists().toArray(new Artist[0])[0].getName()).containsIgnoringCase("Doors");
     }
