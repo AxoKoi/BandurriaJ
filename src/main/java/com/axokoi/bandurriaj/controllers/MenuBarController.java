@@ -4,6 +4,16 @@ import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.services.cdreader.CdReadingFacade;
 import com.axokoi.bandurriaj.services.dataaccess.UserConfigurationService;
 import com.axokoi.bandurriaj.services.tagging.TaggingFacade;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SystemUtils;
 import org.springframework.stereotype.Component;
@@ -43,8 +53,24 @@ public class MenuBarController {
              throw new IllegalArgumentException("Not Supported language");
        }
        //todo display popup.
+      displayRebootPopup();
       userConfigurationService.saveLocale(Locale.getDefault().toString());
     }
+
+   private void displayRebootPopup() {
+
+      Stage popUpStage = new Stage();
+
+      Label infoLabel = new Label("A reboot of BandurriaJ is needed to apply your changes.");
+      Button okButton = new Button("Ok");
+      okButton.setOnMouseClicked(e -> ((Stage) okButton.getScene().getWindow()).close());
+
+      VBox vbox = new VBox(infoLabel, okButton);
+      vbox.setAlignment(Pos.CENTER);
+      Scene popUpScene = new Scene(vbox, 300, 100);
+      popUpStage.setScene(popUpScene);
+      popUpStage.show();
+   }
 
     public void handleReadCd(File selectedFile) {
         String cdId = cdReadingFacade.readCdId(FileToCDPathConverter.convert(selectedFile));
