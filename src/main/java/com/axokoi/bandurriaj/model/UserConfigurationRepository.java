@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface UserConfigurationRepository extends CrudRepository<UserConfiguration,Long> {
 
-   public Optional<String> findByKey (String key);
+   public Optional<UserConfiguration> findByKey (String key);
 }
