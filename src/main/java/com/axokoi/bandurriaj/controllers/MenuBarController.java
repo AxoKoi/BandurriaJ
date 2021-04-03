@@ -1,5 +1,6 @@
 package com.axokoi.bandurriaj.controllers;
 
+import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.services.cdreader.CdReadingFacade;
 import com.axokoi.bandurriaj.services.dataaccess.UserConfigurationService;
@@ -8,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -26,15 +28,18 @@ public class MenuBarController {
     private final TaggingFacade taggingFacade;
     private final LoadedCdController loadedCdController;
     private final UserConfigurationService userConfigurationService;
+   private final MessagesProvider messagesProvider;
 
-    public MenuBarController(CdReadingFacade cdReadingFacade, TaggingFacade taggingFacade, LoadedCdController loadedCdController, UserConfigurationService userConfigurationService) {
+    public MenuBarController(CdReadingFacade cdReadingFacade, TaggingFacade taggingFacade, LoadedCdController loadedCdController, UserConfigurationService userConfigurationService, MessagesProvider messagesProvider) {
         this.cdReadingFacade = cdReadingFacade;
         this.taggingFacade = taggingFacade;
         this.loadedCdController = loadedCdController;
-       this.userConfigurationService = userConfigurationService;
+        this.userConfigurationService = userConfigurationService;
+        this.messagesProvider = messagesProvider;
     }
 
    public void changeLocale(String language) {
+      displayRebootPopup();
        Locale.Builder localeBuilder = new Locale.Builder().setRegion(Locale.getDefault().getCountry());
        switch (language){
           case "EN":
@@ -45,10 +50,14 @@ public class MenuBarController {
              Locale.setDefault(localeBuilder.setLanguage("fr").build());
              break;
 
+          case "ES":
+             Locale.setDefault(localeBuilder.setLanguage("es").build());
+             break;
+
           default:
              throw new IllegalArgumentException("Not Supported language");
        }
-      displayRebootPopup();
+
       userConfigurationService.saveLocale(Locale.getDefault().toString());
     }
 
@@ -56,8 +65,8 @@ public class MenuBarController {
 
       Stage popUpStage = new Stage();
 
-      Label infoLabel = new Label("A reboot of BandurriaJ is needed to apply your changes.");
-      Button okButton = new Button("Ok");
+      Label infoLabel = new Label(messagesProvider.getMessageFrom("menubar.controller.language.reboot"));
+      Button okButton = new Button("OK");
       okButton.setOnMouseClicked(e -> ((Stage) okButton.getScene().getWindow()).close());
 
       VBox vbox = new VBox(infoLabel, okButton);

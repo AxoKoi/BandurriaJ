@@ -60,15 +60,17 @@ public class MenuBarView extends MenuBar {
 
         menu3.getItems().add(menu3_1);
 
-        MenuItem menu3Item1 = new MenuItem("EN");
+        MenuItem menu3Item1 = new MenuItem("English");
         menu3Item1.setOnAction(event -> menuBarController.changeLocale("EN"));
 
-        MenuItem menu3Item2 = new MenuItem("FR");
+        MenuItem menu3Item2 = new MenuItem("Français");
         menu3Item2.setOnAction(event -> menuBarController.changeLocale("FR"));
 
-        menu3_1.getItems().addAll(menu3Item1, menu3Item2);
+        MenuItem menu3Item3 = new MenuItem("Español");
+        menu3Item3.setOnAction(event -> menuBarController.changeLocale("ES"));
+
+        menu3_1.getItems().addAll(menu3Item1, menu3Item2,menu3Item3);
         return menu3;
     }
-
 
 }
