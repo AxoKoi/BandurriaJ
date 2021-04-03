@@ -58,10 +58,10 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
         mainPane.getStyleClass().add("root");
 
         HBox footerView = new HBox();
-        footerView.getChildren().add(new Text("BandurriaJ by Axokoi"));
+        footerView.getChildren().add(new Text(messagesProvider.getMessageFrom("footer.copyright")));
         mainPane.setBottom(footerView);
 
-        stage.setTitle("BandurriaJ");
+        stage.setTitle(messagesProvider.getMessageFrom("app.title"));
 
         stage.setScene(new Scene(mainPane));
         stage.sizeToScene();

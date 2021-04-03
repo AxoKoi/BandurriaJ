@@ -1,5 +1,6 @@
 package com.axokoi.bandurriaj.views;
 
+import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Track;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,15 +19,23 @@ import java.util.Comparator;
 public class TrackListView extends VBox {
    private final Label title = new Label("Tracks");
    private  TableView<Track> tracks = new TableView<>();
+
+
+   private final MessagesProvider messagesProvider;
+
    private final TableColumn<Track, String>  trackNumberColumn = new TableColumn<>("#");
-   private final TableColumn<Track, String>  trackNameColumn = new TableColumn<>("Name");
-   private final TableColumn<Track, String>  trackDurationColumn = new TableColumn<>("Duration");
+   private final TableColumn<Track, String> trackNameColumn;
+   private final TableColumn<Track, String> trackDurationColumn;
 
 
-   public TrackListView() {
-
+   public TrackListView(MessagesProvider messagesProvider) {
+      this.messagesProvider = messagesProvider;
       trackNumberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
+
+      trackNameColumn= new TableColumn<>(this.messagesProvider.getMessageFrom("tracklist.view.table.name"));
       trackNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+      trackDurationColumn= new TableColumn<>(this.messagesProvider.getMessageFrom("tracklist.view.table.duration"));
       trackDurationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
 
       tracks.getColumns().addAll(trackNumberColumn, trackNameColumn, trackDurationColumn);

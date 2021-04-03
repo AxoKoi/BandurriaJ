@@ -1,6 +1,7 @@
 package com.axokoi.bandurriaj.views;
 
 import com.axokoi.bandurriaj.controllers.LoadedCdController;
+import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Catalogue;
 import com.axokoi.bandurriaj.model.Disc;
 import javafx.event.ActionEvent;
@@ -19,22 +20,33 @@ import java.util.List;
 public class LoadedCdView extends VBox {
 
 
-    private static final String WARNING = "Warning! you have more than one result! please select the CD";
-    private static final Label warningLabel = new Label(WARNING);
-    private final Label cdName = new Label("Your Cd is:");
+    private final String WARNING;
+    private final Label warningLabel;
+    private final Label cdName;
     private final ComboBox<Disc> cds = new ComboBox<>();
-    private final Label catalogueName = new Label("Please choose the catalogue to save the CD");
+    private final Label catalogueName;
     private final ComboBox<Catalogue> catalogues = new ComboBox<>();
-    private final Button cancelButton = new Button("Cancel");
-    private final Button saveButton = new Button("Save");
+    private final Button cancelButton;
+    private final Button saveButton;
     private final ButtonBar cancelSaveBar = new ButtonBar();
 
     @Autowired
     private LoadedCdController controller;
 
-    public LoadedCdView() {
-        super();
+    private final MessagesProvider messagesProvider;
+
+    public LoadedCdView(MessagesProvider messagesProvider) {
+        this.messagesProvider = messagesProvider;
+
+        WARNING = this.messagesProvider.getMessageFrom("loadedCD.view.warning");
+        warningLabel = new Label(WARNING);
         warningLabel.setVisible(false);
+
+        cdName  = new Label(this.messagesProvider.getMessageFrom("loadedCD.view.your.cd.is"));
+        catalogueName= new Label(this.messagesProvider.getMessageFrom("loadedCD.view.choose.catalogue"));
+        cancelButton = new Button(this.messagesProvider.getMessageFrom("button.cancel"));
+        saveButton = new Button(this.messagesProvider.getMessageFrom("button.save"));
+
         ButtonBar.setButtonData(cancelButton, ButtonBar.ButtonData.NO);
         ButtonBar.setButtonData(saveButton, ButtonBar.ButtonData.YES);
         cancelSaveBar.getButtons().addAll(cancelButton, saveButton);
@@ -54,7 +66,6 @@ public class LoadedCdView extends VBox {
             controller.dispatchRefreshToCatalogue();
             ((Stage) saveButton.getScene().getWindow()).close();
         };
-
     }
 
     private EventHandler<ActionEvent> getCancelHandler() {

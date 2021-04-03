@@ -1,6 +1,7 @@
 package com.axokoi.bandurriaj.views;
 
 import com.axokoi.bandurriaj.controllers.DiscController;
+import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
 import javafx.collections.FXCollections;
@@ -21,17 +22,18 @@ public class DiscView extends VBox {
 
     private final DiscController discController;
     private final TrackListView trackListView;
-
+    private final MessagesProvider messagesProvider;
     private final Label discName = new Label();
-    private final Label byLabel = new Label("By");
+    private final Label byLabel;
     private final Label creditedArtistLabel = new Label();
     private ListView<Artist> artists = new ListView<>();
 
 
-    public DiscView(DiscController discController, TrackListView trackListView){
+    public DiscView(DiscController discController, TrackListView trackListView, MessagesProvider messagesProvider){
         this.discController = discController;
         this.trackListView = trackListView;
-
+        this.messagesProvider = messagesProvider;
+        byLabel = new Label(messagesProvider.getMessageFrom("disc.view.by"));
         discName.setFont(new Font(discName.getFont().getFamily(),40));
         byLabel.setFont(new Font(discName.getFont().getFamily(),30));
         creditedArtistLabel.setFont(new Font(creditedArtistLabel.getFont().getFamily(),40));

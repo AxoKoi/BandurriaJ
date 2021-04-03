@@ -1,6 +1,7 @@
 package com.axokoi.bandurriaj.views;
 
 import com.axokoi.bandurriaj.controllers.CatalogueController;
+import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Catalogue;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.Searchable;
@@ -26,6 +27,8 @@ public final class CatalogueView extends VBox {
 
 	@Autowired
 	private  CatalogueController catalogueController;
+	@Autowired
+	private MessagesProvider messagesProvider;
 
 	private TreeView<Searchable> treeView = new TreeView<>();
 
@@ -50,7 +53,7 @@ public final class CatalogueView extends VBox {
 
 	private TreeView<Searchable> cataloguesToTreeView() {
 		TreeView<Searchable> treeViewToBuild = new TreeView<>();
-		TreeItem<Searchable> rootItem = new TreeItem<>(() -> "Catalogues");
+		TreeItem<Searchable> rootItem = new TreeItem<>(() -> messagesProvider.getMessageFrom("catalogue.view.root.label"));
 		List<Catalogue> catalogues = catalogueController.getCatalogues();
 		catalogues.forEach(catalogue -> {
 					TreeItem<Searchable> catalogueItem = new TreeItem<>(catalogue);
@@ -109,7 +112,7 @@ public final class CatalogueView extends VBox {
 
 	private void addContextMenu(TreeView<Searchable> treeViewToBuild) {
 		ContextMenu catalogueContextMenu = new ContextMenu();
-		MenuItem addNewCatalogueItem = new MenuItem("add a new Catalogue");
+		MenuItem addNewCatalogueItem = new MenuItem(messagesProvider.getMessageFrom("catalogue.view.add.new.catalogue.item"));
 		addNewCatalogueItem.setOnAction(displayAddNewCataloguePopupHandler());
 
 		catalogueContextMenu.getItems().addAll(addNewCatalogueItem);
@@ -123,13 +126,13 @@ public final class CatalogueView extends VBox {
 
 	private void displayDeleteCatalogue(String catalogueName) {
 		Stage popUpStage = new Stage();
-		Label warning = new Label("Warning! This will delete your catalogue: " + catalogueName);
-		Button deleteButton = new Button("Delete");
+		Label warning = new Label(messagesProvider.getMessageFrom("catalogue.view.delete.catalogue",catalogueName));
+		Button deleteButton = new Button(messagesProvider.getMessageFrom("button.delete"));
 		deleteButton.setOnMouseClicked(e -> {
 			catalogueController.deleteCatalogue(catalogueName);
 			((Stage) deleteButton.getScene().getWindow()).close();
 		});
-		Button cancelButton = new Button("Cancel");
+		Button cancelButton = new Button(messagesProvider.getMessageFrom("button.cancel"));
 		cancelButton.setOnMouseClicked(e -> ((Stage) cancelButton.getScene().getWindow()).close());
 
 		HBox saveCancelBox = new HBox(deleteButton, cancelButton);
@@ -144,14 +147,14 @@ public final class CatalogueView extends VBox {
 
 		Stage popUpStage = new Stage();
 
-		Label catalogueName = new Label("Catalogue name");
-		TextField catalogueNameInput = new TextField("Enter the name here");
-		Button saveButton = new Button("Save");
+		Label catalogueName = new Label(messagesProvider.getMessageFrom("catalogue.view.add.new.popup.catalogue.name"));
+		TextField catalogueNameInput = new TextField(messagesProvider.getMessageFrom("catalogue.view.add.new.popup.catalogue.name.input.text"));
+		Button saveButton = new Button(messagesProvider.getMessageFrom("button.save"));
 		saveButton.setOnMouseClicked(e -> {
 			catalogueController.addNewCatalogue(catalogueNameInput.getText());
 			((Stage) saveButton.getScene().getWindow()).close();
 		});
-		Button cancelButton = new Button("Cancel");
+		Button cancelButton = new Button(messagesProvider.getMessageFrom("button.cancel"));
 		cancelButton.setOnMouseClicked(e -> ((Stage) cancelButton.getScene().getWindow()).close());
 
 		HBox catalogueHBox = new HBox(catalogueName, catalogueNameInput);
