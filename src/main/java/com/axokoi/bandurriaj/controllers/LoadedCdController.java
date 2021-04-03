@@ -18,23 +18,20 @@ import java.util.stream.Collectors;
 
 @Component
 public class LoadedCdController {
-   final DiscService discService;
-   final CatalogueRepository catalogueRepository;
-   final ArtistService artistService;
-   final DiscController discController;
-   final CatalogueController catalogueController;
-   final LoadedCdView loadedCdView;
-   final TaggingFacade taggingFacade;
-
-   public LoadedCdController(DiscService discService, CatalogueRepository catalogueRepository, ArtistService artistService, DiscController discController, CatalogueController catalogueController, LoadedCdView loadedCdView, TaggingFacade taggingFacade) {
-      this.discService = discService;
-      this.catalogueRepository = catalogueRepository;
-      this.artistService = artistService;
-      this.discController = discController;
-      this.catalogueController = catalogueController;
-      this.loadedCdView = loadedCdView;
-      this.taggingFacade = taggingFacade;
-   }
+   @Autowired
+   private DiscService discService;
+   @Autowired
+   private CatalogueRepository catalogueRepository;
+   @Autowired
+   private ArtistService artistService;
+   @Autowired
+   private DiscController discController;
+   @Autowired
+   private CatalogueController catalogueController;
+   @Autowired
+   private LoadedCdView loadedCdView;
+   @Autowired
+   private TaggingFacade taggingFacade;
 
    public Disc saveCdOnCatalogue(Disc disc, Catalogue catalogue) {
 

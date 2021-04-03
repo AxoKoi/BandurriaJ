@@ -1,5 +1,7 @@
-package com.axokoi.bandurriaj;
+package com.axokoi.bandurriaj.booting;
 
+import com.axokoi.bandurriaj.MainApplication;
+import com.axokoi.bandurriaj.ViewDispatcher;
 import com.axokoi.bandurriaj.views.CatalogueView;
 import com.axokoi.bandurriaj.views.MenuBarView;
 import com.axokoi.bandurriaj.views.SmartSearchView;
@@ -37,7 +39,7 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
     public void onApplicationEvent(MainApplication.StageReadyEvent event) {
 
         catalogueView.refresh();
-catalogueView.setPrefHeight(5);
+        catalogueView.setPrefHeight(5);
 
         Stage stage = event.getStage();
         BorderPane mainPane = new BorderPane();

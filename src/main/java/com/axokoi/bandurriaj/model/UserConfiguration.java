@@ -14,4 +14,17 @@ public class UserConfiguration {
 
    String value;
 
+   public enum Keys{
+      LOCALE("user.language");
+
+      private String value;
+      Keys(String value) {
+         this.value = value;
+      }
+
+      public String getValue(){
+         return this.value;
+      }
+   }
+
 }
