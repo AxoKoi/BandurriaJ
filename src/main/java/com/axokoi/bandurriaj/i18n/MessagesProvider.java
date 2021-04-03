@@ -2,7 +2,6 @@ package com.axokoi.bandurriaj.i18n;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.Locale;
 

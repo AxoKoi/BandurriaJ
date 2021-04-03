@@ -2,6 +2,7 @@ package com.axokoi.bandurriaj.views;
 
 import java.util.List;
 
+import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import javafx.scene.layout.Priority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,13 +23,18 @@ import javafx.scene.layout.VBox;
 public final class SmartSearchView extends VBox {
 
 	@Autowired
-	SmartSearchController smartSearchController;
+	private SmartSearchController smartSearchController;
 
-	private final Label search = new Label("Enter your search");
+	@Autowired
+	private final MessagesProvider messagesProvider;
+
+	private final Label search ;
 	private final TextField inputSearch = new TextField();
 	private final ListView<Searchable> results = new ListView<>();
 
-	public SmartSearchView() {
+	public SmartSearchView(MessagesProvider messagesProvider) {
+		this.messagesProvider = messagesProvider;
+		search = new Label(this.messagesProvider.getMessageFrom("smartsearch.view.search"));
 		inputSearch.setOnAction(x -> smartSearchController.smartSearch(inputSearch.getText().trim()));
 		getChildren().addAll(search, inputSearch, results);
 

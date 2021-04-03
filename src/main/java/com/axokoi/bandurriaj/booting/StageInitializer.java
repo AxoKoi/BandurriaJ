@@ -2,6 +2,7 @@ package com.axokoi.bandurriaj.booting;
 
 import com.axokoi.bandurriaj.MainApplication;
 import com.axokoi.bandurriaj.ViewDispatcher;
+import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.views.CatalogueView;
 import com.axokoi.bandurriaj.views.MenuBarView;
 import com.axokoi.bandurriaj.views.SmartSearchView;
@@ -24,15 +25,18 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
 
     private final SmartSearchView smartSearchView;
 
-    final ViewDispatcher viewDispatcher;
+    private final ViewDispatcher viewDispatcher;
 
-    final MenuBarView menuBarView;
+    private final MenuBarView menuBarView;
 
-    public StageInitializer(CatalogueView catalogueView, SmartSearchView smartSearchView, ViewDispatcher viewDispatcher, MenuBarView menuBarView) {
+    private final MessagesProvider messagesProvider;
+
+    public StageInitializer(CatalogueView catalogueView, SmartSearchView smartSearchView, ViewDispatcher viewDispatcher, MenuBarView menuBarView, MessagesProvider messagesProvider) {
         this.catalogueView = catalogueView;
         this.smartSearchView = smartSearchView;
         this.viewDispatcher = viewDispatcher;
         this.menuBarView = menuBarView;
+        this.messagesProvider = messagesProvider;
     }
 
     @Override

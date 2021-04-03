@@ -42,6 +42,7 @@ public class MenuBarController {
           default:
              throw new IllegalArgumentException("Not Supported language");
        }
+       //todo display popup.
       userConfigurationService.saveLocale(Locale.getDefault().toString());
     }
 
