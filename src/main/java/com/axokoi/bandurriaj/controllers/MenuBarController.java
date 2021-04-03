@@ -48,7 +48,6 @@ public class MenuBarController {
           default:
              throw new IllegalArgumentException("Not Supported language");
        }
-       //todo display popup.
       displayRebootPopup();
       userConfigurationService.saveLocale(Locale.getDefault().toString());
     }
@@ -83,14 +82,8 @@ public class MenuBarController {
         private FileToCDPathConverter(){}
 
         static String convert(File file) {
-            String rawPath = file.getPath();
-            //todo we need to figure it out how can we better handle this.
-            //maybe take the last sr0?for linux
             if (SystemUtils.IS_OS_WINDOWS) {
-                return "";
-                //todo we have the spring profiles,
-                // todo Maybe add a detection if profile is isolated not throw new UnsupportedOperationException("Windows not yet supported");
-
+                return file.getAbsolutePath();
             } else if (SystemUtils.IS_OS_LINUX) {
                 return "/dev/cdrom";
             } else {
