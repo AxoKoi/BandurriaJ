@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-@Profile("prod")
+@Profile("!noCD")
 class CdReaderImpl implements CdReader {
 
 

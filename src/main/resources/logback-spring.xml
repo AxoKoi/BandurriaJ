@@ -43,5 +43,13 @@
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </logger>
+    <logger name="com.javafx" level="info" additivity="false">
+        <appender-ref ref="RollingFile" />
+        <appender-ref ref="Console" />
+    </logger>
+    <logger name="org.springframework" level="info" additivity="false">
+        <appender-ref ref="RollingFile" />
+        <appender-ref ref="Console" />
+    </logger>
 
 </configuration>
