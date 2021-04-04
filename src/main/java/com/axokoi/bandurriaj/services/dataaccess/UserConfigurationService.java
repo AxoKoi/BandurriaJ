@@ -21,6 +21,7 @@ public class UserConfigurationService {
 
       UserConfiguration configurationToPersist = repository.findByKey(key.getValue())
               .orElse(new UserConfiguration(key, value));
+      configurationToPersist.setValue(value);
 
       repository.save(configurationToPersist);
    }

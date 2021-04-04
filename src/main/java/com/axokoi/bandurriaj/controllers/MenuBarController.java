@@ -43,22 +43,23 @@ public class MenuBarController {
        Locale.Builder localeBuilder = new Locale.Builder().setRegion(Locale.getDefault().getCountry());
        switch (language){
           case "EN":
-             Locale.setDefault(localeBuilder.setLanguage("en").build());
+             localeBuilder.setLanguage("en");
              break;
 
           case "FR":
-             Locale.setDefault(localeBuilder.setLanguage("fr").build());
+             localeBuilder.setLanguage("fr");
              break;
 
           case "ES":
-             Locale.setDefault(localeBuilder.setLanguage("es").build());
+             localeBuilder.setLanguage("es");
              break;
 
           default:
              throw new IllegalArgumentException("Not Supported language");
        }
 
-      userConfigurationService.saveLocale(Locale.getDefault().toString());
+      Locale locale = localeBuilder.build();
+      userConfigurationService.saveLocale(locale.toString());
     }
 
    private void displayRebootPopup() {
