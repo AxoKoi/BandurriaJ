@@ -24,9 +24,9 @@ class CdReaderImplTest {
     have to point the library path in the application.properties file.*/
     @Test
     void readId() {
-/*        CdReader cdReader = new CdReader(pathToLib);
-        String cdId = cdReader.readId(DRIVE);
-       // assertThat(cdId).isNotNull().isNotEmpty();*/
+        //CdReader cdReader = new CdReaderImpl(pathToLib);
+        //String cdId = cdReader.readId(DRIVE);
+       // assertThat(cdId).isNotNull().isNotEmpty();
     }
 
 }

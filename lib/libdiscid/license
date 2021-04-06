@@ -1,0 +1,6 @@
+Libdisc is included as a dependency only for building purposes.
+
+libdiscid is a C library for creating MusicBrainz and freedb disc IDs from audio CDs
+libdiscid is licensed under the GNU Lesser General Public License 2.1 or later.
+
+More info at https://musicbrainz.org/doc/libdiscid

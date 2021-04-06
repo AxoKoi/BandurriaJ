@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+
 @Slf4j
 @Component
 @Profile("!noCD")
@@ -21,8 +23,9 @@ class CdReaderImpl implements CdReader {
     public String readId(String driverPath) {
         JMBDiscId discId = new JMBDiscId();
 
-        log.info("Initiating library at :[" + pathToLib + "]");
-        discId.init(pathToLib);
+        String relativePath= (new File("")).getAbsolutePath();
+        log.info("Initiating library at :[" + relativePath + pathToLib + "]");
+        discId.init(relativePath + pathToLib);
 
         return discId.getDiscId(driverPath);
     }
