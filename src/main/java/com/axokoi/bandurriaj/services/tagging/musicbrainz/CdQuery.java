@@ -1,50 +1,24 @@
 package com.axokoi.bandurriaj.services.tagging.musicbrainz;
 
 import com.axokoi.bandurriaj.model.Disc;
-import com.axokoi.bandurriaj.services.tagging.musicbrainz.converter.CdConverter;
-import lombok.extern.slf4j.Slf4j;
-import org.musicbrainz.MBWS2Exception;
-import org.musicbrainz.controller.ReleaseGroup;
-import org.musicbrainz.model.entity.DiscWs2;
-import org.musicbrainz.model.entity.ReleaseGroupWs2;
-import org.musicbrainz.model.entity.ReleaseWs2;
-import org.musicbrainz.model.searchresult.ReleaseGroupResultWs2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-@Slf4j
-@Component
-public class CdQuery {
-    @Autowired
-    CdConverter cdConverter;
+public interface CdQuery {
+   /**
+    * Concrete implementation of {@link com.axokoi.bandurriaj.services.tagging.ProviderFacade#lookUpFromDiscId(String)}
+    * @param discId The discId computed from the physical CD
+    * @return A list of disc that correspond to this discid. The disc contains minimum information to be displayed to the user so
+    * a choice can be made.
+    */
+   List<Disc> lookUpFromDiscId(String discId);
 
-    public Disc getDiscInfo(String discName) {
-        ReleaseGroupWs2 resultFromMBapi = callMB(discName);//= use the api
-        return cdConverter.convert(resultFromMBapi);
-    }
+   /**
+    * Concrete implementation of {@link com.axokoi.bandurriaj.services.tagging.ProviderFacade#getFullDiscInfoFromUniqueIdentifier(String)}
+    * @param uniqueId The external identifier  corresponding to the disc.
+    * @return An optional Disc which will be empty if the disc couldn't been found.
+    */
+   Optional<Disc> getFullDiscInfoFromUniqueIdentifier(String uniqueId);
 
-    private ReleaseGroupWs2 callMB(String discID) {
-        ReleaseGroup releaseGroup = new ReleaseGroup();
-        releaseGroup.search(discID);
-        List<ReleaseGroupResultWs2> apiResult = releaseGroup.getFullSearchResultList();
-        return apiResult.get(0).getReleaseGroup();
-    }
-
-    public List<Disc> getDiscInfoById(String id) {
-        org.musicbrainz.controller.Disc controller = new org.musicbrainz.controller.Disc();
-        try {
-            DiscWs2 disc = controller.lookUp(id, null);
-            return disc.getReleases().stream()
-                    .map(ReleaseWs2::getReleaseGroup)
-                    .map(x -> cdConverter.convert(x))
-                    .collect(Collectors.toList());
-
-        } catch (MBWS2Exception e) {
-            log.info("Error when looking for disc id: {}", id, e);
-        }
-        return null;
-    }
 }

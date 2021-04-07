@@ -6,5 +6,5 @@ import javafx.scene.layout.BorderPane;
 
 public class AboutView extends BorderPane {
 
-	List<String> colaborators;
+	List<String> collaborators;
 }

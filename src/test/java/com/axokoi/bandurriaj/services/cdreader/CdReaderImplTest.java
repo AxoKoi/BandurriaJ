@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfiguration.class)
-class CdReaderTest {
+class CdReaderImplTest {
     //todo only for linux, we should generify this
     private final static String DRIVE = "/dev/cdrom";
 
@@ -24,9 +24,9 @@ class CdReaderTest {
     have to point the library path in the application.properties file.*/
     @Test
     void readId() {
-/*        CdReader cdReader = new CdReader(pathToLib);
-        String cdId = cdReader.readId(DRIVE);
-       // assertThat(cdId).isNotNull().isNotEmpty();*/
+        //CdReader cdReader = new CdReaderImpl(pathToLib);
+        //String cdId = cdReader.readId(DRIVE);
+       // assertThat(cdId).isNotNull().isNotEmpty();
     }
 
 }

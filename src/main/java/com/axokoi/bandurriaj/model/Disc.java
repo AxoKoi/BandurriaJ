@@ -1,14 +1,8 @@
 package com.axokoi.bandurriaj.model;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 public class Disc implements Searchable {
@@ -18,12 +12,19 @@ public class Disc implements Searchable {
 
    private String name;
 
-   @ManyToOne(targetEntity = Band.class)
-   private Band band;
+   @ManyToMany(targetEntity = Artist.class, fetch = FetchType.EAGER)
+   private Set<Artist> creditedArtists;
 
-   @OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL)
-   private List<Track> tracks;
+   @ManyToMany(targetEntity = Artist.class, fetch = FetchType.EAGER)
+   private Set<Artist> relatedArtist;
 
+   @OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+   private Set<Track> tracks;
+
+   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+   private Set<ExternalIdentifier>  externalIdentifier;
+
+   @Lob
    private String comment;
 
    public String getName() {
@@ -34,19 +35,25 @@ public class Disc implements Searchable {
       this.name = name;
    }
 
-   public Band getBand() {
-      return band;
+   public Set<Artist> getCreditedArtists() {
+      return creditedArtists;
+   }
+   public Set<Artist> getRelatedArtist() {
+      return relatedArtist;
    }
 
-   public void setBand(Band band) {
-      this.band = band;
+   public void setRelatedArtist(Set<Artist> relatedArtist) {
+      this.relatedArtist = relatedArtist;
+   }
+   public void setCreditedArtists(Set<Artist> artists) {
+      this.creditedArtists = artists;
    }
 
-   public List<Track> getTracks() {
+   public Set<Track> getTracks() {
       return tracks;
    }
 
-   public void setTracks(List<Track> tracks) {
+   public void setTracks(Set<Track> tracks) {
       this.tracks = tracks;
    }
 
@@ -64,5 +71,20 @@ public class Disc implements Searchable {
 
    public void setId(Long id) {
       this.id = id;
+   }
+
+   public Set<Artist> getAllArtist() {
+      Set<Artist> allArtist = new LinkedHashSet<>();
+      allArtist.addAll(this.getCreditedArtists());
+      allArtist.addAll(this.getRelatedArtist());
+      return allArtist;
+   }
+
+   public Set<ExternalIdentifier> getExternalIdentifier() {
+      return externalIdentifier;
+   }
+
+   public void setExternalIdentifier(Set<ExternalIdentifier> externalIdentifier) {
+      this.externalIdentifier = externalIdentifier;
    }
 }

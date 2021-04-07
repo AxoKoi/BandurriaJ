@@ -1,8 +1,7 @@
 package com.axokoi.bandurriaj;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import javafx.application.Application;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class SpringBootMain {

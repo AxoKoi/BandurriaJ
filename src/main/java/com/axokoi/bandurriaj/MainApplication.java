@@ -1,13 +1,14 @@
 package com.axokoi.bandurriaj;
 
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.stage.Stage;
-
+@Slf4j
 public class MainApplication extends Application {
 
 	public static class StageReadyEvent extends ApplicationEvent {
@@ -20,6 +21,14 @@ public class MainApplication extends Application {
 		}
 	}
 
+	public static class FXApplicationClosedEvent extends  ApplicationEvent{
+
+		public FXApplicationClosedEvent(Object source) {
+			super(source);
+		}
+
+	}
+
 	private ConfigurableApplicationContext applicationContext;
 
 	@Override
@@ -29,9 +38,12 @@ public class MainApplication extends Application {
 
 	@Override
 	public void stop() {
+      log.info("Stopping application. Publishing event.");
+		applicationContext.publishEvent(new FXApplicationClosedEvent(""));
 		applicationContext.close();
 		Platform.exit();
 	}
+
 
 	@Override
 	public void start(Stage stage) {

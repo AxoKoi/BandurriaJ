@@ -1,38 +1,34 @@
 package com.axokoi.bandurriaj.views;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.axokoi.bandurriaj.controllers.CatalogueController;
+import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Catalogue;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.Searchable;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public final class CatalogueView extends VBox {
+
 	@Autowired
-	private CatalogueController catalogueController;
+	private  CatalogueController catalogueController;
+	@Autowired
+	private MessagesProvider messagesProvider;
 
 	private TreeView<Searchable> treeView = new TreeView<>();
 
@@ -40,20 +36,24 @@ public final class CatalogueView extends VBox {
 
 		this.setPadding(new Insets(14));
 		this.setSpacing(8);
-		this.getStyleClass().add("left-pane");
+
+		this.prefHeight(Double.MAX_VALUE);
+		VBox.setVgrow(treeView, Priority.ALWAYS);
+		this.getChildren().add(treeView);
 	}
 
 	public void refresh() {
 		//todo doing this for every refresh, every disc may be too heavy. To check
 		treeView = cataloguesToTreeView();
 		treeView.setCellFactory(x -> new SearchableCell());
+		VBox.setVgrow(treeView, Priority.ALWAYS);
 		this.getChildren().clear();
 		this.getChildren().add(treeView);
 	}
 
 	private TreeView<Searchable> cataloguesToTreeView() {
 		TreeView<Searchable> treeViewToBuild = new TreeView<>();
-		TreeItem<Searchable> rootItem = new TreeItem<>(() -> "Catalogues");
+		TreeItem<Searchable> rootItem = new TreeItem<>(() -> messagesProvider.getMessageFrom("catalogue.view.root.label"));
 		List<Catalogue> catalogues = catalogueController.getCatalogues();
 		catalogues.forEach(catalogue -> {
 					TreeItem<Searchable> catalogueItem = new TreeItem<>(catalogue);
@@ -112,7 +112,7 @@ public final class CatalogueView extends VBox {
 
 	private void addContextMenu(TreeView<Searchable> treeViewToBuild) {
 		ContextMenu catalogueContextMenu = new ContextMenu();
-		MenuItem addNewCatalogueItem = new MenuItem("add a new Catalogue");
+		MenuItem addNewCatalogueItem = new MenuItem(messagesProvider.getMessageFrom("catalogue.view.add.new.catalogue.item"));
 		addNewCatalogueItem.setOnAction(displayAddNewCataloguePopupHandler());
 
 		catalogueContextMenu.getItems().addAll(addNewCatalogueItem);
@@ -126,13 +126,13 @@ public final class CatalogueView extends VBox {
 
 	private void displayDeleteCatalogue(String catalogueName) {
 		Stage popUpStage = new Stage();
-		Label warning = new Label("Warning! This will delete your catalogue: " + catalogueName);
-		Button deleteButton = new Button("Delete");
+		Label warning = new Label(messagesProvider.getMessageFrom("catalogue.view.delete.catalogue",catalogueName));
+		Button deleteButton = new Button(messagesProvider.getMessageFrom("button.delete"));
 		deleteButton.setOnMouseClicked(e -> {
 			catalogueController.deleteCatalogue(catalogueName);
 			((Stage) deleteButton.getScene().getWindow()).close();
 		});
-		Button cancelButton = new Button("Cancel");
+		Button cancelButton = new Button(messagesProvider.getMessageFrom("button.cancel"));
 		cancelButton.setOnMouseClicked(e -> ((Stage) cancelButton.getScene().getWindow()).close());
 
 		HBox saveCancelBox = new HBox(deleteButton, cancelButton);
@@ -147,14 +147,14 @@ public final class CatalogueView extends VBox {
 
 		Stage popUpStage = new Stage();
 
-		Label catalogueName = new Label("Catalogue name");
-		TextField catalogueNameInput = new TextField("Enter the name here");
-		Button saveButton = new Button("Save");
+		Label catalogueName = new Label(messagesProvider.getMessageFrom("catalogue.view.add.new.popup.catalogue.name"));
+		TextField catalogueNameInput = new TextField(messagesProvider.getMessageFrom("catalogue.view.add.new.popup.catalogue.name.input.text"));
+		Button saveButton = new Button(messagesProvider.getMessageFrom("button.save"));
 		saveButton.setOnMouseClicked(e -> {
 			catalogueController.addNewCatalogue(catalogueNameInput.getText());
 			((Stage) saveButton.getScene().getWindow()).close();
 		});
-		Button cancelButton = new Button("Cancel");
+		Button cancelButton = new Button(messagesProvider.getMessageFrom("button.cancel"));
 		cancelButton.setOnMouseClicked(e -> ((Stage) cancelButton.getScene().getWindow()).close());
 
 		HBox catalogueHBox = new HBox(catalogueName, catalogueNameInput);

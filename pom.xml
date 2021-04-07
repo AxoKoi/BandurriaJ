@@ -12,26 +12,20 @@
 
 	<groupId>com.axokoi</groupId>
 	<artifactId>BandurriaJ</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-
-					<source>11</source>
-					<target>11</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
-
+	<properties>
+		<!--spring profile for executable-->
+		<spring.profile>-Dspring.profiles.active=prod</spring.profile>
+		<!--javafx for executable-->
+		<java.fx.path>--module-path .\lib\javafx\lib</java.fx.path>
+		<java.fx.modules>--add-modules javafx.controls,javafx.fxml</java.fx.modules>
+		<!--jre library for executable-->
+		<jre.path>.\lib\jre</jre.path>
+		<!-- only needed when building a exe distribution-->
+        <!-- <jre.path.from></jre.path.from>
+		<javafx.path.from></javafx.path.from>-->
+	</properties>
 	<repositories>
 		<repository>
 			<id>central</id>
@@ -51,11 +45,11 @@
 			<artifactId>javafx-controls</artifactId>
 			<version>14</version>
 		</dependency>
-		<!--CSS-->
+		<!--css-->
 		<dependency>
-			<groupId>org.kordamp.bootstrapfx</groupId>
-			<artifactId>bootstrapfx-core</artifactId>
-			<version>0.2.4</version>
+			<groupId>org.jfxtras</groupId>
+			<artifactId>jmetro</artifactId>
+			<version>11.5.7</version>
 		</dependency>
 		<!--Spring-->
 		<dependency>
@@ -93,6 +87,7 @@
 			<artifactId>musicbrainzws2-java</artifactId>
 			<version>3.0.15</version>
 		</dependency>
+		<!--Others-->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -103,5 +98,83 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- For mocking names-->
+		<dependency>
+		<groupId>com.github.javafaker</groupId>
+		<artifactId>javafaker</artifactId>
+		<version>1.0.2</version>
+	</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>11</source>
+					<target>11</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+		<!--Launch4J to be uncommented when creating a windows exe-->
+<!--			<plugin>
+				<groupId>com.akathist.maven.plugins.launch4j</groupId>
+				<artifactId>launch4j-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>l4j-gui</id>
+						<phase>package</phase>
+						<goals><goal>launch4j</goal></goals>
+						<configuration>
+							<headerType>gui</headerType>
+							<outfile>target/BandurriaJ.exe</outfile>
+							<jar>target/${project.artifactId}-${project.version}.jar</jar>
+							<errTitle>Bandurria J</errTitle>
+							<jre>
+								<path>${jre.path}</path>
+								<minVersion>1.11.0</minVersion>
+								<opts>
+									<opt>${spring.profile}</opt>
+									<opt>${java.fx.path}</opt>
+									<opt>${java.fx.modules}</opt>
+								</opts>
+							</jre>
+							<versionInfo>
+								<fileVersion>1.0.0.0</fileVersion>
+								<txtFileVersion>1.0.0.0</txtFileVersion>
+								<fileDescription>BandurriaJ - CD Catalogue</fileDescription>
+								<copyright>By Axokoi - GPU V3 license</copyright>
+								<productVersion>1.0.0.0</productVersion>
+								<txtProductVersion>1.0.0.0</txtProductVersion>
+								<productName>BandurriaJ</productName>
+								<internalName>BandurriaJ</internalName>
+								<originalFilename>BandurriaJ.exe</originalFilename>
+							</versionInfo>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>assembly</id>
+						<phase>package</phase>
+						<goals><goal>single</goal></goals>
+						<configuration>
+							<descriptors>
+								<descriptor>assembly-.windows64.xml</descriptor>
+								<descriptor>assembly-.windows32.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>-->
+		</plugins>
+	</build>
 </project>

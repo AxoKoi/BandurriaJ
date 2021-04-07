@@ -2,6 +2,10 @@ package com.axokoi.bandurriaj.views;
 
 import java.util.List;
 
+import com.axokoi.bandurriaj.i18n.MessagesProvider;
+import javafx.geometry.Pos;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,34 +23,38 @@ import javafx.scene.layout.VBox;
 
 @Component
 public final class ArtistView extends VBox {
-	private final Label name = new Label("Artist Name: ");
-	private final Label role = new Label("Role: ");
-	private final Label comment = new Label("Comments: ");
+	private final Label name;
+	private final Label discBy ;
 	private final ListView<Disc> discs = new ListView<>();
 
 	@Autowired
-	ArtistController artistController;
+	private ArtistController artistController;
 
-	public ArtistView() {
+	private final MessagesProvider messagesProvider;
 
+	public ArtistView(MessagesProvider messagesProvider) {
+		this.messagesProvider = messagesProvider;
+		name = new Label();
+		name.setFont(new Font(name.getFont().getFamily(),40));
+
+		discBy = new Label(this.messagesProvider.getMessageFrom("artist.view.disc.by"));
+		discBy.setFont(new Font(discBy.getFont().getFamily(),30));
+
+      this.setAlignment(Pos.CENTER);
 		getChildren().add(name);
-		getChildren().add(role);
-		getChildren().addAll(comment);
+		getChildren().add(discBy);
 		getChildren().addAll(discs);
 
 		discs.setCellFactory(list -> new DiscCell());
 
-		discs.addEventHandler(KeyEvent.KEY_PRESSED,event->{
-			artistController.dispatchRefreshToController(discs.getSelectionModel().getSelectedItem());
-		});
+		discs.addEventHandler(KeyEvent.KEY_PRESSED,event-> artistController.dispatchRefreshToController(discs.getSelectionModel().getSelectedItem()));
+		discs.addEventHandler(MouseEvent.MOUSE_CLICKED, event-> artistController.dispatchRefreshToController(discs.getSelectionModel().getSelectedItem()));
 		this.setPadding(new Insets(14));
 		this.setSpacing(8);
 	}
 
 	public void refresh(Artist artist) {
-		name.setText("Artist name: " + artist.getName());
-		role.setText("Role: " + artist.getRole());
-		comment.setText("Comments: " + artist.getComment());
+		name.setText(artist.getName());
 		List<Disc> artistDiscs = artistController.findAllDiscByArtist(artist);
 		discs.getItems().clear();
 		discs.getItems().addAll(FXCollections.observableArrayList(artistDiscs));
