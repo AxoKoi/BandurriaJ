@@ -44,7 +44,7 @@ public class ArtistController extends GuiController<Artist> {
 
 	}
 
-	public void dispatchRefreshToController(Disc selectedItem) {
+	public void replaceCenterWithDisc(Disc selectedItem) {
 		discController.displayViewCenter(selectedItem);
 	}
 

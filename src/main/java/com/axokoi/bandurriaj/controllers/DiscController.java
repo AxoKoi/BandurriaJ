@@ -22,6 +22,8 @@ public class DiscController extends GuiController<Disc> {
 	private DiscService discService;
 	@Autowired
 	private ArtistService artistService;
+	@Autowired
+	private ArtistController artistController;
 
 	@Override
 	Node getView() {
@@ -40,5 +42,10 @@ public class DiscController extends GuiController<Disc> {
 
 	public Artist fetchArtistToDisplay(Artist artist) {
 		return artistService.findById(artist.getId());
+	}
+
+   public void replaceCenterWithArtist(Artist selectedArtist) {
+		artistController.displayViewCenter(selectedArtist);
+
 	}
 }

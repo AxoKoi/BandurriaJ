@@ -11,6 +11,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -83,6 +85,9 @@ public class DiscView extends VBox {
                 }
             }
         });
+        newArtistsToDisplay.addEventHandler(KeyEvent.KEY_PRESSED, event-> discController.replaceCenterWithArtist(newArtistsToDisplay.getSelectionModel().getSelectedItem()));
+        newArtistsToDisplay.addEventHandler(MouseEvent.MOUSE_CLICKED, event-> discController.replaceCenterWithArtist(newArtistsToDisplay.getSelectionModel().getSelectedItem()));
+
         ObservableList<Artist> artistsToDisplay = FXCollections.observableArrayList(disc.getAllArtist());
         newArtistsToDisplay.getItems().addAll(artistsToDisplay);
         return newArtistsToDisplay;
