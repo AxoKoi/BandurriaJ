@@ -1,5 +1,7 @@
 # BandurriaJ
 
+Our First Alpha version is released! you can download it for windows here: https://axokoi.com/bandurriaj/
+
 Music fan may have a huge amount of physical CDs, LPs, Cassettes. BandurriaJ will allow them to manage their full catalogue,
  providing tagging features and queries possibilities.
  
