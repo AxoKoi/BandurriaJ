@@ -27,6 +27,8 @@ public class Disc implements Searchable {
    @Lob
    private String comment;
 
+   private String pathToImage;
+
    public String getName() {
       return name;
    }
@@ -86,5 +88,13 @@ public class Disc implements Searchable {
 
    public void setExternalIdentifier(Set<ExternalIdentifier> externalIdentifier) {
       this.externalIdentifier = externalIdentifier;
+   }
+
+   public String getPathToImage() {
+      return pathToImage;
+   }
+
+   public void setPathToImage(String pathToImage) {
+      this.pathToImage = pathToImage;
    }
 }

@@ -11,13 +11,21 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+@Slf4j
 @Component
 public class DiscView extends VBox {
 
@@ -29,6 +37,8 @@ public class DiscView extends VBox {
     private final Label byLabel;
     private final Label creditedArtistLabel = new Label();
     private ListView<Artist> artists = new ListView<>();
+    private ImageView albumPicture = new ImageView();
+    private HBox centralComponent = new HBox();
 
 
     public DiscView(DiscController discController, TrackListView trackListView, MessagesProvider messagesProvider){
@@ -40,14 +50,18 @@ public class DiscView extends VBox {
         byLabel.setFont(new Font(discName.getFont().getFamily(),30));
         creditedArtistLabel.setFont(new Font(creditedArtistLabel.getFont().getFamily(),40));
 
+        albumPicture.setFitHeight(250);
+        albumPicture.setFitWidth(250);
+        centralComponent.getChildren().addAll(artists,albumPicture);
 
         VBox.setVgrow(trackListView, Priority.ALWAYS);
         this.setAlignment(Pos.CENTER);
         getChildren().add(discName);
         getChildren().add(byLabel);
         getChildren().add(creditedArtistLabel);
-        getChildren().addAll(artists);
+        getChildren().add(centralComponent);
         getChildren().add(this.trackListView);
+
         this.setPadding(new Insets(14));
         this.setSpacing(8);
 
@@ -62,14 +76,26 @@ public class DiscView extends VBox {
         trackListView.refresh(disc.getTracks());
         artists = refreshArtistsView(disc);
 
-        VBox.setVgrow(artists,Priority.SOMETIMES);
+
+        if (discToDisplay.getPathToImage()!= null && !discToDisplay.getPathToImage().isEmpty()) {
+            try {
+                albumPicture.setImage(new Image(new FileInputStream(discToDisplay.getPathToImage())));
+            } catch (FileNotFoundException e) {
+                log.error("Image not found at:" + discToDisplay.getPathToImage(),e);
+            }
+        } else {
+            albumPicture.setImage(null);
+        }
+
         this.getChildren().clear();
         this.getChildren().add(discName);
         this.getChildren().add(byLabel);
         this.getChildren().add(creditedArtistLabel);
-
-        this.getChildren().addAll(artists);
+        centralComponent.getChildren().clear();
+        centralComponent.getChildren().addAll(artists, albumPicture);
+        getChildren().add(centralComponent);
         this.getChildren().add(trackListView);
+
     }
 
     private ListView<Artist> refreshArtistsView(Disc disc) {
