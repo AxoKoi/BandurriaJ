@@ -4,7 +4,7 @@ import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.ExternalIdentifier;
 import com.axokoi.bandurriaj.model.Track;
-import com.axokoi.bandurriaj.services.tagging.musicbrainz.imageQuery.ReleaseImageQuery;
+import com.axokoi.bandurriaj.services.tagging.musicbrainz.imagequery.ReleaseImageQuery;
 import org.musicbrainz.MBWS2Exception;
 import org.musicbrainz.model.NameCreditWs2;
 import org.musicbrainz.model.RelationWs2;

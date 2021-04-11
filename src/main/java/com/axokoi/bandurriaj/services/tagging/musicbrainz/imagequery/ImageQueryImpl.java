@@ -1,4 +1,4 @@
-package com.axokoi.bandurriaj.services.tagging.musicbrainz.imageQuery;
+package com.axokoi.bandurriaj.services.tagging.musicbrainz.imagequery;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package com.axokoi.bandurriaj.services.tagging.musicbrainz.imageQuery;
+package com.axokoi.bandurriaj.services.tagging.musicbrainz.imagequery;
 
 import java.util.Optional;
 
