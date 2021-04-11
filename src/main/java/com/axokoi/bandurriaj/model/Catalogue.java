@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 public class Catalogue implements Searchable {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	@Column(unique = true)
 	private String name;

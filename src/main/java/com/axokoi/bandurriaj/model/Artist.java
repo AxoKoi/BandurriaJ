@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Artist implements Searchable {
 
    @Id
-   @GeneratedValue(strategy = GenerationType.AUTO)
+   @GeneratedValue(strategy = GenerationType.SEQUENCE)
    private Long id;
    private String name;
    private String role;
@@ -66,7 +66,7 @@ public class Artist implements Searchable {
    }
 
    public enum Type {
-      COMPOSITE, SINGLE, UNKNOWN;
+      COMPOSITE, SINGLE, UNKNOWN
    }
 }
 
