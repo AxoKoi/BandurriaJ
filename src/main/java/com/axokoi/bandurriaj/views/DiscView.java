@@ -92,6 +92,7 @@ public class DiscView extends VBox {
         this.getChildren().add(byLabel);
         this.getChildren().add(creditedArtistLabel);
         centralComponent.getChildren().clear();
+        HBox.setHgrow(artists, Priority.ALWAYS);
         centralComponent.getChildren().addAll(artists, albumPicture);
         getChildren().add(centralComponent);
         this.getChildren().add(trackListView);
