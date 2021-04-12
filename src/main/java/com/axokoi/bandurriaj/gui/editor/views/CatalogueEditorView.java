@@ -42,9 +42,10 @@ public class CatalogueEditorView extends EditorView<Catalogue> {
    }
 
    @Override
-   public void refresh(Catalogue catalogue) {
+   public CatalogueEditorView refresh(Catalogue catalogue) {
       catalogueToEdit = catalogue;
       catalogueNameInput.setText(catalogue.getName());
+      return this;
    }
 
    public Catalogue getEntityToEdit(){

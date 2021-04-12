@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-abstract class EditorView<S extends Searchable> extends BorderPane {
+public abstract class EditorView<S extends Searchable> extends BorderPane {
 
    private final EditorController<S> controller;
    protected final Button saveButton;
@@ -22,7 +22,7 @@ abstract class EditorView<S extends Searchable> extends BorderPane {
       saveButton = new Button(messagesProvider.getMessageFrom("button.save"));
       saveButton.setOnAction(this::onSave);
       cancelButton = new Button(messagesProvider.getMessageFrom("button.cancel"));
-      saveButton.setOnAction(this::onCancel);
+      cancelButton.setOnAction(this::onCancel);
    }
 
    protected void onCancel(ActionEvent actionEvent) {
@@ -36,5 +36,5 @@ abstract class EditorView<S extends Searchable> extends BorderPane {
       ((Stage) saveButton.getScene().getWindow()).close();
    }
 
-   abstract void refresh(S searchable);
+   public abstract EditorView<S> refresh(S searchable);
 }

@@ -116,7 +116,9 @@ public final class CatalogueView extends VBox {
 		MenuItem addNewCatalogueItem = new MenuItem(messagesProvider.getMessageFrom("catalogue.view.add.new.catalogue.item"));
 		addNewCatalogueItem.setOnAction(displayAddNewCataloguePopupHandler());
 
-		catalogueContextMenu.getItems().addAll(addNewCatalogueItem);
+		MenuItem editCatalogue = new MenuItem("Edit");
+		editCatalogue.setOnAction(event->catalogueController.displayEditMenu(event, (Catalogue) treeView.getSelectionModel().getSelectedItem().getValue()));
+		catalogueContextMenu.getItems().addAll(addNewCatalogueItem,editCatalogue);
 
 		treeViewToBuild.setContextMenu(catalogueContextMenu);
 	}
