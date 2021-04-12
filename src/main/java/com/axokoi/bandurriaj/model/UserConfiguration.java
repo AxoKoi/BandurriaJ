@@ -50,9 +50,10 @@ public class UserConfiguration {
    }
 
    public enum Keys{
-      LOCALE("user.language");
+      LOCALE("user.language"),
+      PREFERRED_CD_DRIVER_PATH("user.preferred.driver.path");
 
-      private String value;
+      private final String value;
       Keys(String value) {
          this.value = value;
       }
