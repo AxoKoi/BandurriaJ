@@ -1,9 +1,9 @@
-package com.axokoi.bandurriaj.controllers;
+package com.axokoi.bandurriaj.gui.viewer.controllers;
 
 import com.axokoi.bandurriaj.model.Catalogue;
 import com.axokoi.bandurriaj.model.CatalogueRepository;
 import com.axokoi.bandurriaj.model.Disc;
-import com.axokoi.bandurriaj.views.CatalogueView;
+import com.axokoi.bandurriaj.gui.viewer.views.CatalogueView;
 import javafx.scene.Node;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;

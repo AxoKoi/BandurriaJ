@@ -1,4 +1,4 @@
-package com.axokoi.bandurriaj.controllers;
+package com.axokoi.bandurriaj.gui.viewer.controllers;
 
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Disc;

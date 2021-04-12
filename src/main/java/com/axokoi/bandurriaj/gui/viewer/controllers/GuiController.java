@@ -1,4 +1,4 @@
-package com.axokoi.bandurriaj.controllers;
+package com.axokoi.bandurriaj.gui.viewer.controllers;
 
 import com.axokoi.bandurriaj.ViewDispatcher;
 import com.axokoi.bandurriaj.model.Searchable;
@@ -17,7 +17,7 @@ public abstract class GuiController<S extends Searchable> {
 	 * @param searchable
 	 */
 	public void displayViewCenter(S searchable) {
-
+//IRO what if the searchable is null?
 		this.refreshView(searchable);
 		viewDispatcher.replaceCenterWith(this.getView());
 	}

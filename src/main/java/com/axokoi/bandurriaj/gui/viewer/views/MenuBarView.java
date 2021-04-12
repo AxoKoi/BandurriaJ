@@ -1,6 +1,6 @@
-package com.axokoi.bandurriaj.views;
+package com.axokoi.bandurriaj.gui.viewer.views;
 
-import com.axokoi.bandurriaj.controllers.MenuBarController;
+import com.axokoi.bandurriaj.gui.viewer.controllers.MenuBarController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;

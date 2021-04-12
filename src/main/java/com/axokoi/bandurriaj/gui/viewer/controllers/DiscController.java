@@ -1,7 +1,8 @@
-package com.axokoi.bandurriaj.controllers;
+package com.axokoi.bandurriaj.gui.viewer.controllers;
 
 import javax.transaction.Transactional;
 
+import com.axokoi.bandurriaj.gui.viewer.views.DiscView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +10,6 @@ import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.services.dataaccess.ArtistService;
 import com.axokoi.bandurriaj.services.dataaccess.DiscService;
-import com.axokoi.bandurriaj.views.DiscView;
 
 import javafx.scene.Node;
 

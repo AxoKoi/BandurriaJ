@@ -1,4 +1,4 @@
-package com.axokoi.bandurriaj.controllers;
+package com.axokoi.bandurriaj.gui.viewer.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import com.axokoi.bandurriaj.services.dataaccess.DiscService;
 import com.axokoi.bandurriaj.model.Searchable;
 import com.axokoi.bandurriaj.model.Track;
 import com.axokoi.bandurriaj.services.dataaccess.TrackService;
-import com.axokoi.bandurriaj.views.SmartSearchView;
+import com.axokoi.bandurriaj.gui.viewer.views.SmartSearchView;
 
 @Component
 public class SmartSearchController {

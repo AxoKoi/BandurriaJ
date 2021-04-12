@@ -1,4 +1,4 @@
-package com.axokoi.bandurriaj.controllers;
+package com.axokoi.bandurriaj.gui.viewer.controllers;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.services.dataaccess.ArtistService;
 import com.axokoi.bandurriaj.services.dataaccess.DiscService;
-import com.axokoi.bandurriaj.views.ArtistView;
+import com.axokoi.bandurriaj.gui.viewer.views.*;
 
 import javafx.scene.Node;
 
