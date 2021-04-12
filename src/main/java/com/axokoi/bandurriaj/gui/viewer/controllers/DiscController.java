@@ -14,7 +14,7 @@ import com.axokoi.bandurriaj.services.dataaccess.DiscService;
 import javafx.scene.Node;
 
 @Component
-public class DiscController extends GuiController<Disc> {
+public class DiscController extends ViewerController<Disc> {
 
 	@Autowired
 	private DiscView discView;
@@ -26,7 +26,7 @@ public class DiscController extends GuiController<Disc> {
 	private ArtistController artistController;
 
 	@Override
-	Node getView() {
+	protected Node getView() {
 		return this.discView;
 	}
 

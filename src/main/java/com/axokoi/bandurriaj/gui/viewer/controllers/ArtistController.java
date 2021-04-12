@@ -14,7 +14,7 @@ import com.axokoi.bandurriaj.gui.viewer.views.*;
 import javafx.scene.Node;
 
 @Component
-public class ArtistController extends GuiController<Artist> {
+public class ArtistController extends ViewerController<Artist> {
 
 	@Autowired
 	ArtistService artistService;
@@ -34,7 +34,7 @@ public class ArtistController extends GuiController<Artist> {
 	}
 
 	@Override
-	Node getView() {
+	protected Node getView() {
 		return this.artistView;
 	}
 

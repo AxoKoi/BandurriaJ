@@ -1,13 +1,14 @@
 package com.axokoi.bandurriaj.gui.viewer.controllers;
 
 import com.axokoi.bandurriaj.ViewDispatcher;
+import com.axokoi.bandurriaj.gui.commons.GuiController;
 import com.axokoi.bandurriaj.model.Searchable;
 import javafx.scene.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public abstract class GuiController<S extends Searchable> {
+public abstract class ViewerController<S extends Searchable> extends GuiController<S> {
 	@Autowired
 	ViewDispatcher viewDispatcher;
 
@@ -22,15 +23,5 @@ public abstract class GuiController<S extends Searchable> {
 		viewDispatcher.replaceCenterWith(this.getView());
 	}
 
-	/**
-	 * @return A node which correspond to the respective view.
-	 */
-	abstract Node getView();
-
-	/**
-	 * A method to refresh the view with the given model
-	 * @param searchable The searchable model
-	 */
-	abstract void refreshView(S searchable);
 
 }

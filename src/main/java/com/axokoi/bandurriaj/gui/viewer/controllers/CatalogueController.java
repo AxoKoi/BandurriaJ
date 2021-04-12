@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Component
-public class CatalogueController extends GuiController<Catalogue> {
+public class CatalogueController extends ViewerController<Catalogue> {
     @Autowired
     private CatalogueRepository catalogueRepository;
     @Autowired
@@ -47,12 +47,12 @@ public class CatalogueController extends GuiController<Catalogue> {
     }
 
     @Override
-    Node getView() {
+    protected Node getView() {
         return this.catalogueView;
     }
 
     @Override
-    void refreshView(Catalogue searchable) {
+    protected void refreshView(Catalogue searchable) {
         catalogueView.refresh();
     }
 
