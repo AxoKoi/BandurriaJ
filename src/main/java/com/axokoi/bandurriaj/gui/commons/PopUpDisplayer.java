@@ -21,13 +21,7 @@ public class PopUpDisplayer {
 
    public void displayNewPopup(Parent toDisplay, Node toHide) {
 
- /*     if(popupScene == null){
-         popupScene = new Scene( toDisplay,300, 100);
-      }
-      else{
-         popupScene.setRoot(toDisplay);
-      }
-*/
+
       popupScene.setRoot(toDisplay);
       //toHide.setDisable(true);
       popUpStage.showAndWait();
