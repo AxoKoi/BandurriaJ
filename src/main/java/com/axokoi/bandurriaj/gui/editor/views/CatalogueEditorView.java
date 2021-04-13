@@ -13,16 +13,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class CatalogueEditorView extends EditorView<Catalogue> {
 
-   private final CatalogueEditorController controller;
-   private final MessagesProvider messagesProvider;
    private Label catalogueNameLabel;
    private TextField catalogueNameInput;
    private Catalogue catalogueToEdit;
 
    public CatalogueEditorView(CatalogueEditorController controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
-      this.controller = controller;
-      this.messagesProvider = messagesProvider;
 
       catalogueNameLabel = new Label("Name");
       catalogueNameInput = new TextField();
