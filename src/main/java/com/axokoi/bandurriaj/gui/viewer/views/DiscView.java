@@ -1,9 +1,10 @@
-package com.axokoi.bandurriaj.views;
+package com.axokoi.bandurriaj.gui.viewer.views;
 
-import com.axokoi.bandurriaj.controllers.DiscController;
+
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
+import com.axokoi.bandurriaj.gui.viewer.controllers.DiscController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
