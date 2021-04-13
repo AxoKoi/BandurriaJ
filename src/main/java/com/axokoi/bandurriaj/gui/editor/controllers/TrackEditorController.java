@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class TrackEditorController extends EditorController<Track> {
 
    @Autowired
-   private  TrackEditorView trackEditorView;
+   private TrackEditorView trackEditorView;
 
    private final TrackService trackService;
 
@@ -35,6 +35,6 @@ public class TrackEditorController extends EditorController<Track> {
 
    @Override
    public void onSave(ActionEvent event) {
-trackService.save(trackEditorView.getEntityToEdit());
+      trackService.save(trackEditorView.getEntityToEdit());
    }
 }

@@ -19,7 +19,7 @@ public class TrackEditorView extends EditorView<Track> {
    private final TextField durationText;
    private final Label commentLabel;
    private final TextField commentText;
-   private Track trackToEdit;
+
 
    protected TrackEditorView(EditorController<Track> controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
@@ -50,7 +50,7 @@ public class TrackEditorView extends EditorView<Track> {
 
    @Override
    public EditorView<Track> refresh(Track track) {
-      trackToEdit = track;
+      entityToEdit = track;
 
       numberText.setText(String.valueOf(track.getNumber()));
       nameText.setText(track.getName());
@@ -62,14 +62,11 @@ public class TrackEditorView extends EditorView<Track> {
 
    @Override
    protected void onSave(ActionEvent actionEvent) {
-      trackToEdit.setNumber(Integer.parseInt(numberText.getText()));
-      trackToEdit.setName(nameText.getText());
-      trackToEdit.setDuration(durationText.getText());
-      trackToEdit.setComment(commentText.getText());
+      entityToEdit.setNumber(Integer.parseInt(numberText.getText()));
+      entityToEdit.setName(nameText.getText());
+      entityToEdit.setDuration(durationText.getText());
+      entityToEdit.setComment(commentText.getText());
       super.onSave(actionEvent);
    }
 
-   public Track getEntityToEdit() {
-      return trackToEdit;
-   }
 }

@@ -59,7 +59,6 @@ public class ArtistController extends ViewerController<Artist> {
 
       artistEditorController.refreshView(artist);
       ArtistEditorView view = artistEditorController.getView();
-      //IRO ok but it should rather be something like artistEditorCotnroller.refresh (and give back the view)
       popUpDisplayer.displayNewPopup(view,null);
    }
 }

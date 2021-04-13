@@ -19,8 +19,6 @@ public class ArtistEditorView extends EditorView<Artist> {
    Label artistCommentLabel = new Label("Comments:");
    TextField artistCommentText = new TextField();
 
-   Artist artistToEdit;
-
    protected ArtistEditorView(ArtistEditorController controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
 
@@ -36,7 +34,7 @@ public class ArtistEditorView extends EditorView<Artist> {
 
    @Override
    public EditorView<Artist> refresh(Artist artist) {
-      artistToEdit = artist;
+      entityToEdit = artist;
       artistMbIdentifier.setText(artist.getMbIdentifier());
       artistNameText.setText(artist.getName());
       artistCommentText.setText(artist.getComment());
@@ -45,12 +43,9 @@ public class ArtistEditorView extends EditorView<Artist> {
 
    @Override
    protected void onSave(ActionEvent actionEvent){
-      artistToEdit.setName(artistNameText.getText());
-      artistToEdit.setComment(artistCommentText.getText());
+      entityToEdit.setName(artistNameText.getText());
+      entityToEdit.setComment(artistCommentText.getText());
       super.onSave(actionEvent);
    }
 
-   public Artist getEntityToEdit(){
-      return this.artistToEdit;
-   }
 }

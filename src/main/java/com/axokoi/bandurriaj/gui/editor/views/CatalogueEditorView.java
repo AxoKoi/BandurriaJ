@@ -15,7 +15,6 @@ public class CatalogueEditorView extends EditorView<Catalogue> {
 
    private Label catalogueNameLabel;
    private TextField catalogueNameInput;
-   private Catalogue catalogueToEdit;
 
    public CatalogueEditorView(CatalogueEditorController controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
@@ -33,19 +32,16 @@ public class CatalogueEditorView extends EditorView<Catalogue> {
 
    @Override
    protected void onSave(ActionEvent event) {
-      catalogueToEdit.setName(this.catalogueNameInput.getText());
+      entityToEdit.setName(this.catalogueNameInput.getText());
       super.onSave(event);
    }
 
    @Override
    public CatalogueEditorView refresh(Catalogue catalogue) {
-      catalogueToEdit = catalogue;
+      entityToEdit = catalogue;
       catalogueNameInput.setText(catalogue.getName());
       return this;
    }
 
-   public Catalogue getEntityToEdit(){
-      return this.catalogueToEdit;
-   }
 
 }

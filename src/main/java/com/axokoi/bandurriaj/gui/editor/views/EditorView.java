@@ -14,6 +14,7 @@ public abstract class EditorView<S extends Searchable> extends BorderPane {
    protected final Button saveButton;
    protected final Button cancelButton;
    protected final MessagesProvider messagesProvider;
+   protected S entityToEdit;
 
    protected EditorView(EditorController<S> controller, MessagesProvider messagesProvider) {
       this.controller = controller;
@@ -26,14 +27,18 @@ public abstract class EditorView<S extends Searchable> extends BorderPane {
    }
 
    protected void onCancel(ActionEvent actionEvent) {
-   this.controller.onCancel(actionEvent);
+      this.controller.onCancel(actionEvent);
       ((Stage) cancelButton.getScene().getWindow()).close();
    }
 
 
-   protected void onSave(ActionEvent event){
+   protected void onSave(ActionEvent event) {
       this.controller.onSave(event);
       ((Stage) saveButton.getScene().getWindow()).close();
+   }
+
+   public S getEntityToEdit() {
+      return entityToEdit;
    }
 
    public abstract EditorView<S> refresh(S searchable);
