@@ -2,8 +2,10 @@ package com.axokoi.bandurriaj.gui.viewer.views;
 
 import java.util.List;
 
+import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +28,14 @@ public final class ArtistView extends VBox {
 	private final Label name;
 	private final Label discBy ;
 	private final ListView<Disc> discs = new ListView<>();
+	private final Button editButton;
 
 	@Autowired
 	private ArtistController artistController;
 
 	private final MessagesProvider messagesProvider;
 
-	public ArtistView(MessagesProvider messagesProvider) {
+	public ArtistView( MessagesProvider messagesProvider) {
 		this.messagesProvider = messagesProvider;
 		name = new Label();
 		name.setFont(new Font(name.getFont().getFamily(),40));
@@ -40,7 +43,10 @@ public final class ArtistView extends VBox {
 		discBy = new Label(this.messagesProvider.getMessageFrom("artist.view.disc.by"));
 		discBy.setFont(new Font(discBy.getFont().getFamily(),30));
 
+		editButton = new Button("Edit");
+
       this.setAlignment(Pos.CENTER);
+		getChildren().add(editButton);
 		getChildren().add(name);
 		getChildren().add(discBy);
 		getChildren().addAll(discs);
@@ -58,6 +64,9 @@ public final class ArtistView extends VBox {
 		List<Disc> artistDiscs = artistController.findAllDiscByArtist(artist);
 		discs.getItems().clear();
 		discs.getItems().addAll(FXCollections.observableArrayList(artistDiscs));
+
+		editButton.setOnAction(event->artistController.displayEditorPopup(event, artist));
+
 	}
 
 	private static class DiscCell extends ListCell<Disc> {

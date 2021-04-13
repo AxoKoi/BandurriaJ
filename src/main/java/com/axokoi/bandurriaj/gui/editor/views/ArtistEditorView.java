@@ -24,12 +24,13 @@ public class ArtistEditorView extends EditorView<Artist> {
    protected ArtistEditorView(ArtistEditorController controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
 
-      center.add(artistMbIdentifier, 0, 0, 1,2);
-      center.add(artistNameLabel,1,0,1,1);
+      center.add(artistMbIdentifier, 0, 0, 2,1);
+      center.add(artistNameLabel,0,1,1,1);
       center.add(artistNameText,1,1,1,1);
-      center.add(artistCommentLabel,2,0,1,1);
-      center.add(artistCommentText,1,1,1,1);
-
+      center.add(artistCommentLabel,0,2,1,1);
+      center.add(artistCommentText,1,2,1,1);
+      center.add(cancelButton, 0, 3, 1, 1);
+      center.add(saveButton, 2, 3, 1, 1);
       this.setCenter(center);
    }
 
@@ -37,7 +38,7 @@ public class ArtistEditorView extends EditorView<Artist> {
    public EditorView<Artist> refresh(Artist artist) {
       artistToEdit = artist;
       artistMbIdentifier.setText(artist.getMbIdentifier());
-      artistNameLabel.setText(artist.getName());
+      artistNameText.setText(artist.getName());
       artistCommentText.setText(artist.getComment());
       return this;
    }

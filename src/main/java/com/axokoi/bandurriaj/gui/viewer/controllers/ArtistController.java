@@ -1,51 +1,65 @@
 package com.axokoi.bandurriaj.gui.viewer.controllers;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
+import com.axokoi.bandurriaj.gui.editor.controllers.ArtistEditorController;
+import com.axokoi.bandurriaj.gui.editor.views.ArtistEditorView;
+import com.axokoi.bandurriaj.gui.viewer.views.ArtistView;
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.services.dataaccess.ArtistService;
 import com.axokoi.bandurriaj.services.dataaccess.DiscService;
-import com.axokoi.bandurriaj.gui.viewer.views.*;
-
+import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ArtistController extends ViewerController<Artist> {
 
-	@Autowired
-	ArtistService artistService;
+   @Autowired
+   private ArtistService artistService;
 
-	@Autowired
-	DiscService discService;
+   @Autowired
+   private DiscService discService;
 
-	@Autowired
-	ArtistView artistView;
+   @Autowired
+   private ArtistView artistView;
 
-	@Autowired
-	DiscController discController;
+   @Autowired
+   private DiscController discController;
+   @Autowired
+   private  ArtistEditorController artistEditorController;
+   private final PopUpDisplayer popUpDisplayer;
 
-	@Override
-	public void refreshView(Artist artist) {
-		artistView.refresh(artistService.findById(artist.getId()));
+	public ArtistController(PopUpDisplayer popUpDisplayer) {
+		this.popUpDisplayer = popUpDisplayer;
 	}
 
 	@Override
-	protected Node getView() {
-		return this.artistView;
-	}
+   public void refreshView(Artist artist) {
+      artistView.refresh(artistService.findById(artist.getId()));
+   }
 
-	public List<Disc> findAllDiscByArtist(Artist artist) {
+   @Override
+   protected Node getView() {
+      return this.artistView;
+   }
 
-		return discService.findAllDiscByArtist(artist);
+   public List<Disc> findAllDiscByArtist(Artist artist) {
+      return discService.findAllDiscByArtist(artist);
+   }
 
-	}
+   public void replaceCenterWithDisc(Disc selectedItem) {
+      discController.displayViewCenter(selectedItem);
+   }
 
-	public void replaceCenterWithDisc(Disc selectedItem) {
-		discController.displayViewCenter(selectedItem);
-	}
+   public void displayEditorPopup(ActionEvent event, Artist artist) {
 
+      artistEditorController.refreshView(artist);
+      ArtistEditorView view = artistEditorController.getView();
+      //IRO ok but it should rather be something like artistEditorCotnroller.refresh (and give back the view)
+      popUpDisplayer.displayNewPopup(view,null);
+   }
 }

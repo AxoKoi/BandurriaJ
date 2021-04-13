@@ -2,7 +2,7 @@ package com.axokoi.bandurriaj.gui.viewer.controllers;
 
 import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
 import com.axokoi.bandurriaj.gui.editor.controllers.CatalogueEditorController;
-import com.axokoi.bandurriaj.gui.editor.views.EditorView;
+import com.axokoi.bandurriaj.gui.editor.views.CatalogueEditorView;
 import com.axokoi.bandurriaj.gui.viewer.views.CatalogueView;
 import com.axokoi.bandurriaj.model.Catalogue;
 import com.axokoi.bandurriaj.model.CatalogueRepository;
@@ -69,9 +69,9 @@ public class CatalogueController extends ViewerController<Catalogue> {
    }
 
    public void displayEditMenu(ActionEvent event, Catalogue selectedCatalogue) {
-      // if(event.getSource() typeof )
-      EditorView<Catalogue> catalogueEditorView = catalogueEditorController.getView();
-       catalogueEditorView = catalogueEditorView.refresh(selectedCatalogue);
+
+      catalogueEditorController.refreshView(selectedCatalogue);
+      CatalogueEditorView catalogueEditorView = catalogueEditorController.getView();
       popUpDisplayer.displayNewPopup(catalogueEditorView, null);
    }
 }

@@ -24,12 +24,12 @@ public class CatalogueEditorController extends EditorController<Catalogue> {
 
 
    @Override
-   public EditorView<Catalogue> getView() {
+   public CatalogueEditorView getView() {
       return this.catalogueView;
    }
 
    @Override
-   protected void refreshView(Catalogue catalogue) {
+   public void refreshView(Catalogue catalogue) {
       catalogueView.refresh(catalogue);
    }
 
