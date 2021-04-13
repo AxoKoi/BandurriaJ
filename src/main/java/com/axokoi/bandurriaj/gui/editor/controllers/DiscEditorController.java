@@ -6,7 +6,9 @@ import com.axokoi.bandurriaj.services.dataaccess.DiscService;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DiscEditorController extends EditorController<Disc> {
 
    @Autowired
@@ -18,12 +20,12 @@ public class DiscEditorController extends EditorController<Disc> {
    }
 
    @Override
-   protected Node getView() {
+   public DiscEditorView getView() {
       return discEditorView;
    }
 
    @Override
-   protected void refreshView(Disc disc) {
+   public void refreshView(Disc disc) {
       discEditorView.refresh(disc);
    }
 

@@ -15,7 +15,7 @@ public class PopUpDisplayer {
    private final Pane dummyNode = new Pane();
 
    public PopUpDisplayer() {
-      popupScene = new Scene(dummyNode,500,300);
+      popupScene = new Scene(dummyNode,250*3,250*3);
       popUpStage.setScene(popupScene);
    }
 
