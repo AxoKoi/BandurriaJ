@@ -1,4 +1,4 @@
-package com.axokoi.bandurriaj.views;
+package com.axokoi.bandurriaj.gui.viewer.views;
 
 import java.util.List;
 

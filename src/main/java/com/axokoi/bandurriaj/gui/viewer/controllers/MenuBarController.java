@@ -1,7 +1,8 @@
-package com.axokoi.bandurriaj.controllers;
+package com.axokoi.bandurriaj.gui.viewer.controllers;
 
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Disc;
+import com.axokoi.bandurriaj.model.UserConfiguration;
 import com.axokoi.bandurriaj.services.cdreader.CdReadingFacade;
 import com.axokoi.bandurriaj.services.dataaccess.UserConfigurationService;
 import com.axokoi.bandurriaj.services.tagging.TaggingFacade;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -84,6 +86,13 @@ public class MenuBarController {
         loadedCdController.refreshView(loadedCds);
     }
 
+   public Optional<String> getUserPreferredPath() {
+      return userConfigurationService.findValueByKey(UserConfiguration.Keys.PREFERRED_CD_DRIVER_PATH);
+    }
+
+   public void savePathToPreferredDriver(String absolutePath) {
+         userConfigurationService.saveConfiguration(UserConfiguration.Keys.PREFERRED_CD_DRIVER_PATH,absolutePath);
+    }
 
 
    static class FileToCDPathConverter {

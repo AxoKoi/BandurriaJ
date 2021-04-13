@@ -4,6 +4,8 @@ import com.axokoi.bandurriaj.services.tagging.musicbrainz.CdQueryImpl;
 import com.axokoi.bandurriaj.services.tagging.musicbrainz.converter.ArtistConverter;
 import com.axokoi.bandurriaj.services.tagging.musicbrainz.converter.CdConverter;
 import com.axokoi.bandurriaj.services.tagging.musicbrainz.converter.TrackConverter;
+import com.axokoi.bandurriaj.services.tagging.musicbrainz.imagequery.ImageQueryImpl;
+import com.axokoi.bandurriaj.services.tagging.musicbrainz.imagequery.ReleaseImageQuery;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 
@@ -28,7 +30,12 @@ public class TestConfiguration {
     }
 
     @Bean
-    CdConverter cdConverter(TrackConverter trackConverter, ArtistConverter artistConverter) {
-        return new CdConverter(trackConverter, artistConverter);
+    ReleaseImageQuery releaseImageQuery(){return new ImageQueryImpl("http://coverartarchive.org/release/{identifier}/front", "/images");
+    }
+
+    @Bean
+    CdConverter cdConverter(TrackConverter trackConverter, ArtistConverter artistConverter,
+                            ReleaseImageQuery releaseImageQuery) {
+        return new CdConverter(trackConverter, artistConverter, releaseImageQuery);
     }
 }

@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class UserConfiguration {
 
    @Id
-   @GeneratedValue(strategy = GenerationType.AUTO)
+   @GeneratedValue(strategy = GenerationType.SEQUENCE)
    private Long id;
 
    @Column(unique = true)
@@ -50,9 +50,10 @@ public class UserConfiguration {
    }
 
    public enum Keys{
-      LOCALE("user.language");
+      LOCALE("user.language"),
+      PREFERRED_CD_DRIVER_PATH("user.preferred.driver.path");
 
-      private String value;
+      private final String value;
       Keys(String value) {
          this.value = value;
       }

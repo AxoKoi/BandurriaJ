@@ -1,6 +1,6 @@
-package com.axokoi.bandurriaj.views;
+package com.axokoi.bandurriaj.gui.viewer.views;
 
-import com.axokoi.bandurriaj.controllers.LoadedCdController;
+import com.axokoi.bandurriaj.gui.viewer.controllers.LoadedCdController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Catalogue;
 import com.axokoi.bandurriaj.model.Disc;

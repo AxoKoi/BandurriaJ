@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class ExternalIdentifier {
 
    @Id
-   @GeneratedValue(strategy = GenerationType.AUTO)
+   @GeneratedValue(strategy = GenerationType.SEQUENCE)
    private Long id;
    private String identifier;
    private Type type;
@@ -23,7 +23,7 @@ public class ExternalIdentifier {
    }
 
    public enum Type {
-      MUSICBRAINZ;
+      MUSICBRAINZ
    }
 
 

@@ -4,6 +4,7 @@ import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.ExternalIdentifier;
 import com.axokoi.bandurriaj.model.Track;
+import com.axokoi.bandurriaj.services.tagging.musicbrainz.imagequery.ReleaseImageQuery;
 import org.musicbrainz.MBWS2Exception;
 import org.musicbrainz.model.NameCreditWs2;
 import org.musicbrainz.model.RelationWs2;
@@ -24,19 +25,21 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
 
     private final TrackConverter trackConverter;
     private final ArtistConverter artistConverter;
+    private final ReleaseImageQuery imageQuery;
 
-    public CdConverter(TrackConverter trackConverter, ArtistConverter artistConverter) {
+    public CdConverter(TrackConverter trackConverter, ArtistConverter artistConverter, ReleaseImageQuery imageQuery) {
         this.trackConverter = trackConverter;
         this.artistConverter = artistConverter;
+        this.imageQuery = imageQuery;
     }
 
     public Disc convertSimple(ReleaseWs2 releaseWs2){
-        return buildDisc(releaseWs2);
+        return buildMinimalDisc(releaseWs2);
     }
 
     @Override
     public Disc convert(ReleaseWs2 release) {
-        Disc disc = buildDisc(release);
+        Disc disc = buildMinimalDisc(release);
 
         org.musicbrainz.controller.Release controller = new org.musicbrainz.controller.Release();
 
@@ -50,6 +53,8 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
         Set<Artist> relatedArtists  = extractRelatedArtistFromRelease(release);
         disc.setRelatedArtist(relatedArtists);
         disc.setTracks(getTrackList(release));
+
+        imageQuery.downloadFrontImage(release.getId()).ifPresent(disc::setPathToImage);
 
         return disc;
     }
@@ -72,7 +77,7 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
                     .map(artistConverter::convert).collect(Collectors.toSet());
     }
 
-    private Disc buildDisc(ReleaseWs2 release) {
+    private Disc buildMinimalDisc(ReleaseWs2 release) {
         Disc disc = new Disc();
         disc.setName(release.getTitle());
         disc.setExternalIdentifier(getExternalIdentifiers(release));
