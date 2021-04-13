@@ -19,4 +19,8 @@ public class TrackService implements SmartSearchService<Track> {
 		results.addAll(trackRepository.findByCommentContainingIgnoringCase(inputSearch));
 		return results;
 	}
+
+	public void save(Track track){
+		trackRepository.save(track);
+	}
 }

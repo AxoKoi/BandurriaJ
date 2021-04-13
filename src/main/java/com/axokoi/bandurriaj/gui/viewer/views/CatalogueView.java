@@ -1,7 +1,8 @@
-package com.axokoi.bandurriaj.views;
+package com.axokoi.bandurriaj.gui.viewer.views;
 
-import com.axokoi.bandurriaj.controllers.CatalogueController;
+
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
+import com.axokoi.bandurriaj.gui.viewer.controllers.CatalogueController;
 import com.axokoi.bandurriaj.model.Catalogue;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.Searchable;
@@ -115,7 +116,9 @@ public final class CatalogueView extends VBox {
 		MenuItem addNewCatalogueItem = new MenuItem(messagesProvider.getMessageFrom("catalogue.view.add.new.catalogue.item"));
 		addNewCatalogueItem.setOnAction(displayAddNewCataloguePopupHandler());
 
-		catalogueContextMenu.getItems().addAll(addNewCatalogueItem);
+		MenuItem editCatalogue = new MenuItem("Edit");
+		editCatalogue.setOnAction(event->catalogueController.displayEditMenu(event, (Catalogue) treeView.getSelectionModel().getSelectedItem().getValue()));
+		catalogueContextMenu.getItems().addAll(addNewCatalogueItem,editCatalogue);
 
 		treeViewToBuild.setContextMenu(catalogueContextMenu);
 	}
