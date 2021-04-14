@@ -1,15 +1,13 @@
 package com.axokoi.bandurriaj.gui.editor.views;
 
-import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
-import com.axokoi.bandurriaj.gui.editor.controllers.ArtistEditorController;
+import com.axokoi.bandurriaj.gui.commons.cells.list.ArtistCell;
+import com.axokoi.bandurriaj.gui.commons.cells.list.TrackCell;
 import com.axokoi.bandurriaj.gui.editor.controllers.DiscEditorController;
-import com.axokoi.bandurriaj.gui.editor.controllers.TrackEditorController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.Track;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -96,20 +94,4 @@ public class DiscEditorView extends EditorView<Disc> {
       return this;
    }
 
-   private static class ArtistCell extends ListCell<Artist> {
-         @Override
-         protected void updateItem(Artist artist, boolean empty) {
-            super.updateItem(artist, empty);
-
-            setText(artist == null ? "" : artist.getName());
-         }
-   }
-
-   private static class TrackCell extends ListCell<Track> {
-      @Override
-      protected void updateItem(Track track, boolean empty){
-         super.updateItem(track,empty);
-         setText(track == null ? "" : track.getNumber() + " - " + track.getName() + " - " + track.getDuration());
-      }
-   }
 }
