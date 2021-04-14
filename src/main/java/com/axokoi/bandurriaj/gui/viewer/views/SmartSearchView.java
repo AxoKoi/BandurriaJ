@@ -2,6 +2,7 @@ package com.axokoi.bandurriaj.gui.viewer.views;
 
 import java.util.List;
 
+import com.axokoi.bandurriaj.gui.commons.cells.list.SearchableCell;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import javafx.scene.layout.Priority;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +60,5 @@ public final class SmartSearchView extends VBox {
 
 	}
 
-	public static class SearchableCell extends ListCell<Searchable> {
-		@Override
-		protected void updateItem(Searchable searchable, boolean empty) {
-			super.updateItem(searchable, empty);
-			setText(searchable == null ? "" : searchable.getName() );
-		}
-	}
+
 }

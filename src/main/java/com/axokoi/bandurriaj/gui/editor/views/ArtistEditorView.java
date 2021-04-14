@@ -3,7 +3,6 @@ package com.axokoi.bandurriaj.gui.editor.views;
 import com.axokoi.bandurriaj.gui.editor.controllers.ArtistEditorController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;
-import com.axokoi.bandurriaj.model.Catalogue;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;

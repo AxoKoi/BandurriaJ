@@ -1,5 +1,7 @@
 package com.axokoi.bandurriaj.gui.viewer.views;
 
+import com.axokoi.bandurriaj.gui.commons.cells.list.CatalogueCell;
+import com.axokoi.bandurriaj.gui.commons.cells.list.DiscCell;
 import com.axokoi.bandurriaj.gui.viewer.controllers.LoadedCdController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Catalogue;
@@ -102,7 +104,7 @@ public class LoadedCdView extends VBox {
 
         cds.getItems().clear();
         cds.getItems().addAll(loadedCds);
-        cds.setCellFactory(x -> new CdsCell());
+        cds.setCellFactory(x -> new DiscCell());
         cds.setConverter(new StringConverter<>() {
 
             @Override
@@ -127,20 +129,4 @@ public class LoadedCdView extends VBox {
 
     }
 
-    //todo we can extracts these cells into a generic one
-    static class CatalogueCell extends ListCell<Catalogue> {
-        @Override
-        protected void updateItem(Catalogue catalogue, boolean empty) {
-            super.updateItem(catalogue, empty);
-            setText(catalogue == null ? "" : catalogue.getName());
-        }
-    }
-
-    static class CdsCell extends ListCell<Disc> {
-        @Override
-        protected void updateItem(Disc disc, boolean empty) {
-            super.updateItem(disc, empty);
-            setText(disc == null ? "" : disc.getName());
-        }
-    }
 }

@@ -1,29 +1,41 @@
 package com.axokoi.bandurriaj.gui.editor.controllers;
 
+import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
 import com.axokoi.bandurriaj.gui.editor.views.DiscEditorView;
+import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
+import com.axokoi.bandurriaj.model.Track;
 import com.axokoi.bandurriaj.services.dataaccess.DiscService;
 import javafx.event.ActionEvent;
-import javafx.scene.Node;
+import javafx.event.Event;
+import javafx.scene.control.ListView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DiscEditorController extends EditorController<Disc> {
 
    @Autowired
    private DiscEditorView discEditorView;
    private final DiscService discService;
+   private final PopUpDisplayer popUpDisplayer;
+   @Autowired
+   private ArtistEditorController artistEditorController;
+   @Autowired
+   private TrackEditorController trackEditorController;
 
-   public DiscEditorController(DiscService discService) {
+   public DiscEditorController(DiscService discService, PopUpDisplayer popUpDisplayer) {
       this.discService = discService;
+      this.popUpDisplayer = popUpDisplayer;
    }
 
    @Override
-   protected Node getView() {
+   public DiscEditorView getView() {
       return discEditorView;
    }
 
    @Override
-   protected void refreshView(Disc disc) {
+   public void refreshView(Disc disc) {
       discEditorView.refresh(disc);
    }
 
@@ -35,5 +47,28 @@ public class DiscEditorController extends EditorController<Disc> {
    @Override
    public void onSave(ActionEvent event) {
       discService.save(discEditorView.getEntityToEdit());
+   }
+
+   public void displayArtistEditor(Event event) {
+      Artist artistToEdit = ((ListView<Artist>) event.getSource()).getSelectionModel().getSelectedItem();
+      artistEditorController.refreshView(artistToEdit);
+      popUpDisplayer.displayNewPopupWithFunction(artistEditorController.getView(), null,
+              () -> {
+                 this.refreshView(this.getView().getEntityToEdit());
+                 return null;
+              }
+      );
+   }
+
+   public void displayTrackEditor(Event event) {
+      Track trackToEdit = ((ListView<Track>) event.getSource()).getSelectionModel().getSelectedItem();
+      trackEditorController.refreshView(trackToEdit);
+      popUpDisplayer.displayNewPopupWithFunction(trackEditorController.getView(), null,
+              () -> {
+                 this.refreshView(this.getView().getEntityToEdit());
+                 return null;
+              }
+      );
+
    }
 }
