@@ -2,7 +2,10 @@ package com.axokoi.bandurriaj.gui.viewer.controllers;
 
 import javax.transaction.Transactional;
 
+import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
+import com.axokoi.bandurriaj.gui.editor.controllers.DiscEditorController;
 import com.axokoi.bandurriaj.gui.viewer.views.DiscView;
+import javafx.event.ActionEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +27,14 @@ public class DiscController extends ViewerController<Disc> {
 	private ArtistService artistService;
 	@Autowired
 	private ArtistController artistController;
+
+	@Autowired
+	private  DiscEditorController discEditorController;
+	private final PopUpDisplayer popUpDisplayer;
+
+	public DiscController( PopUpDisplayer popUpDisplayer) {
+		this.popUpDisplayer = popUpDisplayer;
+	}
 
 	@Override
 	protected Node getView() {
@@ -47,5 +58,15 @@ public class DiscController extends ViewerController<Disc> {
    public void replaceCenterWithArtist(Artist selectedArtist) {
 		artistController.displayViewCenter(selectedArtist);
 
+	}
+
+	public void displayEditorPopup(ActionEvent event, Disc disc) {
+
+		discEditorController.refreshView(disc);
+		popUpDisplayer.displayNewPopupWithFunction(discEditorController.getView(), null,
+				() -> {
+			discView.refresh(disc);
+			return null;
+		});
 	}
 }

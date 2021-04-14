@@ -72,6 +72,10 @@ public class CatalogueController extends ViewerController<Catalogue> {
 
       catalogueEditorController.refreshView(selectedCatalogue);
       CatalogueEditorView catalogueEditorView = catalogueEditorController.getView();
-      popUpDisplayer.displayNewPopup(catalogueEditorView, null);
+
+      popUpDisplayer.displayNewPopupWithFunction(catalogueEditorView, null, () -> {
+         this.refreshView(selectedCatalogue);
+         return null;
+      });
    }
 }

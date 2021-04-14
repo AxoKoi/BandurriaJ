@@ -23,11 +23,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.function.BiFunction;
 
 @Slf4j
 @Component
@@ -100,8 +102,7 @@ public class DiscView extends VBox {
         }
 
         editButton.setOnAction(event -> {
-            discEditorController.refreshView(discToDisplay);
-            popUpDisplayer.displayNewPopup(discEditorController.getView(), null);
+            discController.displayEditorPopup(event,disc);
         });
 
         this.getChildren().clear();

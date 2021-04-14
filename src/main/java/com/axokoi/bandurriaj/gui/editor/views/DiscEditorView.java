@@ -11,14 +11,18 @@ import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.Track;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Comparator;
@@ -31,6 +35,7 @@ public class DiscEditorView extends EditorView<Disc> {
    private ListView<Artist> relatedArtist = new ListView<>();
    private ListView<Track> tracks = new ListView<>();
    private ImageView frontCover = new ImageView();
+   private Button frontCoverEditButton;
    private final PopUpDisplayer popUpDisplayer;
 
 
@@ -42,7 +47,7 @@ public class DiscEditorView extends EditorView<Disc> {
       this.popUpDisplayer = popUpDisplayer;
       this.artistEditorController = artistEditorController;
       this.trackEditorController = trackEditorController;
-
+      frontCoverEditButton = new Button("Edit Image");
       frontCover.setFitHeight(250);
       frontCover.setFitWidth(250);
 
@@ -57,29 +62,27 @@ public class DiscEditorView extends EditorView<Disc> {
       this.setCenter(center);
 
       //IRO probably to add a right click edit menu?
-      mainArtist.setOnMouseClicked(event -> {
-         artistEditorController.refreshView(((ListView<Artist>) event.getSource()).getSelectionModel().getSelectedItem());
-         popUpDisplayer.displayNewPopup(artistEditorController.getView(), null);
-      });
-
+      mainArtist.setOnMouseClicked(controller::displayArtistEditor);
     //IRO We could extract these cells to a common library
-
       mainArtist.setCellFactory(x-> new ArtistCell());
 
-      relatedArtist.setOnMouseClicked(event -> {
-         artistEditorController.refreshView(((ListView<Artist>) event.getSource()).getSelectionModel().getSelectedItem());
-         popUpDisplayer.displayNewPopup(artistEditorController.getView(), null);
-      });
+      relatedArtist.setOnMouseClicked(controller::displayArtistEditor);
       relatedArtist.setCellFactory(x-> new ArtistCell());
 
-      tracks.setOnMouseClicked(event -> {
-         trackEditorController.refreshView(((ListView<Track>) event.getSource()).getSelectionModel().getSelectedItem());
-         popUpDisplayer.displayNewPopup(trackEditorController.getView(), null);
-      });
+      tracks.setOnMouseClicked(controller::displayTrackEditor);
 
       tracks.setCellFactory(x->new TrackCell());
 
-      //IRO need still to add Image
+      frontCover.setOnMouseClicked(event->{
+         FileChooser fileChooser = new FileChooser();
+         File file = fileChooser.showOpenDialog(this.getScene().getWindow());
+         try {
+            frontCover.setImage(new Image(new FileInputStream(file.getAbsolutePath())));
+            entityToEdit.setPathToImage(file.getAbsolutePath());
+         } catch (Exception e) {
+            log.error("Error when loading the image at:"+ file.getAbsolutePath(),e);
+         }
+      });
 
    }
 

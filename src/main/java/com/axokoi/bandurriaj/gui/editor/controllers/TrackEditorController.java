@@ -1,10 +1,12 @@
 package com.axokoi.bandurriaj.gui.editor.controllers;
 
+import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
 import com.axokoi.bandurriaj.gui.editor.views.TrackEditorView;
 import com.axokoi.bandurriaj.model.Track;
 import com.axokoi.bandurriaj.services.dataaccess.TrackService;
 import javafx.event.ActionEvent;
-import javafx.scene.Node;
+import javafx.event.Event;
+import javafx.scene.control.ListView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +17,11 @@ public class TrackEditorController extends EditorController<Track> {
    private TrackEditorView trackEditorView;
 
    private final TrackService trackService;
+   private final PopUpDisplayer popUpDisplayer;
 
-   public TrackEditorController(TrackService trackService) {
+   public TrackEditorController(TrackService trackService, PopUpDisplayer popUpDisplayer) {
       this.trackService = trackService;
+      this.popUpDisplayer = popUpDisplayer;
    }
 
    @Override
@@ -39,4 +43,5 @@ public class TrackEditorController extends EditorController<Track> {
    public void onSave(ActionEvent event) {
       trackService.save(trackEditorView.getEntityToEdit());
    }
+
 }

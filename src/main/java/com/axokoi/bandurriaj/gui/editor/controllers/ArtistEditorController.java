@@ -1,11 +1,13 @@
 package com.axokoi.bandurriaj.gui.editor.controllers;
 
+import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
 import com.axokoi.bandurriaj.gui.editor.views.ArtistEditorView;
 import com.axokoi.bandurriaj.gui.viewer.controllers.ArtistController;
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.services.dataaccess.ArtistService;
 import javafx.event.ActionEvent;
-import javafx.scene.Node;
+import javafx.event.Event;
+import javafx.scene.control.ListView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +17,13 @@ public class ArtistEditorController extends EditorController<Artist> {
    @Autowired
    private ArtistEditorView artistEditorView;
    private final ArtistService artistService;
-
+   private final PopUpDisplayer popUpDisplayer;
    @Autowired
-   private  ArtistController artistController;
+   private ArtistController artistController;
 
-   public ArtistEditorController(ArtistService artistService) {
+   public ArtistEditorController(ArtistService artistService, PopUpDisplayer popUpDisplayer) {
       this.artistService = artistService;
+      this.popUpDisplayer = popUpDisplayer;
    }
 
    @Override
@@ -42,7 +45,9 @@ public class ArtistEditorController extends EditorController<Artist> {
    public void onSave(ActionEvent event) {
       Artist artistToEdit = artistEditorView.getEntityToEdit();
       artistService.save(artistToEdit);
-      //IRO could it be better to be some kind of callback function given through the popup displayer?
+
       artistController.refreshView(artistToEdit);
    }
+
+
 }
