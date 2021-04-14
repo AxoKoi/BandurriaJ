@@ -59,7 +59,6 @@ public class ArtistController extends ViewerController<Artist> {
 
       artistEditorController.refreshView(artist);
       ArtistEditorView view = artistEditorController.getView();
-      //IRO like this we don't need the objects
       popUpDisplayer.displayNewPopupWithFunction(view,null, () -> {
          this.refreshView(artist);
          return null;

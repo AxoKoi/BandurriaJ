@@ -6,25 +6,20 @@ import com.axokoi.bandurriaj.gui.editor.controllers.DiscEditorController;
 import com.axokoi.bandurriaj.gui.editor.controllers.TrackEditorController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;
-import com.axokoi.bandurriaj.model.Catalogue;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.Track;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Comparator;
 
 @Slf4j
@@ -36,17 +31,12 @@ public class DiscEditorView extends EditorView<Disc> {
    private ListView<Track> tracks = new ListView<>();
    private ImageView frontCover = new ImageView();
    private Button frontCoverEditButton;
-   private final PopUpDisplayer popUpDisplayer;
 
 
-   private final ArtistEditorController artistEditorController;
-   private final TrackEditorController trackEditorController;
 
-   protected DiscEditorView(DiscEditorController controller, MessagesProvider messagesProvider, PopUpDisplayer popUpDisplayer, ArtistEditorController artistEditorController, TrackEditorController trackEditorController) {
+   protected DiscEditorView(DiscEditorController controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
-      this.popUpDisplayer = popUpDisplayer;
-      this.artistEditorController = artistEditorController;
-      this.trackEditorController = trackEditorController;
+
       frontCoverEditButton = new Button("Edit Image");
       frontCover.setFitHeight(250);
       frontCover.setFitWidth(250);

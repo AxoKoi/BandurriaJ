@@ -12,21 +12,12 @@ import java.util.function.Supplier;
 @Component
 public class PopUpDisplayer {
 
-   public PopUpDisplayer() {
-
-   }
-
-/*   public void displayNewPopup(Parent toDisplay, Node toHide) {
-
-
-      popupScene.setRoot(toDisplay);
-      //toHide.setDisable(true);
-      popUpStage.showAndWait();
-      popupScene.setRoot(dummyNode);
-      // toHide.setDisable(false);
-
-   }*/
-//IRO The supplier solution is not the best.
+   /**
+    * A component to handle all the popups needed in the application.
+    * @param toDisplay The Parent view that will be displayed in the popup
+    * @param toHide The Node that needs to be disabled. By default it will get its corresponding scene and disable the root
+    * @param function a void function to be called when the popup is closed
+    */
    public void displayNewPopupWithFunction(Parent toDisplay, Node toHide, Supplier<Void> function) {
       final Stage popUpStage = new Stage();
       Scene popupScene;
@@ -36,12 +27,14 @@ public class PopUpDisplayer {
 
       popUpStage.setScene(popupScene);
       popupScene.setRoot(toDisplay);
-      //toHide.setDisable(true);
+
+      toHide.getScene().getRoot().setDisable(true);
+
       popUpStage.showAndWait();
+
+      toHide.getScene().getRoot().setDisable(false);
       popupScene.setRoot(dummyNode);
       function.get();
-      // toHide.setDisable(false);
-
    }
 
 }

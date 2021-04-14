@@ -23,13 +23,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.function.BiFunction;
 
 @Slf4j
 @Component
@@ -46,15 +44,13 @@ public class DiscView extends VBox {
     private ImageView albumPicture = new ImageView();
     private HBox centralComponent = new HBox();
     private final Button editButton;
-    private final PopUpDisplayer popUpDisplayer;
-    private final DiscEditorController discEditorController;
 
-    public DiscView(DiscController discController, TrackListView trackListView, MessagesProvider messagesProvider, PopUpDisplayer popUpDisplayer, DiscEditorController discEditorController){
+
+
+    public DiscView(DiscController discController, TrackListView trackListView, MessagesProvider messagesProvider){
         this.discController = discController;
         this.trackListView = trackListView;
         this.messagesProvider = messagesProvider;
-        this.popUpDisplayer = popUpDisplayer;
-        this.discEditorController = discEditorController;
 
         byLabel = new Label(messagesProvider.getMessageFrom("disc.view.by"));
         discName.setFont(new Font(discName.getFont().getFamily(),40));
@@ -101,9 +97,7 @@ public class DiscView extends VBox {
             albumPicture.setImage(null);
         }
 
-        editButton.setOnAction(event -> {
-            discController.displayEditorPopup(event,disc);
-        });
+        editButton.setOnAction(event -> discController.displayEditorPopup(event,disc));
 
         this.getChildren().clear();
         getChildren().add(editButton);

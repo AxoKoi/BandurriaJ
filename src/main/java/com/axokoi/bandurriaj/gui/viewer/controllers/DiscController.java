@@ -63,7 +63,7 @@ public class DiscController extends ViewerController<Disc> {
 	public void displayEditorPopup(ActionEvent event, Disc disc) {
 
 		discEditorController.refreshView(disc);
-		popUpDisplayer.displayNewPopupWithFunction(discEditorController.getView(), null,
+		popUpDisplayer.displayNewPopupWithFunction(discEditorController.getView(), this.getView(),
 				() -> {
 			discView.refresh(disc);
 			return null;

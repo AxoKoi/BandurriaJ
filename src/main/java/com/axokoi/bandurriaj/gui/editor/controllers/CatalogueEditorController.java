@@ -1,7 +1,6 @@
 package com.axokoi.bandurriaj.gui.editor.controllers;
 
 import com.axokoi.bandurriaj.gui.editor.views.CatalogueEditorView;
-import com.axokoi.bandurriaj.gui.editor.views.EditorView;
 import com.axokoi.bandurriaj.gui.viewer.controllers.CatalogueController;
 import com.axokoi.bandurriaj.model.Catalogue;
 import com.axokoi.bandurriaj.services.dataaccess.CatalogueService;

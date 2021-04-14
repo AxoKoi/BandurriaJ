@@ -2,7 +2,6 @@ package com.axokoi.bandurriaj.gui.viewer.views;
 
 import java.util.List;
 
-import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
