@@ -35,7 +35,7 @@ public class DiscEditorView extends EditorView<Disc> {
    protected DiscEditorView(DiscEditorController controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
 
-      frontCoverEditButton = new Button("Edit Image");
+      frontCoverEditButton = new Button(messagesProvider.getMessageFrom("disc.editor.view.edit.image"));
       frontCover.setFitHeight(250);
       frontCover.setFitWidth(250);
 

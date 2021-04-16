@@ -15,7 +15,7 @@ public class ReadingDiscPopupView extends GridPane {
    public ReadingDiscPopupView(MessagesProvider messagesProvider) {
       this.messagesProvider = messagesProvider;
       this.setAlignment(Pos.BASELINE_CENTER);
-      final Label messageLabel = new Label("Loading your CD, please wait");
+      final Label messageLabel = new Label(messagesProvider.getMessageFrom("reading.disc.popup.view.reading"));
       messageLabel.setFont(new Font(messageLabel.getFont().getFamily(),40));
       this.add(messageLabel, 0, 0, 2, 2);
    }

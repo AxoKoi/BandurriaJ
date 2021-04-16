@@ -25,13 +25,13 @@ public class TrackEditorView extends EditorView<Track> {
    protected TrackEditorView(EditorController<Track> controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
 
-      numberLabel = new Label("#");
+      numberLabel = new Label(messagesProvider.getMessageFrom("track.editor.view.number"));
       numberText = new TextField();
-      nameLabel = new Label("name:");
+      nameLabel = new Label(messagesProvider.getMessageFrom("track.editor.view.name"));
       nameText = new TextField();
-      durationLabel = new Label("duration:");
+      durationLabel = new Label(messagesProvider.getMessageFrom("track.editor.view.duration"));
       durationText = new TextField();
-      commentLabel = new Label("comments:");
+      commentLabel = new Label(messagesProvider.getMessageFrom("track.editor.view.comments"));
       commentText = new TextField();
 
       GridPane center = new GridPane();
