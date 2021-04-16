@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class LoadedCdView extends VBox {
@@ -84,8 +85,10 @@ public class LoadedCdView extends VBox {
         catalogues.getItems().clear();
         catalogues.getItems().addAll(existingCatalogues);
         catalogues.setCellFactory(x -> new CatalogueCell());
-        //todo can we avoid or refactor these converters. They are needed to display the
-        // name of the catalogue in the selected box.
+
+        //maybe the equals method are not the same
+        controller.getLastUsedCatalogue().ifPresent(x->catalogues.getSelectionModel().select(x));
+
         catalogues.setConverter(new StringConverter<>() {
 
             @Override

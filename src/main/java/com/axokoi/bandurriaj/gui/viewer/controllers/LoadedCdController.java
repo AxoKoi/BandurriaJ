@@ -3,6 +3,7 @@ package com.axokoi.bandurriaj.gui.viewer.controllers;
 import com.axokoi.bandurriaj.model.*;
 import com.axokoi.bandurriaj.services.dataaccess.ArtistService;
 import com.axokoi.bandurriaj.services.dataaccess.DiscService;
+import com.axokoi.bandurriaj.services.dataaccess.UserConfigurationService;
 import com.axokoi.bandurriaj.services.tagging.TaggingFacade;
 import com.axokoi.bandurriaj.gui.viewer.views.LoadedCdView;
 import org.apache.commons.collections4.IterableUtils;
@@ -33,6 +34,12 @@ public class LoadedCdController {
    @Autowired
    private TaggingFacade taggingFacade;
 
+   private final UserConfigurationService userConfigurationService;
+
+   public LoadedCdController(UserConfigurationService userConfigurationService) {
+      this.userConfigurationService = userConfigurationService;
+   }
+
    public Disc saveCdOnCatalogue(Disc disc, Catalogue catalogue) {
 
       //Complete the discinfo
@@ -50,6 +57,10 @@ public class LoadedCdController {
       discToPersist.setCreditedArtists(creditedArtistsToPersist);
       discToPersist.setRelatedArtist(relatedArtistToPersists);
       persistsCdOnCatalogue(catalogue, creditedArtistsToPersist,relatedArtistToPersists, discToPersist);
+
+
+      userConfigurationService.saveConfiguration(UserConfiguration.Keys.LAST_CATALOGUE_USED,catalogue.getId().toString());
+
       return discToPersist;
    }
 
@@ -80,5 +91,10 @@ public class LoadedCdController {
 
    public void dispatchRefreshToCatalogue() {
       catalogueController.refreshView();
+   }
+
+   public Optional<Catalogue> getLastUsedCatalogue() {
+      Optional<String> catalogueId = userConfigurationService.findValueByKey(UserConfiguration.Keys.LAST_CATALOGUE_USED);
+      return catalogueId.flatMap(s -> catalogueRepository.findById(Long.parseLong(s)));
    }
 }
