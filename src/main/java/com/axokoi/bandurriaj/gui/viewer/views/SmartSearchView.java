@@ -1,24 +1,21 @@
 package com.axokoi.bandurriaj.gui.viewer.views;
 
-import java.util.List;
-
 import com.axokoi.bandurriaj.gui.commons.cells.list.SearchableCell;
-import com.axokoi.bandurriaj.i18n.MessagesProvider;
-import javafx.scene.layout.Priority;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.axokoi.bandurriaj.gui.viewer.controllers.SmartSearchController;
+import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Searchable;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public final class SmartSearchView extends VBox {

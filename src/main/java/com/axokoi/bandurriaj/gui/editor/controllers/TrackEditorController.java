@@ -1,6 +1,5 @@
 package com.axokoi.bandurriaj.gui.editor.controllers;
 
-import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
 import com.axokoi.bandurriaj.gui.editor.views.TrackEditorView;
 import com.axokoi.bandurriaj.model.Track;
 import com.axokoi.bandurriaj.services.dataaccess.TrackService;

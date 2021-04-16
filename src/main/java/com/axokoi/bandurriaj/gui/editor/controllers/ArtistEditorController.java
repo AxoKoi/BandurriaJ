@@ -1,6 +1,5 @@
 package com.axokoi.bandurriaj.gui.editor.controllers;
 
-import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
 import com.axokoi.bandurriaj.gui.editor.views.ArtistEditorView;
 import com.axokoi.bandurriaj.gui.viewer.controllers.ArtistController;
 import com.axokoi.bandurriaj.model.Artist;

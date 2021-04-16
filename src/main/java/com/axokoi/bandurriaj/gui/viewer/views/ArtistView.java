@@ -1,27 +1,24 @@
 package com.axokoi.bandurriaj.gui.viewer.views;
 
-import java.util.List;
-
 import com.axokoi.bandurriaj.gui.commons.cells.list.DiscCell;
+import com.axokoi.bandurriaj.gui.viewer.controllers.ArtistController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
+import com.axokoi.bandurriaj.model.Artist;
+import com.axokoi.bandurriaj.model.Disc;
+import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.axokoi.bandurriaj.gui.viewer.controllers.ArtistController;
-import com.axokoi.bandurriaj.model.Artist;
-import com.axokoi.bandurriaj.model.Disc;
-
-import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.VBox;
+import java.util.List;
 
 @Component
 public final class ArtistView extends VBox {
