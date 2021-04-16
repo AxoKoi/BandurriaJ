@@ -7,6 +7,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -15,11 +16,11 @@ import java.util.Optional;
 @Component
 public class MenuBarView extends MenuBar {
 
-    private final MenuBarController menuBarController;
+    @Autowired
+    private  MenuBarController menuBarController;
     private final MessagesProvider messagesProvider;
 
-    public MenuBarView(MenuBarController menuBarController, MessagesProvider messagesProvider) {
-        this.menuBarController = menuBarController;
+    public MenuBarView(MessagesProvider messagesProvider) {
         this.messagesProvider = messagesProvider;
     }
 

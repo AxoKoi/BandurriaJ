@@ -122,6 +122,7 @@ public class LoadedCdView extends VBox {
         });
         Stage popUpStage = new Stage();
         if (this.getScene() == null) {
+            //IRO what is this?
             new Scene(this, 500, 300);
         }
         popUpStage.setScene(this.getScene());

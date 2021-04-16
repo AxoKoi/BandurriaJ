@@ -14,9 +14,10 @@ public class PopUpDisplayer {
 
    /**
     * A component to handle all the popups needed in the application.
+    *
     * @param toDisplay The Parent view that will be displayed in the popup
-    * @param toHide The Node that needs to be disabled. By default it will get its corresponding scene and disable the root
-    * @param function a void function to be called when the popup is closed
+    * @param toHide    The Node that needs to be disabled. By default it will get its corresponding scene and disable the root
+    * @param function  a void function to be called when the popup is closed
     */
    public void displayNewPopupWithFunction(Parent toDisplay, Node toHide, Supplier<Void> function) {
       final Stage popUpStage = new Stage();
@@ -28,11 +29,15 @@ public class PopUpDisplayer {
       popUpStage.setScene(popupScene);
       popupScene.setRoot(toDisplay);
 
-      toHide.getScene().getRoot().setDisable(true);
+      if (toHide != null) {
+         toHide.getScene().getRoot().setDisable(true);
+      }
 
       popUpStage.showAndWait();
 
-      toHide.getScene().getRoot().setDisable(false);
+      if (toHide != null) {
+         toHide.getScene().getRoot().setDisable(false);
+      }
       popupScene.setRoot(dummyNode);
       function.get();
    }
