@@ -5,7 +5,7 @@ import java.util.Objects;
 
 
 @Entity
-public class Artist extends BusinessEntity implements Searchable {
+public class Artist extends BusinessEntity<Artist> implements Searchable {
 
    @Id
    @GeneratedValue(strategy = GenerationType.SEQUENCE)

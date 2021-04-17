@@ -3,7 +3,7 @@ package com.axokoi.bandurriaj.model;
 import javax.persistence.Entity;
 import java.util.UUID;
 
-public abstract class BusinessEntity {
+public abstract class BusinessEntity<T> {
 
    private final String businessIdentifier;
 

@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class Disc extends BusinessEntity implements Searchable {
+public class Disc extends BusinessEntity<Disc> implements Searchable {
    @Id
    @GeneratedValue(strategy = GenerationType.SEQUENCE)
    private Long id;

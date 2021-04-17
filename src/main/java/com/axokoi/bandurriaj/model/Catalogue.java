@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 
 @Entity
-public class Catalogue extends BusinessEntity implements Searchable {
+public class Catalogue extends BusinessEntity<Catalogue> implements Searchable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
