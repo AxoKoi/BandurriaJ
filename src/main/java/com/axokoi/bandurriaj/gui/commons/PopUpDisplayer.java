@@ -7,27 +7,39 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 
+import java.util.function.Supplier;
+
 @Component
 public class PopUpDisplayer {
 
-   private final Stage popUpStage = new Stage();
-   private  Scene popupScene;
-   private final Pane dummyNode = new Pane();
+   /**
+    * A component to handle all the popups needed in the application.
+    *
+    * @param toDisplay The Parent view that will be displayed in the popup
+    * @param toHide    The Node that needs to be disabled. By default it will get its corresponding scene and disable the root
+    * @param function  a void function to be called when the popup is closed
+    */
+   public void displayNewPopupWithFunction(Parent toDisplay, Node toHide, Supplier<Void> function) {
+      final Stage popUpStage = new Stage();
+      Scene popupScene;
+      Pane dummyNode = new Pane();
 
-   public PopUpDisplayer() {
-      popupScene = new Scene(dummyNode,500,300);
+      popupScene = new Scene(dummyNode, 250 * 3, 250 * 3);
+
       popUpStage.setScene(popupScene);
-   }
-
-   public void displayNewPopup(Parent toDisplay, Node toHide) {
-
-
       popupScene.setRoot(toDisplay);
-      //toHide.setDisable(true);
-      popUpStage.showAndWait();
-      popupScene.setRoot(dummyNode);
-     // toHide.setDisable(false);
 
+      if (toHide != null) {
+         toHide.getScene().getRoot().setDisable(true);
+      }
+
+      popUpStage.showAndWait();
+
+      if (toHide != null) {
+         toHide.getScene().getRoot().setDisable(false);
+      }
+      popupScene.setRoot(dummyNode);
+      function.get();
    }
 
 }

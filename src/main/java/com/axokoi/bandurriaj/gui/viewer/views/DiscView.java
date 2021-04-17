@@ -1,14 +1,15 @@
 package com.axokoi.bandurriaj.gui.viewer.views;
 
 
+import com.axokoi.bandurriaj.gui.viewer.controllers.DiscController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
-import com.axokoi.bandurriaj.gui.viewer.controllers.DiscController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -40,12 +41,15 @@ public class DiscView extends VBox {
     private ListView<Artist> artists = new ListView<>();
     private ImageView albumPicture = new ImageView();
     private HBox centralComponent = new HBox();
+    private final Button editButton;
+
 
 
     public DiscView(DiscController discController, TrackListView trackListView, MessagesProvider messagesProvider){
         this.discController = discController;
         this.trackListView = trackListView;
         this.messagesProvider = messagesProvider;
+
         byLabel = new Label(messagesProvider.getMessageFrom("disc.view.by"));
         discName.setFont(new Font(discName.getFont().getFamily(),40));
         byLabel.setFont(new Font(discName.getFont().getFamily(),30));
@@ -55,8 +59,11 @@ public class DiscView extends VBox {
         albumPicture.setFitWidth(250);
         centralComponent.getChildren().addAll(artists,albumPicture);
 
+        editButton = new Button("Edit");
+
         VBox.setVgrow(trackListView, Priority.ALWAYS);
         this.setAlignment(Pos.CENTER);
+        getChildren().add(editButton);
         getChildren().add(discName);
         getChildren().add(byLabel);
         getChildren().add(creditedArtistLabel);
@@ -88,7 +95,10 @@ public class DiscView extends VBox {
             albumPicture.setImage(null);
         }
 
+        editButton.setOnAction(event -> discController.displayEditorPopup(event,disc));
+
         this.getChildren().clear();
+        getChildren().add(editButton);
         this.getChildren().add(discName);
         this.getChildren().add(byLabel);
         this.getChildren().add(creditedArtistLabel);

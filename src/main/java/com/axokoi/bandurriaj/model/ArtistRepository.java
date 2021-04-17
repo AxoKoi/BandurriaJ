@@ -5,10 +5,11 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface ArtistRepository extends CrudRepository<Artist, Long> {
+public interface ArtistRepository extends CrudRepository<Artist, Long>, BusinessEntityRepository<Artist>{
 	List<Artist> findByNameContainingIgnoreCase(String discName);
 
 	List<Artist> findByCommentContainingIgnoreCase(String inputSearch);
 
 	Optional<Artist> findByMbIdentifier(String identifier);
+
 }

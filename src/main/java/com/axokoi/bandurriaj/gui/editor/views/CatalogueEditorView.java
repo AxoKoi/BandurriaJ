@@ -19,7 +19,7 @@ public class CatalogueEditorView extends EditorView<Catalogue> {
    public CatalogueEditorView(CatalogueEditorController controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
 
-      catalogueNameLabel = new Label("Name");
+      catalogueNameLabel = new Label(messagesProvider.getMessageFrom("catalogue.editor.view.name"));
       catalogueNameInput = new TextField();
 
       GridPane center = new GridPane();

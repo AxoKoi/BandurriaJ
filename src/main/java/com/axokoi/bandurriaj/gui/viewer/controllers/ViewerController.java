@@ -3,7 +3,6 @@ package com.axokoi.bandurriaj.gui.viewer.controllers;
 import com.axokoi.bandurriaj.ViewDispatcher;
 import com.axokoi.bandurriaj.gui.commons.GuiController;
 import com.axokoi.bandurriaj.model.Searchable;
-import javafx.scene.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

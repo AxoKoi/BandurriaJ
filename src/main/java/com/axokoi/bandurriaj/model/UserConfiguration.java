@@ -1,6 +1,7 @@
 package com.axokoi.bandurriaj.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class UserConfiguration {
@@ -51,7 +52,8 @@ public class UserConfiguration {
 
    public enum Keys{
       LOCALE("user.language"),
-      PREFERRED_CD_DRIVER_PATH("user.preferred.driver.path");
+      PREFERRED_CD_DRIVER_PATH("user.preferred.driver.path"),
+      LAST_CATALOGUE_USED("user.preferred.catalogue");
 
       private final String value;
       Keys(String value) {

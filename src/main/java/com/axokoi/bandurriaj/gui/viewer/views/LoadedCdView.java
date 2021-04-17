@@ -1,5 +1,7 @@
 package com.axokoi.bandurriaj.gui.viewer.views;
 
+import com.axokoi.bandurriaj.gui.commons.cells.list.CatalogueCell;
+import com.axokoi.bandurriaj.gui.commons.cells.list.DiscCell;
 import com.axokoi.bandurriaj.gui.viewer.controllers.LoadedCdController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Catalogue;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class LoadedCdView extends VBox {
@@ -82,8 +85,10 @@ public class LoadedCdView extends VBox {
         catalogues.getItems().clear();
         catalogues.getItems().addAll(existingCatalogues);
         catalogues.setCellFactory(x -> new CatalogueCell());
-        //todo can we avoid or refactor these converters. They are needed to display the
-        // name of the catalogue in the selected box.
+
+        //maybe the equals method are not the same
+        controller.getLastUsedCatalogue().ifPresent(x->catalogues.getSelectionModel().select(x));
+
         catalogues.setConverter(new StringConverter<>() {
 
             @Override
@@ -102,7 +107,7 @@ public class LoadedCdView extends VBox {
 
         cds.getItems().clear();
         cds.getItems().addAll(loadedCds);
-        cds.setCellFactory(x -> new CdsCell());
+        cds.setCellFactory(x -> new DiscCell());
         cds.setConverter(new StringConverter<>() {
 
             @Override
@@ -120,6 +125,7 @@ public class LoadedCdView extends VBox {
         });
         Stage popUpStage = new Stage();
         if (this.getScene() == null) {
+            //IRO what is this?
             new Scene(this, 500, 300);
         }
         popUpStage.setScene(this.getScene());
@@ -127,20 +133,4 @@ public class LoadedCdView extends VBox {
 
     }
 
-    //todo we can extracts these cells into a generic one
-    static class CatalogueCell extends ListCell<Catalogue> {
-        @Override
-        protected void updateItem(Catalogue catalogue, boolean empty) {
-            super.updateItem(catalogue, empty);
-            setText(catalogue == null ? "" : catalogue.getName());
-        }
-    }
-
-    static class CdsCell extends ListCell<Disc> {
-        @Override
-        protected void updateItem(Disc disc, boolean empty) {
-            super.updateItem(disc, empty);
-            setText(disc == null ? "" : disc.getName());
-        }
-    }
 }

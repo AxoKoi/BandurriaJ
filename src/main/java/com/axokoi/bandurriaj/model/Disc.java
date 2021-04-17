@@ -2,14 +2,18 @@ package com.axokoi.bandurriaj.model;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class Disc implements Searchable {
+public class Disc extends BusinessEntity<Disc> implements Searchable {
    @Id
    @GeneratedValue(strategy = GenerationType.SEQUENCE)
    private Long id;
 
+   @Column(unique = true, updatable = false)
+   private final String businessIdentifier;
+   
    private String name;
 
    @ManyToMany(targetEntity = Artist.class, fetch = FetchType.EAGER)
@@ -28,6 +32,10 @@ public class Disc implements Searchable {
    private String comment;
 
    private String pathToImage;
+
+   public Disc() {
+      businessIdentifier = super.getBusinessIdentifier();
+   }
 
    public String getName() {
       return name;
@@ -96,5 +104,23 @@ public class Disc implements Searchable {
 
    public void setPathToImage(String pathToImage) {
       this.pathToImage = pathToImage;
+   }
+
+   @Override
+   public String getBusinessIdentifier() {
+      return businessIdentifier;
+   }
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      Disc disc = (Disc) o;
+      return businessIdentifier.equals(disc.businessIdentifier);
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(businessIdentifier);
    }
 }

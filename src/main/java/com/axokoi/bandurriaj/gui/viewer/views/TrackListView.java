@@ -30,6 +30,8 @@ public class TrackListView extends VBox {
 
    public TrackListView(MessagesProvider messagesProvider) {
       this.messagesProvider = messagesProvider;
+      title.setText(messagesProvider.getMessageFrom("track.list.view.title"));
+
       trackNumberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
 
       trackNameColumn= new TableColumn<>(this.messagesProvider.getMessageFrom("tracklist.view.table.name"));

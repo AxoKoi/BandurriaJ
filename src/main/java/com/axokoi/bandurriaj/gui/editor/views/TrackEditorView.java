@@ -7,8 +7,9 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class TrackEditorView extends EditorView<Track> {
 
    private final Label numberLabel;
@@ -24,13 +25,13 @@ public class TrackEditorView extends EditorView<Track> {
    protected TrackEditorView(EditorController<Track> controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
 
-      numberLabel = new Label("#");
+      numberLabel = new Label(messagesProvider.getMessageFrom("track.editor.view.number"));
       numberText = new TextField();
-      nameLabel = new Label("name:");
+      nameLabel = new Label(messagesProvider.getMessageFrom("track.editor.view.name"));
       nameText = new TextField();
-      durationLabel = new Label("duration:");
+      durationLabel = new Label(messagesProvider.getMessageFrom("track.editor.view.duration"));
       durationText = new TextField();
-      commentLabel = new Label("comments:");
+      commentLabel = new Label(messagesProvider.getMessageFrom("track.editor.view.comments"));
       commentText = new TextField();
 
       GridPane center = new GridPane();
@@ -41,7 +42,7 @@ public class TrackEditorView extends EditorView<Track> {
       center.add(durationLabel, 0, 2, 1, 1);
       center.add(durationText, 1, 2, 1, 1);
       center.add(commentLabel, 0, 3, 1, 1);
-      center.add(commentText, 0, 3, 1, 1);
+      center.add(commentText, 1, 3, 1, 1);
 
       center.add(cancelButton, 0, 4, 1, 1);
       center.add(saveButton, 1, 4, 1, 1);

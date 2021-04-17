@@ -1,6 +1,7 @@
 package com.axokoi.bandurriaj.gui.viewer.views;
 
 
+import com.axokoi.bandurriaj.gui.commons.cells.tree.SearchableCell;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.gui.viewer.controllers.CatalogueController;
 import com.axokoi.bandurriaj.model.Catalogue;
@@ -180,14 +181,5 @@ public final class CatalogueView extends VBox {
 				.filter(x -> x.getValue().getName().equals(catalogue.getName())).findFirst()
 				.ifPresent(searchableTreeItem -> treeView.getSelectionModel().select(treeView.getRow(searchableTreeItem)));
 
-	}
-
-	static class SearchableCell extends TreeCell<Searchable> {
-		@Override
-		protected void updateItem(Searchable searchable, boolean empty) {
-			super.updateItem(searchable, empty);
-
-			setText(searchable == null ? "" : searchable.getName());
-		}
 	}
 }
