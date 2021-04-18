@@ -18,6 +18,8 @@ import jfxtras.styles.jmetro.Style;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import java.net.URL;
+
 @Component
 public class StageInitializer implements ApplicationListener<MainApplication.StageReadyEvent> {
 
@@ -55,7 +57,6 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
         mainPane.setLeft(catalogueView);
         mainPane.setCenter(center);
         mainPane.setRight(smartSearchView);
-        mainPane.getStyleClass().add("root");
 
         HBox footerView = new HBox();
         footerView.getChildren().add(new Text(messagesProvider.getMessageFrom("footer.copyright")));
@@ -66,6 +67,9 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
         stage.setScene(new Scene(mainPane));
         stage.sizeToScene();
         new JMetro(stage.getScene(), Style.LIGHT);
+
+        stage.getScene().getStylesheets().clear();
+        stage.getScene().getStylesheets().add("styles.css");
         viewDispatcher.setBorderPane(mainPane);
 
         stage.show();
