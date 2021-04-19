@@ -60,6 +60,11 @@ public class LoadedCdController {
    }
 
    public Disc saveCdOnCatalogue(Disc disc, Catalogue catalogue) {
+      //Return fast if the cd is already present on one of the catalogues.
+      if (discService.findByDiscId(disc.getDiscId()).isPresent()) {
+         popUpDisplayer.displayNewPopupWithFunction(alreadyLoadedCdView, null, () -> null);
+         return disc;
+      }
 
       //Complete the discinfo
       //For the moment we only have MusicBrainz implemented so we just pick the only one in the set
@@ -87,18 +92,12 @@ public class LoadedCdController {
       Set<Artist> creditedArtistsToPersist = getArtistsToPersists(disc.getCreditedArtists());
       Set<Artist> relatedArtistToPersists = getArtistsToPersists(disc.getRelatedArtist());
 
-      Optional<Disc> existingDisc = discService.findByDiscId(disc.getDiscId());
+      catalogue.getDiscs().add(disc);
+      disc.setCreditedArtists(creditedArtistsToPersist);
+      disc.setRelatedArtist(relatedArtistToPersists);
+      persistsCdOnCatalogue(catalogue, creditedArtistsToPersist, relatedArtistToPersists, disc);
+      userConfigurationService.saveConfiguration(UserConfiguration.Keys.LAST_CATALOGUE_USED, catalogue.getId().toString());
 
-      if (existingDisc.isEmpty()) {
-
-         catalogue.getDiscs().add(disc);
-         disc.setCreditedArtists(creditedArtistsToPersist);
-         disc.setRelatedArtist(relatedArtistToPersists);
-         persistsCdOnCatalogue(catalogue, creditedArtistsToPersist, relatedArtistToPersists, disc);
-         userConfigurationService.saveConfiguration(UserConfiguration.Keys.LAST_CATALOGUE_USED, catalogue.getId().toString());
-      } else {
-         popUpDisplayer.displayNewPopupWithFunction(alreadyLoadedCdView, null, () -> null);
-      }
       return disc;
    }
 
