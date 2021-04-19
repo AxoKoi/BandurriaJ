@@ -53,7 +53,7 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
         Set<Artist> relatedArtists  = extractRelatedArtistFromRelease(release);
         disc.setRelatedArtist(relatedArtists);
         disc.setTracks(getTrackList(release));
-
+        disc.setDiscId(release.getMediumList().getCompleteDiscList().stream().findAny().orElseThrow().getDiscId());
         imageQuery.downloadFrontImage(release.getId()).ifPresent(disc::setPathToImage);
 
         return disc;
@@ -84,6 +84,7 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
         disc.setCreditedArtists(release.getArtistCredit().getNameCredits().stream().map(NameCreditWs2::getArtist)
                 .map(artistConverter::convert).collect(Collectors.toSet()));
         disc.setComment(release.getYear());
+        disc.setDiscId(release.getMediumList().getCompleteDiscList().stream().findAny().orElseThrow().getDiscId());
         return disc;
     }
 

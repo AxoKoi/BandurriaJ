@@ -48,7 +48,7 @@ public class DiscController extends ViewerController<Disc> {
 
 	@Transactional
 	public Disc fetchDiscToDisplay(Disc discToDisplay) {
-		return discService.findById(discToDisplay.getId());
+		return discService.findByDiscId(discToDisplay.getDiscId()).orElseThrow(()->new RuntimeException("Impossible to retrieve disc from DB:"+discToDisplay.getDiscId()));
 	}
 
 	public Artist fetchArtistToDisplay(Artist artist) {

@@ -1,6 +1,7 @@
 package com.axokoi.bandurriaj.gui.viewer.controllers;
 
 import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
+import com.axokoi.bandurriaj.gui.commons.popups.AlreadyLoadedCdPopupView;
 import com.axokoi.bandurriaj.gui.commons.popups.TaggingDiscPopupView;
 import com.axokoi.bandurriaj.gui.viewer.views.LoadedCdView;
 import com.axokoi.bandurriaj.model.*;
@@ -47,13 +48,15 @@ public class LoadedCdController {
    private final ThreadPoolTaskExecutor executorService;
    private final UserConfigurationService userConfigurationService;
    private final PopUpDisplayer popUpDisplayer;
+   private final AlreadyLoadedCdPopupView alreadyLoadedCdView;
 
-   public LoadedCdController(TaggingDiscPopupView taggingDiscPopupView, ThreadPoolTaskExecutor executorService, UserConfigurationService userConfigurationService, PopUpDisplayer popUpDisplayer) {
+   public LoadedCdController(TaggingDiscPopupView taggingDiscPopupView, ThreadPoolTaskExecutor executorService, UserConfigurationService userConfigurationService, PopUpDisplayer popUpDisplayer, AlreadyLoadedCdPopupView alreadyLoadedCdView) {
       this.taggingDiscPopupView = taggingDiscPopupView;
       this.executorService = executorService;
 
       this.userConfigurationService = userConfigurationService;
       this.popUpDisplayer = popUpDisplayer;
+      this.alreadyLoadedCdView = alreadyLoadedCdView;
    }
 
    public Disc saveCdOnCatalogue(Disc disc, Catalogue catalogue) {
@@ -76,24 +79,27 @@ public class LoadedCdController {
       try {
          disc = (Disc) futureTaggedDiscs.get();
       } catch (InterruptedException | ExecutionException e) {
-         throw new RuntimeException("Impossible to tag cd with external identifier:" + externalIdentifier.getType() + ":"+
+         Thread.currentThread().interrupt();
+         throw new RuntimeException("Impossible to tag cd with external identifier:" + externalIdentifier.getType() + ":" +
                  externalIdentifier.getIdentifier());
       }
 
       Set<Artist> creditedArtistsToPersist = getArtistsToPersists(disc.getCreditedArtists());
       Set<Artist> relatedArtistToPersists = getArtistsToPersists(disc.getRelatedArtist());
 
-      Optional<Disc> existingDisc = discService.findByNameIgnoreCase(disc.getName());
-      Disc discToPersist = existingDisc.orElse(disc);
-      catalogue.getDiscs().add(discToPersist);
+      Optional<Disc> existingDisc = discService.findByDiscId(disc.getDiscId());
 
-      discToPersist.setCreditedArtists(creditedArtistsToPersist);
-      discToPersist.setRelatedArtist(relatedArtistToPersists);
-      persistsCdOnCatalogue(catalogue, creditedArtistsToPersist, relatedArtistToPersists, discToPersist);
+      if (existingDisc.isEmpty()) {
 
-      userConfigurationService.saveConfiguration(UserConfiguration.Keys.LAST_CATALOGUE_USED, catalogue.getId().toString());
-
-      return discToPersist;
+         catalogue.getDiscs().add(disc);
+         disc.setCreditedArtists(creditedArtistsToPersist);
+         disc.setRelatedArtist(relatedArtistToPersists);
+         persistsCdOnCatalogue(catalogue, creditedArtistsToPersist, relatedArtistToPersists, disc);
+         userConfigurationService.saveConfiguration(UserConfiguration.Keys.LAST_CATALOGUE_USED, catalogue.getId().toString());
+      } else {
+         popUpDisplayer.displayNewPopupWithFunction(alreadyLoadedCdView, null, () -> null);
+      }
+      return disc;
    }
 
    private Set<Artist> getArtistsToPersists(Set<Artist> creditedArtist) {

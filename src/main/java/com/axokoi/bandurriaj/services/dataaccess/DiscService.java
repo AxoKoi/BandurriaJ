@@ -63,4 +63,9 @@ public class DiscService implements SmartSearchService<Disc> {
 	public Optional<Disc> findByNameIgnoreCase(String name) {
 		return discRepository.findByNameIgnoreCase(name);
 	}
+
+	public Optional<Disc> findByDiscId(String discId) {
+		return discRepository.findByDiscId(discId);
+	}
+
 }

@@ -1,5 +1,7 @@
 package com.axokoi.bandurriaj.model;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -27,6 +29,9 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
 
    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
    private Set<ExternalIdentifier>  externalIdentifier;
+
+   @Column(nullable = false)
+   private String discId;
 
    @Lob
    private String comment;
@@ -122,5 +127,13 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
    @Override
    public int hashCode() {
       return Objects.hash(businessIdentifier);
+   }
+
+   public String getDiscId() {
+      return discId;
+   }
+
+   public void setDiscId(String discId) {
+      this.discId = discId;
    }
 }
