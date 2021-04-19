@@ -1,7 +1,5 @@
 package com.axokoi.bandurriaj.model;
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Objects;

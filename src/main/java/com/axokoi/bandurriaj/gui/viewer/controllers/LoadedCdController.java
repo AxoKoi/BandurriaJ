@@ -59,6 +59,7 @@ public class LoadedCdController {
       this.alreadyLoadedCdView = alreadyLoadedCdView;
    }
 
+   //IRO Try to refactor this
    public Disc saveCdOnCatalogue(Disc disc, Catalogue catalogue) {
       //Return fast if the cd is already present on one of the catalogues.
       if (discService.findByDiscId(disc.getDiscId()).isPresent()) {
@@ -71,23 +72,10 @@ public class LoadedCdController {
       ExternalIdentifier externalIdentifier = disc.getExternalIdentifier().stream().findAny().orElseThrow(() -> new RuntimeException("Impossible to find the external indentifier for disc"));
 
       // Create the task for looking the metadata in the background
-      Future<?> futureTaggedDiscs = executorService.submit(() -> {
-
-         Disc loadedCd = taggingFacade.getDiscFromUniqueIdentifier(externalIdentifier).orElseThrow(() -> new RuntimeException("Impossible to tag cd with external identifier:" + externalIdentifier.getType() + ":" +
-                 externalIdentifier.getIdentifier()));
-         log.info("Cd tagged was: {}", externalIdentifier.getIdentifier());
-         Platform.runLater(() -> ((Stage) taggingDiscPopupView.getScene().getWindow()).close());
-         return loadedCd;
-      });
+      Future<?> futureTaggedDisc = retrieveDiscCorrespondingToIdentifier(externalIdentifier);
 
       popUpDisplayer.displayNewPopupWithFunction(taggingDiscPopupView, null, () -> null);
-      try {
-         disc = (Disc) futureTaggedDiscs.get();
-      } catch (InterruptedException | ExecutionException e) {
-         Thread.currentThread().interrupt();
-         throw new RuntimeException("Impossible to tag cd with external identifier:" + externalIdentifier.getType() + ":" +
-                 externalIdentifier.getIdentifier());
-      }
+      disc = getDiscFromFuture(externalIdentifier, futureTaggedDisc);
 
       Set<Artist> creditedArtistsToPersist = getArtistsToPersists(disc.getCreditedArtists());
       Set<Artist> relatedArtistToPersists = getArtistsToPersists(disc.getRelatedArtist());
@@ -99,6 +87,28 @@ public class LoadedCdController {
       userConfigurationService.saveConfiguration(UserConfiguration.Keys.LAST_CATALOGUE_USED, catalogue.getId().toString());
 
       return disc;
+   }
+
+   private Disc getDiscFromFuture(ExternalIdentifier externalIdentifier, Future<?> futureTaggedDisc) {
+      Disc disc;
+      try {
+         disc = (Disc) futureTaggedDisc.get();
+      } catch (InterruptedException | ExecutionException e) {
+         Thread.currentThread().interrupt();
+         throw new RuntimeException("Impossible to tag cd with external identifier:" + externalIdentifier.getType() + ":" +
+                 externalIdentifier.getIdentifier());
+      }
+      return disc;
+   }
+
+   private Future<?> retrieveDiscCorrespondingToIdentifier(ExternalIdentifier externalIdentifier) {
+      return executorService.submit(() -> {
+         Disc loadedCd = taggingFacade.getDiscFromUniqueIdentifier(externalIdentifier).orElseThrow(() -> new RuntimeException("Impossible to tag cd with external identifier:" + externalIdentifier.getType() + ":" +
+                 externalIdentifier.getIdentifier()));
+         log.info("Cd tagged was: {}", externalIdentifier.getIdentifier());
+         Platform.runLater(() -> ((Stage) taggingDiscPopupView.getScene().getWindow()).close());
+         return loadedCd;
+      });
    }
 
    private Set<Artist> getArtistsToPersists(Set<Artist> creditedArtist) {

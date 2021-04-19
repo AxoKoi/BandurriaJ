@@ -23,18 +23,10 @@ public class AlreadyLoadedCdPopupView extends GridPane {
       messageLabel.setFont(new Font(messageLabel.getFont().getFamily(), 25));
       this.add(messageLabel, 0, 0, 2, 2);
 
-      cancel = new Button(messagesProvider.getMessageFrom("button.cancel"));
-      cancel.setOnAction(this::onCancel);
-      this.add(cancel, 0, 2, 1, 1);
-
       ok = new Button(messagesProvider.getMessageFrom("button.ok"));
       ok.setOnAction(this::onOk);
       this.add(ok, 2, 2, 1, 1);
 
-   }
-
-   private void onCancel(ActionEvent actionEvent) {
-      ((Stage) cancel.getScene().getWindow()).close();
    }
 
 
