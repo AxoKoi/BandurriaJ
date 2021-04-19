@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Component
@@ -44,14 +45,13 @@ public final class SmartSearchView extends VBox {
 
 	public void refresh(List<Searchable> smartSearchResult) {
 		ObservableList<Searchable> items = FXCollections.observableArrayList(smartSearchResult);
-
 		this.results.getItems().clear();
 		if (items.isEmpty()) {
 			return;
 		}
 
 		this.results.getItems().addAll(items);
-		this.results.setCellFactory(list -> new SearchableCell());
+		this.results.setCellFactory(list -> new SearchableCell(messagesProvider));
 
 		this.results.setOnMouseClicked(event -> smartSearchController.dispatchRefreshToController(this.results.getSelectionModel().getSelectedItem()));
 

@@ -1,7 +1,9 @@
 package com.axokoi.bandurriaj.gui.viewer.controllers;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -52,6 +54,10 @@ public class SmartSearchController {
 		results.addAll(artistService.smartSearch(inputSearch));
 		//search Track
 		results.addAll(trackService.smartSearch(inputSearch));
+
+		results = results.stream().sorted(Comparator.comparing(x -> x.getClass().toString())
+		.thenComparing(x->((Searchable)x).getName()))
+				.collect(Collectors.toList());
 		smartSearchView.refresh(results);
 	}
 
