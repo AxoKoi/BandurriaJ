@@ -2,10 +2,10 @@ package com.axokoi.bandurriaj.booting;
 
 import com.axokoi.bandurriaj.MainApplication;
 import com.axokoi.bandurriaj.ViewDispatcher;
-import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.gui.viewer.views.CatalogueView;
 import com.axokoi.bandurriaj.gui.viewer.views.MenuBarView;
 import com.axokoi.bandurriaj.gui.viewer.views.SmartSearchView;
+import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -17,8 +17,6 @@ import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.Style;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-
-import java.net.URL;
 
 @Component
 public class StageInitializer implements ApplicationListener<MainApplication.StageReadyEvent> {
