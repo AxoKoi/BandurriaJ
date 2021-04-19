@@ -1,13 +1,19 @@
 package com.axokoi.bandurriaj.gui.viewer.controllers;
 
+import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
+import com.axokoi.bandurriaj.gui.commons.popups.TaggingDiscPopupView;
+import com.axokoi.bandurriaj.gui.viewer.views.LoadedCdView;
 import com.axokoi.bandurriaj.model.*;
 import com.axokoi.bandurriaj.services.dataaccess.ArtistService;
 import com.axokoi.bandurriaj.services.dataaccess.DiscService;
 import com.axokoi.bandurriaj.services.dataaccess.UserConfigurationService;
 import com.axokoi.bandurriaj.services.tagging.TaggingFacade;
-import com.axokoi.bandurriaj.gui.viewer.views.LoadedCdView;
+import javafx.application.Platform;
+import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -15,8 +21,11 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class LoadedCdController {
    @Autowired
@@ -34,10 +43,17 @@ public class LoadedCdController {
    @Autowired
    private TaggingFacade taggingFacade;
 
+   private final TaggingDiscPopupView taggingDiscPopupView;
+   private final ThreadPoolTaskExecutor executorService;
    private final UserConfigurationService userConfigurationService;
+   private final PopUpDisplayer popUpDisplayer;
 
-   public LoadedCdController(UserConfigurationService userConfigurationService) {
+   public LoadedCdController(TaggingDiscPopupView taggingDiscPopupView, ThreadPoolTaskExecutor executorService, UserConfigurationService userConfigurationService, PopUpDisplayer popUpDisplayer) {
+      this.taggingDiscPopupView = taggingDiscPopupView;
+      this.executorService = executorService;
+
       this.userConfigurationService = userConfigurationService;
+      this.popUpDisplayer = popUpDisplayer;
    }
 
    public Disc saveCdOnCatalogue(Disc disc, Catalogue catalogue) {
@@ -45,7 +61,24 @@ public class LoadedCdController {
       //Complete the discinfo
       //For the moment we only have MusicBrainz implemented so we just pick the only one in the set
       ExternalIdentifier externalIdentifier = disc.getExternalIdentifier().stream().findAny().orElseThrow(() -> new RuntimeException("Impossible to find the external indentifier for disc"));
-      disc = taggingFacade.getDiscFromUniqueIdentifier(externalIdentifier).orElseThrow(()->new RuntimeException("Impossible to tag cd:"));
+
+      // Create the task for looking the metadata in the background
+      Future<?> futureTaggedDiscs = executorService.submit(() -> {
+
+         Disc loadedCd = taggingFacade.getDiscFromUniqueIdentifier(externalIdentifier).orElseThrow(() -> new RuntimeException("Impossible to tag cd with external identifier:" + externalIdentifier.getType() + ":" +
+                 externalIdentifier.getIdentifier()));
+         log.info("Cd tagged was: {}", externalIdentifier.getIdentifier());
+         Platform.runLater(() -> ((Stage) taggingDiscPopupView.getScene().getWindow()).close());
+         return loadedCd;
+      });
+
+      popUpDisplayer.displayNewPopupWithFunction(taggingDiscPopupView, null, () -> null);
+      try {
+         disc = (Disc) futureTaggedDiscs.get();
+      } catch (InterruptedException | ExecutionException e) {
+         throw new RuntimeException("Impossible to tag cd with external identifier:" + externalIdentifier.getType() + ":"+
+                 externalIdentifier.getIdentifier());
+      }
 
       Set<Artist> creditedArtistsToPersist = getArtistsToPersists(disc.getCreditedArtists());
       Set<Artist> relatedArtistToPersists = getArtistsToPersists(disc.getRelatedArtist());
@@ -56,10 +89,9 @@ public class LoadedCdController {
 
       discToPersist.setCreditedArtists(creditedArtistsToPersist);
       discToPersist.setRelatedArtist(relatedArtistToPersists);
-      persistsCdOnCatalogue(catalogue, creditedArtistsToPersist,relatedArtistToPersists, discToPersist);
+      persistsCdOnCatalogue(catalogue, creditedArtistsToPersist, relatedArtistToPersists, discToPersist);
 
-
-      userConfigurationService.saveConfiguration(UserConfiguration.Keys.LAST_CATALOGUE_USED,catalogue.getId().toString());
+      userConfigurationService.saveConfiguration(UserConfiguration.Keys.LAST_CATALOGUE_USED, catalogue.getId().toString());
 
       return discToPersist;
    }

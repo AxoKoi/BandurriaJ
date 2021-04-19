@@ -2,6 +2,7 @@ package com.axokoi.bandurriaj.gui.viewer.controllers;
 
 import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
 import com.axokoi.bandurriaj.gui.commons.popups.ReadingDiscPopupView;
+import com.axokoi.bandurriaj.gui.commons.popups.TaggingDiscPopupView;
 import com.axokoi.bandurriaj.gui.viewer.views.MenuBarView;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Disc;
@@ -42,10 +43,11 @@ public class MenuBarController {
     private final PopUpDisplayer popUpDisplayer;
     private final ThreadPoolTaskExecutor executorService;
     private final ReadingDiscPopupView readingDiscPopupView;
+    private final TaggingDiscPopupView taggingDiscPopupView;
     @Autowired
     private MenuBarView menuBarView;
 
-    public MenuBarController(CdReadingFacade cdReadingFacade, TaggingFacade taggingFacade, LoadedCdController loadedCdController, UserConfigurationService userConfigurationService, MessagesProvider messagesProvider, PopUpDisplayer popUpDisplayer, ThreadPoolTaskExecutor executorService, ReadingDiscPopupView readingDiscPopupView) {
+    public MenuBarController(CdReadingFacade cdReadingFacade, TaggingFacade taggingFacade, LoadedCdController loadedCdController, UserConfigurationService userConfigurationService, MessagesProvider messagesProvider, PopUpDisplayer popUpDisplayer, ThreadPoolTaskExecutor executorService, ReadingDiscPopupView readingDiscPopupView, TaggingDiscPopupView taggingDiscPopupView) {
         this.cdReadingFacade = cdReadingFacade;
         this.taggingFacade = taggingFacade;
         this.loadedCdController = loadedCdController;
@@ -54,6 +56,7 @@ public class MenuBarController {
        this.popUpDisplayer = popUpDisplayer;
        this.executorService = executorService;
        this.readingDiscPopupView = readingDiscPopupView;
+       this.taggingDiscPopupView = taggingDiscPopupView;
     }
 
    public void changeLocale(String language) {
@@ -96,24 +99,31 @@ public class MenuBarController {
    }
 
     public void handleReadCd(File selectedFile) {
-        String cdId = cdReadingFacade.readCdId(FileToCDPathConverter.convert(selectedFile));
-        log.info("Read cdId: {}", cdId);
 
-        //Create the task for reading the cd in the background
-       Future<?> futureResult = executorService.submit(() -> {
-          List<Disc> loadedCds = taggingFacade.lookupFromDiscId(cdId);
-          log.info("Cd tagged was: {}", loadedCds);
+       Future<?> futureDiscId = executorService.submit(() -> {
+
+          String cdId = cdReadingFacade.readCdId(FileToCDPathConverter.convert(selectedFile));
+          log.info("Read cdId: {}", cdId);
           Platform.runLater(()->((Stage)readingDiscPopupView.getScene().getWindow()).close());
+          return cdId;
+       });
+
+       popUpDisplayer.displayNewPopupWithFunction(readingDiscPopupView, null, () -> null);
+
+        //Submit the task for reading the cd in the background
+       Future<?> futureTaggedDiscs = executorService.submit(() -> {
+
+          List<Disc> loadedCds = taggingFacade.lookupFromDiscId((String)futureDiscId.get());
+          log.info("Cd tagged was: {}", loadedCds);
+          Platform.runLater(()->((Stage)taggingDiscPopupView.getScene().getWindow()).close());
           return loadedCds;
        });
 
-       // Display the your CD is being read popup
-       popUpDisplayer.displayNewPopupWithFunction(readingDiscPopupView, null, () -> null);
-
+       popUpDisplayer.displayNewPopupWithFunction(taggingDiscPopupView, null, () -> null);
        //Populate the disc list with the result from the background task
        List<Disc> loadedCds = Collections.emptyList();
        try {
-          loadedCds = (List<Disc>) futureResult.get();
+          loadedCds = (List<Disc>) futureTaggedDiscs.get();
        } catch (InterruptedException | ExecutionException e) {
           log.error("Error reading the cd from driver:"+selectedFile,e);
           Thread.currentThread().interrupt();
