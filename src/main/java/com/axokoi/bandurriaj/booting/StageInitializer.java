@@ -65,9 +65,9 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
         stage.setScene(new Scene(mainPane));
         stage.sizeToScene();
         new JMetro(stage.getScene(), Style.LIGHT);
-
         /*stage.getScene().getStylesheets().clear();*/
         stage.getScene().getStylesheets().add("styles.css");
+
         viewDispatcher.setBorderPane(mainPane);
 
         stage.show();

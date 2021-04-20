@@ -7,6 +7,7 @@ import com.axokoi.bandurriaj.gui.viewer.views.LoadedCdView;
 import com.axokoi.bandurriaj.model.*;
 import com.axokoi.bandurriaj.services.dataaccess.ArtistService;
 import com.axokoi.bandurriaj.services.dataaccess.DiscService;
+import com.axokoi.bandurriaj.services.dataaccess.ExternalIdentifierService;
 import com.axokoi.bandurriaj.services.dataaccess.UserConfigurationService;
 import com.axokoi.bandurriaj.services.tagging.TaggingFacade;
 import javafx.application.Platform;
@@ -49,17 +50,18 @@ public class LoadedCdController {
    private final UserConfigurationService userConfigurationService;
    private final PopUpDisplayer popUpDisplayer;
    private final AlreadyLoadedCdPopupView alreadyLoadedCdView;
+   private final ExternalIdentifierService externalIdentifierService;
 
-   public LoadedCdController(TaggingDiscPopupView taggingDiscPopupView, ThreadPoolTaskExecutor executorService, UserConfigurationService userConfigurationService, PopUpDisplayer popUpDisplayer, AlreadyLoadedCdPopupView alreadyLoadedCdView) {
+   public LoadedCdController(TaggingDiscPopupView taggingDiscPopupView, ThreadPoolTaskExecutor executorService, UserConfigurationService userConfigurationService, PopUpDisplayer popUpDisplayer, AlreadyLoadedCdPopupView alreadyLoadedCdView, ExternalIdentifierService externalIdentifierService) {
       this.taggingDiscPopupView = taggingDiscPopupView;
       this.executorService = executorService;
 
       this.userConfigurationService = userConfigurationService;
       this.popUpDisplayer = popUpDisplayer;
       this.alreadyLoadedCdView = alreadyLoadedCdView;
+      this.externalIdentifierService = externalIdentifierService;
    }
 
-   //IRO Try to refactor this
    public Disc saveCdOnCatalogue(Disc disc, Catalogue catalogue) {
       //Return fast if the cd is already present on one of the catalogues.
       if (discService.findByDiscId(disc.getDiscId()).isPresent()) {
@@ -69,13 +71,17 @@ public class LoadedCdController {
 
       //Complete the discinfo
       //For the moment we only have MusicBrainz implemented so we just pick the only one in the set
-      ExternalIdentifier externalIdentifier = disc.getExternalIdentifier().stream().findAny().orElseThrow(() -> new RuntimeException("Impossible to find the external indentifier for disc"));
+      ExternalIdentifier externalIdentifier = disc.getExternalIdentifiers().stream().findAny().orElseThrow(() -> new RuntimeException("Impossible to find the external indentifier for disc"));
+      ExternalIdentifier userExternalIdentifier = new ExternalIdentifier();
+      userExternalIdentifier.setType(ExternalIdentifier.Type.USER);
+      userExternalIdentifier.setIdentifier(externalIdentifierService.getNextUserIdentifier());
 
       // Create the task for looking the metadata in the background
       Future<?> futureTaggedDisc = retrieveDiscCorrespondingToIdentifier(externalIdentifier);
 
       popUpDisplayer.displayNewPopupWithFunction(taggingDiscPopupView, null, () -> null);
       disc = getDiscFromFuture(externalIdentifier, futureTaggedDisc);
+      disc.addExternalIdentifier(userExternalIdentifier);
 
       Set<Artist> creditedArtistsToPersist = getArtistsToPersists(disc.getCreditedArtists());
       Set<Artist> relatedArtistToPersists = getArtistsToPersists(disc.getRelatedArtist());

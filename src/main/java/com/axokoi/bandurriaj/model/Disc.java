@@ -1,9 +1,8 @@
 package com.axokoi.bandurriaj.model;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import javax.swing.text.html.Option;
+import java.util.*;
 
 @Entity
 public class Disc extends BusinessEntity<Disc> implements Searchable {
@@ -13,7 +12,7 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
 
    @Column(unique = true, updatable = false)
    private final String businessIdentifier;
-   
+
    private String name;
 
    @ManyToMany(targetEntity = Artist.class, fetch = FetchType.EAGER)
@@ -25,8 +24,8 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
    @OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
    private Set<Track> tracks;
 
-   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-   private Set<ExternalIdentifier>  externalIdentifier;
+   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+   private Set<ExternalIdentifier> externalIdentifier;
 
    @Column(nullable = false)
    private String discId;
@@ -51,6 +50,7 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
    public Set<Artist> getCreditedArtists() {
       return creditedArtists;
    }
+
    public Set<Artist> getRelatedArtist() {
       return relatedArtist;
    }
@@ -58,6 +58,7 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
    public void setRelatedArtist(Set<Artist> relatedArtist) {
       this.relatedArtist = relatedArtist;
    }
+
    public void setCreditedArtists(Set<Artist> artists) {
       this.creditedArtists = artists;
    }
@@ -93,7 +94,7 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
       return allArtist;
    }
 
-   public Set<ExternalIdentifier> getExternalIdentifier() {
+   public Set<ExternalIdentifier> getExternalIdentifiers() {
       return externalIdentifier;
    }
 
@@ -133,5 +134,22 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
 
    public void setDiscId(String discId) {
       this.discId = discId;
+   }
+
+   public Optional<String> getUserIdentifier(){
+      if(this.getExternalIdentifiers()==null){
+         return Optional.empty();
+      }
+      return getExternalIdentifiers().stream()
+              .filter(x -> x.getType() == ExternalIdentifier.Type.USER)
+              .map(ExternalIdentifier::getIdentifier)
+              .findAny();
+   }
+
+   public void addExternalIdentifier(ExternalIdentifier userExternalIdentifier) {
+      if (this.getExternalIdentifiers() == null) {
+         this.externalIdentifier = new HashSet<>();
+      }
+      externalIdentifier.add(userExternalIdentifier);
    }
 }

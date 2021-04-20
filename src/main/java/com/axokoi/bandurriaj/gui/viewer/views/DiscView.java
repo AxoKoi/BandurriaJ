@@ -33,6 +33,7 @@ public class DiscView extends VBox {
 
 
     private final DiscController discController;
+    private final Label discNumber = new Label();
     private final TrackListView trackListView;
     private final MessagesProvider messagesProvider;
     private final Label discName = new Label();
@@ -63,6 +64,7 @@ public class DiscView extends VBox {
 
         VBox.setVgrow(trackListView, Priority.ALWAYS);
         this.setAlignment(Pos.CENTER);
+        getChildren().add(discNumber);
         getChildren().add(editButton);
         getChildren().add(discName);
         getChildren().add(byLabel);
@@ -79,7 +81,7 @@ public class DiscView extends VBox {
         Disc disc = discController.fetchDiscToDisplay(discToDisplay);
 
         discName.setText(disc.getName());
-
+        discNumber.setText(discToDisplay.getUserIdentifier().orElse(messagesProvider.getMessageFrom("disc.view.no.user.identifier")));
         creditedArtistLabel.setText(disc.getCreditedArtists().stream().map(Artist::getName).reduce("", (x, y) -> x + " " + y));
         trackListView.refresh(disc.getTracks());
         artists = refreshArtistsView(disc);
@@ -98,7 +100,8 @@ public class DiscView extends VBox {
         editButton.setOnAction(event -> discController.displayEditorPopup(event,disc));
 
         this.getChildren().clear();
-        getChildren().add(editButton);
+        this.getChildren().add(discNumber);
+        this.getChildren().add(editButton);
         this.getChildren().add(discName);
         this.getChildren().add(byLabel);
         this.getChildren().add(creditedArtistLabel);
