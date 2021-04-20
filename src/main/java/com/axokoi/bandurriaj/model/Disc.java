@@ -1,7 +1,6 @@
 package com.axokoi.bandurriaj.model;
 
 import javax.persistence.*;
-import javax.swing.text.html.Option;
 import java.util.*;
 
 @Entity
