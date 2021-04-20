@@ -9,6 +9,9 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
    @GeneratedValue(strategy = GenerationType.SEQUENCE)
    private Long id;
 
+   /**
+    * The business identifier used to compare two discs.
+    */
    @Column(unique = true, updatable = false)
    private final String businessIdentifier;
 
@@ -23,6 +26,9 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
    @OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
    private Set<Track> tracks;
 
+   /**
+    * Additional identifiers for different use.
+    */
    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
    private Set<ExternalIdentifier> externalIdentifier;
 
