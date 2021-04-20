@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExternalIdentifierService {
@@ -31,4 +32,9 @@ public class ExternalIdentifierService {
       return String.valueOf(Integer.parseInt(externalIdentifier.getIdentifier()) + 1);
    }
 
+   public Optional<ExternalIdentifier> findByExternalIdentifier(ExternalIdentifier externalIdentifier) {
+
+      return externalIdentifierRepository.findByTypeAndIdentifier(externalIdentifier.getType(), externalIdentifier.getIdentifier());
+
+   }
 }

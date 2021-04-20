@@ -63,15 +63,21 @@ public class LoadedCdController {
    }
 
    public Disc saveCdOnCatalogue(Disc disc, Catalogue catalogue) {
+      //For the moment we only have MusicBrainz implemented so we just pick the only one in the set
+      ExternalIdentifier externalIdentifier = disc.getExternalIdentifiers().stream()
+              .filter(x->x.getType()== ExternalIdentifier.Type.MUSICBRAINZ)
+              .findAny()
+              .orElseThrow(() -> new RuntimeException("Impossible to find the external indentifier for disc"));
+
+      Optional<Disc> discByExternalIdentifier = discService.findByExternalIdentifier(externalIdentifier);
       //Return fast if the cd is already present on one of the catalogues.
-      if (discService.findByDiscId(disc.getDiscId()).isPresent()) {
+      if (discByExternalIdentifier.isPresent()) {
          popUpDisplayer.displayNewPopupWithFunction(alreadyLoadedCdView, null, () -> null);
-         return disc;
+         return discByExternalIdentifier.get();
       }
 
       //Complete the discinfo
-      //For the moment we only have MusicBrainz implemented so we just pick the only one in the set
-      ExternalIdentifier externalIdentifier = disc.getExternalIdentifiers().stream().findAny().orElseThrow(() -> new RuntimeException("Impossible to find the external indentifier for disc"));
+
       ExternalIdentifier userExternalIdentifier = new ExternalIdentifier();
       userExternalIdentifier.setType(ExternalIdentifier.Type.USER);
       userExternalIdentifier.setIdentifier(externalIdentifierService.getNextUserIdentifier());
