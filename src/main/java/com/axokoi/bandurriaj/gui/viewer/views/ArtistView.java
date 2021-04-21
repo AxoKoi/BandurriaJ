@@ -24,7 +24,7 @@ import java.util.List;
 public final class ArtistView extends VBox {
 	private final Label name;
 	private final Label discBy ;
-	private final ListView<Disc> discs = new ListView<>();
+	private  ListView<Disc> discs = new ListView<>();
 	private final Button editButton;
 
 	@Autowired
@@ -48,11 +48,7 @@ public final class ArtistView extends VBox {
 		getChildren().add(discBy);
 		getChildren().addAll(discs);
 
-		discs.setCellFactory(list -> new DiscCell());
 
-		discs.addEventHandler(KeyEvent.KEY_PRESSED,event-> artistController.replaceCenterWithDisc(discs.getSelectionModel().getSelectedItem()));
-
-		discs.setOnMouseClicked(new DoubleClickHandler(x->artistController.replaceCenterWithDisc(discs.getSelectionModel().getSelectedItem())));
 
 		this.setPadding(new Insets(14));
 		this.setSpacing(8);
@@ -61,10 +57,19 @@ public final class ArtistView extends VBox {
 	public void refresh(Artist artist) {
 		name.setText(artist.getName());
 		List<Disc> artistDiscs = artistController.findAllDiscByArtist(artist);
-		discs.getItems().clear();
+		discs = new ListView<>();
 		discs.getItems().addAll(FXCollections.observableArrayList(artistDiscs));
-
+/*		error aca con los discos*/
+		discs.setCellFactory(list -> new DiscCell());
+		discs.addEventHandler(KeyEvent.KEY_PRESSED,event-> artistController.replaceCenterWithDisc(discs.getSelectionModel().getSelectedItem()));
+		discs.setOnMouseClicked(new DoubleClickHandler(x->artistController.replaceCenterWithDisc(discs.getSelectionModel().getSelectedItem())));
 		editButton.setOnAction(event->artistController.displayEditorPopup(event, artist));
+
+		this.getChildren().clear();
+		getChildren().add(editButton);
+		getChildren().add(name);
+		getChildren().add(discBy);
+		getChildren().addAll(discs);
 
 	}
 

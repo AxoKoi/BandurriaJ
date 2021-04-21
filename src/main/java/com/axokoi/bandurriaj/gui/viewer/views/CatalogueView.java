@@ -85,14 +85,8 @@ public final class CatalogueView extends VBox {
 			boolean isCatalogue = ((TreeView<Searchable>) event.getSource()).getSelectionModel().getSelectedItem().getValue() instanceof Catalogue;
 
 			if (isCD) {
-				switch (event.getCode()) {
-				case ENTER:
-				case UP:
-				case DOWN:
+				if (event.getCode() == KeyCode.ENTER) {
 					catalogueController.dispatchRefreshToController((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
-					break;
-				default:
-					break;
 				}
 			} else if (isCatalogue) {
 				switch (event.getCode()) {

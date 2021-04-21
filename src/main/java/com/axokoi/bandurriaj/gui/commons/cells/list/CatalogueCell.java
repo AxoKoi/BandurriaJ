@@ -5,10 +5,14 @@ import javafx.scene.control.ListCell;
 
 public class CatalogueCell extends ListCell<Catalogue> {
 
-      @Override
-      protected void updateItem(Catalogue catalogue, boolean empty) {
-         super.updateItem(catalogue, empty);
-         setText(catalogue == null ? "" : catalogue.getName());
+   @Override
+   protected void updateItem(Catalogue catalogue, boolean empty) {
+      super.updateItem(catalogue, empty);
+      if (catalogue == null) {
+         disableProperty();
+      } else {
+         setText(catalogue.getName());
       }
+   }
 
 }

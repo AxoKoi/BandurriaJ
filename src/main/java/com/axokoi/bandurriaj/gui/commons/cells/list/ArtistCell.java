@@ -8,7 +8,11 @@ public class ArtistCell extends ListCell<Artist> {
    @Override
    protected void updateItem(Artist artist, boolean empty) {
       super.updateItem(artist, empty);
-      setText(artist == null ? "" : artist.getName());
+      if (artist == null) {
+         disabledProperty();
+      } else {
+         setText(artist.getName());
+      }
 
    }
 }

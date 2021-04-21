@@ -1,6 +1,7 @@
 package com.axokoi.bandurriaj.gui.viewer.views;
 
 
+import com.axokoi.bandurriaj.gui.commons.cells.list.ArtistCell;
 import com.axokoi.bandurriaj.gui.commons.handlers.mouse.DoubleClickHandler;
 import com.axokoi.bandurriaj.gui.viewer.controllers.DiscController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
@@ -117,15 +118,7 @@ public class DiscView extends VBox {
 
         ListView<Artist> newArtistsToDisplay = new ListView<>();
         newArtistsToDisplay.getItems().clear();
-        newArtistsToDisplay.setCellFactory(x-> new ListCell<>(){
-            @Override
-            protected void updateItem(Artist artist, boolean empty){
-                super.updateItem(artist, empty);
-                if(artist!= null) {
-                    this.setText(artist.getName());
-                }
-            }
-        });
+        newArtistsToDisplay.setCellFactory(x->new ArtistCell());
         newArtistsToDisplay.addEventHandler(KeyEvent.KEY_PRESSED, event-> discController.replaceCenterWithArtist(newArtistsToDisplay.getSelectionModel().getSelectedItem()));
         newArtistsToDisplay.setOnMouseClicked(new DoubleClickHandler(x->discController.replaceCenterWithArtist(newArtistsToDisplay.getSelectionModel().getSelectedItem())));
 

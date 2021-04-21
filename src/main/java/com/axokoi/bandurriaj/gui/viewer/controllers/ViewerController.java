@@ -14,10 +14,12 @@ public abstract class ViewerController<S extends Searchable> extends GuiControll
 	/**
 	 * A method that allow a controller to update it's view with the given Searchable and to replace the center pannel with it's view
 	 * Every controller exposes this method so it can called by other controllers.
-	 * @param searchable
+	 * @param searchable if it's null, no dispatching is done.
 	 */
 	public void displayViewCenter(S searchable) {
-//IRO what if the searchable is null?
+		if(searchable == null){
+			return;
+		}
 		this.refreshView(searchable);
 		viewDispatcher.replaceCenterWith(this.getView());
 	}
