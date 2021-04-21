@@ -1,0 +1,4 @@
+We provide build of the discid library for development purposes.
+
+You can found the corresponding information on https://musicbrainz.org/doc/libdiscid and:
+libdiscid is licensed under the GNU Lesser General Public License 2.1 or later
