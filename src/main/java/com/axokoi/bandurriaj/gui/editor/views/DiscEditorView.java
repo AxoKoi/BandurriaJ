@@ -2,7 +2,7 @@ package com.axokoi.bandurriaj.gui.editor.views;
 
 import com.axokoi.bandurriaj.gui.commons.cells.list.ArtistCell;
 import com.axokoi.bandurriaj.gui.commons.cells.list.TrackCell;
-import com.axokoi.bandurriaj.gui.commons.handlers.DoubleClickHandler;
+import com.axokoi.bandurriaj.gui.commons.handlers.mouse.DoubleClickHandler;
 import com.axokoi.bandurriaj.gui.editor.controllers.DiscEditorController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;

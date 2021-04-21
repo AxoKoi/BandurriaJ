@@ -1,7 +1,7 @@
 package com.axokoi.bandurriaj.gui.viewer.views;
 
 import com.axokoi.bandurriaj.gui.commons.cells.list.DiscCell;
-import com.axokoi.bandurriaj.gui.commons.handlers.DoubleClickHandler;
+import com.axokoi.bandurriaj.gui.commons.handlers.mouse.DoubleClickHandler;
 import com.axokoi.bandurriaj.gui.viewer.controllers.ArtistController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;
@@ -13,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import org.springframework.beans.factory.annotation.Autowired;

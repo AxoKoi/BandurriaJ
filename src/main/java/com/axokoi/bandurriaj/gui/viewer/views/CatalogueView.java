@@ -2,7 +2,6 @@ package com.axokoi.bandurriaj.gui.viewer.views;
 
 
 import com.axokoi.bandurriaj.gui.commons.cells.tree.SearchableCell;
-import com.axokoi.bandurriaj.gui.commons.handlers.DoubleClickHandler;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.gui.viewer.controllers.CatalogueController;
 import com.axokoi.bandurriaj.model.Catalogue;
@@ -15,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
