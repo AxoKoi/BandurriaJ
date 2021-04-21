@@ -13,4 +13,6 @@ public interface DiscRepository extends CrudRepository<Disc, Long>,BusinessEntit
 	List<Disc> findByCommentContainingIgnoringCase(String inputSearch);
 
     Optional<Disc> findByNameIgnoreCase(String name);
+
+	Optional<Disc> findByDiscId(String discId);
 }

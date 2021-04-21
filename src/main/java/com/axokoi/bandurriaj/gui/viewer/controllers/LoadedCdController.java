@@ -1,13 +1,21 @@
 package com.axokoi.bandurriaj.gui.viewer.controllers;
 
+import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
+import com.axokoi.bandurriaj.gui.commons.popups.AlreadyLoadedCdPopupView;
+import com.axokoi.bandurriaj.gui.commons.popups.TaggingDiscPopupView;
+import com.axokoi.bandurriaj.gui.viewer.views.LoadedCdView;
 import com.axokoi.bandurriaj.model.*;
 import com.axokoi.bandurriaj.services.dataaccess.ArtistService;
 import com.axokoi.bandurriaj.services.dataaccess.DiscService;
+import com.axokoi.bandurriaj.services.dataaccess.ExternalIdentifierService;
 import com.axokoi.bandurriaj.services.dataaccess.UserConfigurationService;
 import com.axokoi.bandurriaj.services.tagging.TaggingFacade;
-import com.axokoi.bandurriaj.gui.viewer.views.LoadedCdView;
+import javafx.application.Platform;
+import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -15,8 +23,11 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class LoadedCdController {
    @Autowired
@@ -34,34 +45,82 @@ public class LoadedCdController {
    @Autowired
    private TaggingFacade taggingFacade;
 
+   private final TaggingDiscPopupView taggingDiscPopupView;
+   private final ThreadPoolTaskExecutor executorService;
    private final UserConfigurationService userConfigurationService;
+   private final PopUpDisplayer popUpDisplayer;
+   private final AlreadyLoadedCdPopupView alreadyLoadedCdView;
+   private final ExternalIdentifierService externalIdentifierService;
 
-   public LoadedCdController(UserConfigurationService userConfigurationService) {
+   public LoadedCdController(TaggingDiscPopupView taggingDiscPopupView, ThreadPoolTaskExecutor executorService, UserConfigurationService userConfigurationService, PopUpDisplayer popUpDisplayer, AlreadyLoadedCdPopupView alreadyLoadedCdView, ExternalIdentifierService externalIdentifierService) {
+      this.taggingDiscPopupView = taggingDiscPopupView;
+      this.executorService = executorService;
+
       this.userConfigurationService = userConfigurationService;
+      this.popUpDisplayer = popUpDisplayer;
+      this.alreadyLoadedCdView = alreadyLoadedCdView;
+      this.externalIdentifierService = externalIdentifierService;
    }
 
    public Disc saveCdOnCatalogue(Disc disc, Catalogue catalogue) {
+      //For the moment we only have MusicBrainz implemented so we just pick the only one in the set
+      ExternalIdentifier externalIdentifier = disc.getExternalIdentifiers().stream()
+              .filter(x->x.getType()== ExternalIdentifier.Type.MUSICBRAINZ)
+              .findAny()
+              .orElseThrow(() -> new RuntimeException("Impossible to find the external indentifier for disc"));
+
+      Optional<Disc> discByExternalIdentifier = discService.findByExternalIdentifier(externalIdentifier);
+      //Return fast if the cd is already present on one of the catalogues.
+      if (discByExternalIdentifier.isPresent()) {
+         popUpDisplayer.displayNewPopupWithFunction(alreadyLoadedCdView, null, () -> null);
+         return discByExternalIdentifier.get();
+      }
 
       //Complete the discinfo
-      //For the moment we only have MusicBrainz implemented so we just pick the only one in the set
-      ExternalIdentifier externalIdentifier = disc.getExternalIdentifier().stream().findAny().orElseThrow(() -> new RuntimeException("Impossible to find the external indentifier for disc"));
-      disc = taggingFacade.getDiscFromUniqueIdentifier(externalIdentifier).orElseThrow(()->new RuntimeException("Impossible to tag cd:"));
+
+      ExternalIdentifier userExternalIdentifier = new ExternalIdentifier();
+      userExternalIdentifier.setType(ExternalIdentifier.Type.USER);
+      userExternalIdentifier.setIdentifier(externalIdentifierService.getNextUserIdentifier());
+
+      // Create the task for looking the metadata in the background
+      Future<?> futureTaggedDisc = retrieveDiscCorrespondingToIdentifier(externalIdentifier);
+
+      popUpDisplayer.displayNewPopupWithFunction(taggingDiscPopupView, null, () -> null);
+      disc = getDiscFromFuture(externalIdentifier, futureTaggedDisc);
+      disc.addExternalIdentifier(userExternalIdentifier);
 
       Set<Artist> creditedArtistsToPersist = getArtistsToPersists(disc.getCreditedArtists());
       Set<Artist> relatedArtistToPersists = getArtistsToPersists(disc.getRelatedArtist());
 
-      Optional<Disc> existingDisc = discService.findByNameIgnoreCase(disc.getName());
-      Disc discToPersist = existingDisc.orElse(disc);
-      catalogue.getDiscs().add(discToPersist);
+      catalogue.getDiscs().add(disc);
+      disc.setCreditedArtists(creditedArtistsToPersist);
+      disc.setRelatedArtist(relatedArtistToPersists);
+      persistsCdOnCatalogue(catalogue, creditedArtistsToPersist, relatedArtistToPersists, disc);
+      userConfigurationService.saveConfiguration(UserConfiguration.Keys.LAST_CATALOGUE_USED, catalogue.getId().toString());
 
-      discToPersist.setCreditedArtists(creditedArtistsToPersist);
-      discToPersist.setRelatedArtist(relatedArtistToPersists);
-      persistsCdOnCatalogue(catalogue, creditedArtistsToPersist,relatedArtistToPersists, discToPersist);
+      return disc;
+   }
 
+   private Disc getDiscFromFuture(ExternalIdentifier externalIdentifier, Future<?> futureTaggedDisc) {
+      Disc disc;
+      try {
+         disc = (Disc) futureTaggedDisc.get();
+      } catch (InterruptedException | ExecutionException e) {
+         Thread.currentThread().interrupt();
+         throw new RuntimeException("Impossible to tag cd with external identifier:" + externalIdentifier.getType() + ":" +
+                 externalIdentifier.getIdentifier());
+      }
+      return disc;
+   }
 
-      userConfigurationService.saveConfiguration(UserConfiguration.Keys.LAST_CATALOGUE_USED,catalogue.getId().toString());
-
-      return discToPersist;
+   private Future<?> retrieveDiscCorrespondingToIdentifier(ExternalIdentifier externalIdentifier) {
+      return executorService.submit(() -> {
+         Disc loadedCd = taggingFacade.getDiscFromUniqueIdentifier(externalIdentifier).orElseThrow(() -> new RuntimeException("Impossible to tag cd with external identifier:" + externalIdentifier.getType() + ":" +
+                 externalIdentifier.getIdentifier()));
+         log.info("Cd tagged was: {}", externalIdentifier.getIdentifier());
+         Platform.runLater(() -> ((Stage) taggingDiscPopupView.getScene().getWindow()).close());
+         return loadedCd;
+      });
    }
 
    private Set<Artist> getArtistsToPersists(Set<Artist> creditedArtist) {

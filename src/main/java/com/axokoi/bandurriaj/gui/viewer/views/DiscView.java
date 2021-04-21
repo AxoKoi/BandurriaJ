@@ -1,6 +1,8 @@
 package com.axokoi.bandurriaj.gui.viewer.views;
 
 
+import com.axokoi.bandurriaj.gui.commons.cells.list.ArtistCell;
+import com.axokoi.bandurriaj.gui.commons.handlers.mouse.DoubleClickHandler;
 import com.axokoi.bandurriaj.gui.viewer.controllers.DiscController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;
@@ -16,7 +18,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -33,6 +34,7 @@ public class DiscView extends VBox {
 
 
     private final DiscController discController;
+    private final Label discNumber = new Label();
     private final TrackListView trackListView;
     private final MessagesProvider messagesProvider;
     private final Label discName = new Label();
@@ -63,6 +65,7 @@ public class DiscView extends VBox {
 
         VBox.setVgrow(trackListView, Priority.ALWAYS);
         this.setAlignment(Pos.CENTER);
+        getChildren().add(discNumber);
         getChildren().add(editButton);
         getChildren().add(discName);
         getChildren().add(byLabel);
@@ -79,7 +82,7 @@ public class DiscView extends VBox {
         Disc disc = discController.fetchDiscToDisplay(discToDisplay);
 
         discName.setText(disc.getName());
-
+        discNumber.setText(discToDisplay.getUserIdentifier().orElse(messagesProvider.getMessageFrom("disc.view.no.user.identifier")));
         creditedArtistLabel.setText(disc.getCreditedArtists().stream().map(Artist::getName).reduce("", (x, y) -> x + " " + y));
         trackListView.refresh(disc.getTracks());
         artists = refreshArtistsView(disc);
@@ -98,7 +101,8 @@ public class DiscView extends VBox {
         editButton.setOnAction(event -> discController.displayEditorPopup(event,disc));
 
         this.getChildren().clear();
-        getChildren().add(editButton);
+        this.getChildren().add(discNumber);
+        this.getChildren().add(editButton);
         this.getChildren().add(discName);
         this.getChildren().add(byLabel);
         this.getChildren().add(creditedArtistLabel);
@@ -114,20 +118,15 @@ public class DiscView extends VBox {
 
         ListView<Artist> newArtistsToDisplay = new ListView<>();
         newArtistsToDisplay.getItems().clear();
-        newArtistsToDisplay.setCellFactory(x-> new ListCell<>(){
-            @Override
-            protected void updateItem(Artist artist, boolean empty){
-                super.updateItem(artist, empty);
-                if(artist!= null) {
-                    this.setText(artist.getName());
-                }
-            }
-        });
+        newArtistsToDisplay.setCellFactory(x->new ArtistCell());
         newArtistsToDisplay.addEventHandler(KeyEvent.KEY_PRESSED, event-> discController.replaceCenterWithArtist(newArtistsToDisplay.getSelectionModel().getSelectedItem()));
-        newArtistsToDisplay.addEventHandler(MouseEvent.MOUSE_CLICKED, event-> discController.replaceCenterWithArtist(newArtistsToDisplay.getSelectionModel().getSelectedItem()));
+        newArtistsToDisplay.setOnMouseClicked(new DoubleClickHandler(x->discController.replaceCenterWithArtist(newArtistsToDisplay.getSelectionModel().getSelectedItem())));
 
         ObservableList<Artist> artistsToDisplay = FXCollections.observableArrayList(disc.getAllArtist());
         newArtistsToDisplay.getItems().addAll(artistsToDisplay);
         return newArtistsToDisplay;
     }
+
+
+
 }

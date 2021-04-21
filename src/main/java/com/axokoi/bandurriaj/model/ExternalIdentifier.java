@@ -1,12 +1,11 @@
 package com.axokoi.bandurriaj.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Objects;
+import javax.persistence.*;
 
 @Entity
+@Table(uniqueConstraints={
+        @UniqueConstraint(columnNames = {"identifier", "type"})
+})
 public class ExternalIdentifier {
 
    @Id
@@ -24,7 +23,7 @@ public class ExternalIdentifier {
    }
 
    public enum Type {
-      MUSICBRAINZ
+      MUSICBRAINZ, USER
    }
 
 

@@ -1,9 +1,6 @@
 package com.axokoi.bandurriaj.services.dataaccess;
 
-import com.axokoi.bandurriaj.model.Artist;
-import com.axokoi.bandurriaj.model.Disc;
-import com.axokoi.bandurriaj.model.DiscRepository;
-import com.axokoi.bandurriaj.model.Track;
+import com.axokoi.bandurriaj.model.*;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.stereotype.Component;
 
@@ -62,5 +59,22 @@ public class DiscService implements SmartSearchService<Disc> {
 
 	public Optional<Disc> findByNameIgnoreCase(String name) {
 		return discRepository.findByNameIgnoreCase(name);
+	}
+
+	public Optional<Disc> findByDiscId(String discId) {
+		return discRepository.findByDiscId(discId);
+	}
+
+	public Optional<Disc> findByBusinessIdentifier(String businessIdentifier) {
+		return discRepository.findByBusinessIdentifier(businessIdentifier);
+
+	}
+
+	public Optional<Disc> findByExternalIdentifier(ExternalIdentifier externalIdentifier) {
+		return IterableUtils.toList(discRepository.findAll()).stream()
+				.filter(x -> x.getExternalIdentifiers().stream()
+						.anyMatch(y -> y.getType() == externalIdentifier.getType() && y.getIdentifier().equals(externalIdentifier.getIdentifier())))
+				.findFirst();
+
 	}
 }

@@ -1,6 +1,7 @@
 package com.axokoi.bandurriaj.gui.viewer.views;
 
 import com.axokoi.bandurriaj.gui.commons.cells.list.SearchableCell;
+import com.axokoi.bandurriaj.gui.commons.handlers.mouse.DoubleClickHandler;
 import com.axokoi.bandurriaj.gui.viewer.controllers.SmartSearchController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Searchable;
@@ -44,16 +45,15 @@ public final class SmartSearchView extends VBox {
 
 	public void refresh(List<Searchable> smartSearchResult) {
 		ObservableList<Searchable> items = FXCollections.observableArrayList(smartSearchResult);
-
 		this.results.getItems().clear();
 		if (items.isEmpty()) {
 			return;
 		}
 
 		this.results.getItems().addAll(items);
-		this.results.setCellFactory(list -> new SearchableCell());
+		this.results.setCellFactory(list -> new SearchableCell(messagesProvider));
 
-		this.results.setOnMouseClicked(event -> smartSearchController.dispatchRefreshToController(this.results.getSelectionModel().getSelectedItem()));
+		this.results.setOnMouseClicked(new DoubleClickHandler(x->smartSearchController.dispatchRefreshToController(this.results.getSelectionModel().getSelectedItem())));
 
 	}
 

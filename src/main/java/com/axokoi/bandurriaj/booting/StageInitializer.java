@@ -2,10 +2,10 @@ package com.axokoi.bandurriaj.booting;
 
 import com.axokoi.bandurriaj.MainApplication;
 import com.axokoi.bandurriaj.ViewDispatcher;
-import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.gui.viewer.views.CatalogueView;
 import com.axokoi.bandurriaj.gui.viewer.views.MenuBarView;
 import com.axokoi.bandurriaj.gui.viewer.views.SmartSearchView;
+import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -55,7 +55,6 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
         mainPane.setLeft(catalogueView);
         mainPane.setCenter(center);
         mainPane.setRight(smartSearchView);
-        mainPane.getStyleClass().add("root");
 
         HBox footerView = new HBox();
         footerView.getChildren().add(new Text(messagesProvider.getMessageFrom("footer.copyright")));
@@ -66,6 +65,9 @@ public class StageInitializer implements ApplicationListener<MainApplication.Sta
         stage.setScene(new Scene(mainPane));
         stage.sizeToScene();
         new JMetro(stage.getScene(), Style.LIGHT);
+        /*stage.getScene().getStylesheets().clear();*/
+        stage.getScene().getStylesheets().add("styles.css");
+
         viewDispatcher.setBorderPane(mainPane);
 
         stage.show();

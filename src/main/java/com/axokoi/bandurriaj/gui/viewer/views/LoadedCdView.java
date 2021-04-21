@@ -9,7 +9,10 @@ import com.axokoi.bandurriaj.model.Disc;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -17,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class LoadedCdView extends VBox {
@@ -45,10 +47,11 @@ public class LoadedCdView extends VBox {
         warningLabel = new Label(WARNING);
         warningLabel.setVisible(false);
 
-        cdName  = new Label(this.messagesProvider.getMessageFrom("loadedCD.view.your.cd.is"));
-        catalogueName= new Label(this.messagesProvider.getMessageFrom("loadedCD.view.choose.catalogue"));
-        cancelButton = new Button(this.messagesProvider.getMessageFrom("button.cancel"));
-        saveButton = new Button(this.messagesProvider.getMessageFrom("button.save"));
+        cdName  = new Label(messagesProvider.getMessageFrom("loadedCD.view.your.cd.is"));
+        catalogueName= new Label(messagesProvider.getMessageFrom("loadedCD.view.choose.catalogue"));
+
+        cancelButton = new Button(messagesProvider.getMessageFrom("button.cancel"));
+        saveButton = new Button(messagesProvider.getMessageFrom("button.save"));
 
         ButtonBar.setButtonData(cancelButton, ButtonBar.ButtonData.NO);
         ButtonBar.setButtonData(saveButton, ButtonBar.ButtonData.YES);
@@ -81,6 +84,7 @@ public class LoadedCdView extends VBox {
         if (loadedCds.size() > 1) {
             warningLabel.setVisible(true);
         }
+
         List<Catalogue> existingCatalogues = controller.getCatalogues();
         catalogues.getItems().clear();
         catalogues.getItems().addAll(existingCatalogues);

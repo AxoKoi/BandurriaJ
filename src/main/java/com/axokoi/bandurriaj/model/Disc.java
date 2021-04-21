@@ -1,9 +1,7 @@
 package com.axokoi.bandurriaj.model;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Disc extends BusinessEntity<Disc> implements Searchable {
@@ -11,9 +9,12 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
    @GeneratedValue(strategy = GenerationType.SEQUENCE)
    private Long id;
 
+   /**
+    * The business identifier used to compare two discs.
+    */
    @Column(unique = true, updatable = false)
    private final String businessIdentifier;
-   
+
    private String name;
 
    @ManyToMany(targetEntity = Artist.class, fetch = FetchType.EAGER)
@@ -25,8 +26,14 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
    @OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
    private Set<Track> tracks;
 
-   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-   private Set<ExternalIdentifier>  externalIdentifier;
+   /**
+    * Additional identifiers for different use.
+    */
+   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+   private Set<ExternalIdentifier> externalIdentifier;
+
+   @Column(nullable = false)
+   private String discId;
 
    @Lob
    private String comment;
@@ -48,6 +55,7 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
    public Set<Artist> getCreditedArtists() {
       return creditedArtists;
    }
+
    public Set<Artist> getRelatedArtist() {
       return relatedArtist;
    }
@@ -55,6 +63,7 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
    public void setRelatedArtist(Set<Artist> relatedArtist) {
       this.relatedArtist = relatedArtist;
    }
+
    public void setCreditedArtists(Set<Artist> artists) {
       this.creditedArtists = artists;
    }
@@ -90,7 +99,7 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
       return allArtist;
    }
 
-   public Set<ExternalIdentifier> getExternalIdentifier() {
+   public Set<ExternalIdentifier> getExternalIdentifiers() {
       return externalIdentifier;
    }
 
@@ -122,5 +131,30 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
    @Override
    public int hashCode() {
       return Objects.hash(businessIdentifier);
+   }
+
+   public String getDiscId() {
+      return discId;
+   }
+
+   public void setDiscId(String discId) {
+      this.discId = discId;
+   }
+
+   public Optional<String> getUserIdentifier(){
+      if(this.getExternalIdentifiers()==null){
+         return Optional.empty();
+      }
+      return getExternalIdentifiers().stream()
+              .filter(x -> x.getType() == ExternalIdentifier.Type.USER)
+              .map(ExternalIdentifier::getIdentifier)
+              .findAny();
+   }
+
+   public void addExternalIdentifier(ExternalIdentifier userExternalIdentifier) {
+      if (this.getExternalIdentifiers() == null) {
+         this.externalIdentifier = new HashSet<>();
+      }
+      externalIdentifier.add(userExternalIdentifier);
    }
 }

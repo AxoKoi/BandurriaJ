@@ -1,6 +1,7 @@
 package com.axokoi.bandurriaj.gui.viewer.views;
 
 import com.axokoi.bandurriaj.gui.commons.cells.list.DiscCell;
+import com.axokoi.bandurriaj.gui.commons.handlers.mouse.DoubleClickHandler;
 import com.axokoi.bandurriaj.gui.viewer.controllers.ArtistController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;
@@ -12,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.List;
 public final class ArtistView extends VBox {
 	private final Label name;
 	private final Label discBy ;
-	private final ListView<Disc> discs = new ListView<>();
+	private  ListView<Disc> discs = new ListView<>();
 	private final Button editButton;
 
 	@Autowired
@@ -48,10 +48,8 @@ public final class ArtistView extends VBox {
 		getChildren().add(discBy);
 		getChildren().addAll(discs);
 
-		discs.setCellFactory(list -> new DiscCell());
 
-		discs.addEventHandler(KeyEvent.KEY_PRESSED,event-> artistController.replaceCenterWithDisc(discs.getSelectionModel().getSelectedItem()));
-		discs.addEventHandler(MouseEvent.MOUSE_CLICKED, event-> artistController.replaceCenterWithDisc(discs.getSelectionModel().getSelectedItem()));
+
 		this.setPadding(new Insets(14));
 		this.setSpacing(8);
 	}
@@ -59,10 +57,19 @@ public final class ArtistView extends VBox {
 	public void refresh(Artist artist) {
 		name.setText(artist.getName());
 		List<Disc> artistDiscs = artistController.findAllDiscByArtist(artist);
-		discs.getItems().clear();
+		discs = new ListView<>();
 		discs.getItems().addAll(FXCollections.observableArrayList(artistDiscs));
-
+/*		error aca con los discos*/
+		discs.setCellFactory(list -> new DiscCell());
+		discs.addEventHandler(KeyEvent.KEY_PRESSED,event-> artistController.replaceCenterWithDisc(discs.getSelectionModel().getSelectedItem()));
+		discs.setOnMouseClicked(new DoubleClickHandler(x->artistController.replaceCenterWithDisc(discs.getSelectionModel().getSelectedItem())));
 		editButton.setOnAction(event->artistController.displayEditorPopup(event, artist));
+
+		this.getChildren().clear();
+		getChildren().add(editButton);
+		getChildren().add(name);
+		getChildren().add(discBy);
+		getChildren().addAll(discs);
 
 	}
 
