@@ -1,6 +1,8 @@
 package com.axokoi.bandurriaj.gui.viewer.views;
 
 
+import com.axokoi.bandurriaj.gui.commons.cells.list.ArtistCell;
+import com.axokoi.bandurriaj.gui.commons.handlers.mouse.DoubleClickHandler;
 import com.axokoi.bandurriaj.gui.viewer.controllers.DiscController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;
@@ -16,7 +18,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -117,20 +118,15 @@ public class DiscView extends VBox {
 
         ListView<Artist> newArtistsToDisplay = new ListView<>();
         newArtistsToDisplay.getItems().clear();
-        newArtistsToDisplay.setCellFactory(x-> new ListCell<>(){
-            @Override
-            protected void updateItem(Artist artist, boolean empty){
-                super.updateItem(artist, empty);
-                if(artist!= null) {
-                    this.setText(artist.getName());
-                }
-            }
-        });
+        newArtistsToDisplay.setCellFactory(x->new ArtistCell());
         newArtistsToDisplay.addEventHandler(KeyEvent.KEY_PRESSED, event-> discController.replaceCenterWithArtist(newArtistsToDisplay.getSelectionModel().getSelectedItem()));
-        newArtistsToDisplay.addEventHandler(MouseEvent.MOUSE_CLICKED, event-> discController.replaceCenterWithArtist(newArtistsToDisplay.getSelectionModel().getSelectedItem()));
+        newArtistsToDisplay.setOnMouseClicked(new DoubleClickHandler(x->discController.replaceCenterWithArtist(newArtistsToDisplay.getSelectionModel().getSelectedItem())));
 
         ObservableList<Artist> artistsToDisplay = FXCollections.observableArrayList(disc.getAllArtist());
         newArtistsToDisplay.getItems().addAll(artistsToDisplay);
         return newArtistsToDisplay;
     }
+
+
+
 }

@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -65,14 +64,12 @@ public final class CatalogueView extends VBox {
 		);
 
 		treeViewToBuild.addEventHandler(KeyEvent.KEY_PRESSED, getCatalogueKeyEventEventHandler(treeViewToBuild));
-		treeViewToBuild.addEventHandler(MouseEvent.MOUSE_CLICKED,
-				event -> {
-					if (treeViewToBuild.getSelectionModel().getSelectedItem() != null &&
-							treeViewToBuild.getSelectionModel().getSelectedItem().getValue() instanceof Disc) {
-						catalogueController.dispatchRefreshToController((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
-					}
+		treeViewToBuild.setOnMouseClicked(event -> {
+			if (treeViewToBuild.getSelectionModel().getSelectedItem() != null &&
+					treeViewToBuild.getSelectionModel().getSelectedItem().getValue() instanceof Disc) {
+				catalogueController.dispatchRefreshToController((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
+			}});
 
-				});
 		treeViewToBuild.setRoot(rootItem);
 		addContextMenu(treeViewToBuild);
 		rootItem.setExpanded(true);
@@ -88,14 +85,8 @@ public final class CatalogueView extends VBox {
 			boolean isCatalogue = ((TreeView<Searchable>) event.getSource()).getSelectionModel().getSelectedItem().getValue() instanceof Catalogue;
 
 			if (isCD) {
-				switch (event.getCode()) {
-				case ENTER:
-				case UP:
-				case DOWN:
+				if (event.getCode() == KeyCode.ENTER) {
 					catalogueController.dispatchRefreshToController((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
-					break;
-				default:
-					break;
 				}
 			} else if (isCatalogue) {
 				switch (event.getCode()) {

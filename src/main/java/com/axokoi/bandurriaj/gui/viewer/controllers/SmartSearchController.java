@@ -63,6 +63,9 @@ public class SmartSearchController {
 
 	public void dispatchRefreshToController(Searchable selectedItem) {
 
+		if(selectedItem == null){
+			return;
+		}
 		if (selectedItem instanceof Disc) {
 			discController.displayViewCenter((Disc) selectedItem);
 		} else if (selectedItem instanceof Artist) {
