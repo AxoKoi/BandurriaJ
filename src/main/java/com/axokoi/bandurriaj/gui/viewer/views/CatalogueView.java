@@ -2,6 +2,7 @@ package com.axokoi.bandurriaj.gui.viewer.views;
 
 
 import com.axokoi.bandurriaj.gui.commons.cells.tree.SearchableCell;
+import com.axokoi.bandurriaj.gui.commons.handlers.DoubleClickHandler;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.gui.viewer.controllers.CatalogueController;
 import com.axokoi.bandurriaj.model.Catalogue;
@@ -65,14 +66,12 @@ public final class CatalogueView extends VBox {
 		);
 
 		treeViewToBuild.addEventHandler(KeyEvent.KEY_PRESSED, getCatalogueKeyEventEventHandler(treeViewToBuild));
-		treeViewToBuild.addEventHandler(MouseEvent.MOUSE_CLICKED,
-				event -> {
-					if (treeViewToBuild.getSelectionModel().getSelectedItem() != null &&
-							treeViewToBuild.getSelectionModel().getSelectedItem().getValue() instanceof Disc) {
-						catalogueController.dispatchRefreshToController((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
-					}
+		treeViewToBuild.setOnMouseClicked(event -> {
+			if (treeViewToBuild.getSelectionModel().getSelectedItem() != null &&
+					treeViewToBuild.getSelectionModel().getSelectedItem().getValue() instanceof Disc) {
+				catalogueController.dispatchRefreshToController((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
+			}});
 
-				});
 		treeViewToBuild.setRoot(rootItem);
 		addContextMenu(treeViewToBuild);
 		rootItem.setExpanded(true);

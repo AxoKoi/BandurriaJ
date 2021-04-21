@@ -2,6 +2,7 @@ package com.axokoi.bandurriaj.gui.editor.views;
 
 import com.axokoi.bandurriaj.gui.commons.cells.list.ArtistCell;
 import com.axokoi.bandurriaj.gui.commons.cells.list.TrackCell;
+import com.axokoi.bandurriaj.gui.commons.handlers.DoubleClickHandler;
 import com.axokoi.bandurriaj.gui.editor.controllers.DiscEditorController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;
@@ -50,18 +51,18 @@ public class DiscEditorView extends EditorView<Disc> {
       this.setCenter(center);
 
       //IRO probably to add a right click edit menu?
-      mainArtist.setOnMouseClicked(controller::displayArtistEditor);
+      mainArtist.setOnMouseClicked(new DoubleClickHandler(controller::displayArtistEditor));
     //IRO We could extract these cells to a common library
       mainArtist.setCellFactory(x-> new ArtistCell());
 
-      relatedArtist.setOnMouseClicked(controller::displayArtistEditor);
+      relatedArtist.setOnMouseClicked(new DoubleClickHandler(controller::displayArtistEditor));
       relatedArtist.setCellFactory(x-> new ArtistCell());
 
-      tracks.setOnMouseClicked(controller::displayTrackEditor);
+      tracks.setOnMouseClicked(new DoubleClickHandler(controller::displayTrackEditor));
 
       tracks.setCellFactory(x->new TrackCell());
 
-      frontCover.setOnMouseClicked(event->{
+      frontCover.setOnMouseClicked(new DoubleClickHandler(event->{
          FileChooser fileChooser = new FileChooser();
          File file = fileChooser.showOpenDialog(this.getScene().getWindow());
          try {
@@ -70,8 +71,7 @@ public class DiscEditorView extends EditorView<Disc> {
          } catch (Exception e) {
             log.error("Error when loading the image at:"+ file.getAbsolutePath(),e);
          }
-      });
-
+      }));
    }
 
    @Override

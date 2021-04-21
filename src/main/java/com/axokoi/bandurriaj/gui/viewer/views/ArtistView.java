@@ -1,6 +1,7 @@
 package com.axokoi.bandurriaj.gui.viewer.views;
 
 import com.axokoi.bandurriaj.gui.commons.cells.list.DiscCell;
+import com.axokoi.bandurriaj.gui.commons.handlers.DoubleClickHandler;
 import com.axokoi.bandurriaj.gui.viewer.controllers.ArtistController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;
@@ -51,7 +52,9 @@ public final class ArtistView extends VBox {
 		discs.setCellFactory(list -> new DiscCell());
 
 		discs.addEventHandler(KeyEvent.KEY_PRESSED,event-> artistController.replaceCenterWithDisc(discs.getSelectionModel().getSelectedItem()));
-		discs.addEventHandler(MouseEvent.MOUSE_CLICKED, event-> artistController.replaceCenterWithDisc(discs.getSelectionModel().getSelectedItem()));
+
+		discs.setOnMouseClicked(new DoubleClickHandler(x->artistController.replaceCenterWithDisc(discs.getSelectionModel().getSelectedItem())));
+
 		this.setPadding(new Insets(14));
 		this.setSpacing(8);
 	}
