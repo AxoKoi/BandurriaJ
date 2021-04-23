@@ -13,13 +13,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +40,9 @@ public class DiscView extends VBox {
     private final Label discName = new Label();
     private final Label byLabel;
     private final Label creditedArtistLabel = new Label();
+    private final HBox header;
+    private final HBox numberContainer;
+    private final HBox editContainer;
     private ListView<Artist> artists = new ListView<>();
     private ImageView albumPicture = new ImageView();
     private HBox centralComponent = new HBox();
@@ -60,18 +63,21 @@ public class DiscView extends VBox {
         albumPicture.setFitHeight(250);
         albumPicture.setFitWidth(250);
         centralComponent.getChildren().addAll(artists,albumPicture);
-
         editButton = new Button("Edit");
 
+
+        numberContainer = new HBox(discNumber);
+        numberContainer.setAlignment(Pos.CENTER_LEFT);
+        editContainer = new HBox(editButton);
+        editContainer.setAlignment(Pos.CENTER_RIGHT);
+        Region region = new Region();
+        HBox.setHgrow(region, Priority.ALWAYS);
+        header = new HBox(numberContainer, region, editContainer);
+        header.setAlignment(Pos.TOP_CENTER);
+
         VBox.setVgrow(trackListView, Priority.ALWAYS);
-        this.setAlignment(Pos.CENTER);
-        getChildren().add(discNumber);
-        getChildren().add(editButton);
-        getChildren().add(discName);
-        getChildren().add(byLabel);
-        getChildren().add(creditedArtistLabel);
-        getChildren().add(centralComponent);
-        getChildren().add(this.trackListView);
+        this.setAlignment(Pos.TOP_CENTER);
+
 
         this.setPadding(new Insets(14));
         this.setSpacing(8);
@@ -101,8 +107,7 @@ public class DiscView extends VBox {
         editButton.setOnAction(event -> discController.displayEditorPopup(event,disc));
 
         this.getChildren().clear();
-        this.getChildren().add(discNumber);
-        this.getChildren().add(editButton);
+        this.getChildren().add(header);
         this.getChildren().add(discName);
         this.getChildren().add(byLabel);
         this.getChildren().add(creditedArtistLabel);
