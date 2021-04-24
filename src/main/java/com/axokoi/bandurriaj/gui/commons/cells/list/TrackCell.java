@@ -9,6 +9,7 @@ public class TrackCell extends ListCell<Track> {
       super.updateItem(track, empty);
       if (track == null) {
          disableProperty();
+         setText("");
       } else {
          setText(track.getNumber() + " - " + track.getName() + " - " + track.getDuration());
       }

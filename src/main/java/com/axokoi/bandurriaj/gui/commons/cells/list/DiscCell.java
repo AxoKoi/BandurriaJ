@@ -10,6 +10,7 @@ public class DiscCell extends ListCell<Disc> {
       super.updateItem(disc, empty);
       if (disc == null) {
          disableProperty();
+         setText("");
       } else {
          setText(disc.getName());
       }

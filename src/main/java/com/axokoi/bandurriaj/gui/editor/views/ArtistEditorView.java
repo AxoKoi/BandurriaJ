@@ -28,8 +28,6 @@ public class ArtistEditorView extends EditorView<Artist> {
    protected ArtistEditorView(ArtistEditorController controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
 
-
-
       artistMbIdentifier.setText(messagesProvider.getMessageFrom("artist.editor.view.mbidentifier"));
       artistMbIdentifier.setText(messagesProvider.getMessageFrom("artist.editor.view.name"));
       artistMbIdentifier.setText(messagesProvider.getMessageFrom("artist.editor.view.comments"));

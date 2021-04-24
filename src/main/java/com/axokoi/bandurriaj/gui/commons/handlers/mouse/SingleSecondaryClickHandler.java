@@ -17,7 +17,7 @@ public class SingleSecondaryClickHandler implements EventHandler<MouseEvent> {
 
    @Override
    public void handle(MouseEvent mouseEvent) {
-      if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2) {
+      if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 1) {
          handler.handle(mouseEvent);
       }
    }

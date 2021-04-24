@@ -3,16 +3,21 @@ package com.axokoi.bandurriaj.gui.editor.views;
 import com.axokoi.bandurriaj.gui.commons.cells.list.ArtistCell;
 import com.axokoi.bandurriaj.gui.commons.cells.list.TrackCell;
 import com.axokoi.bandurriaj.gui.commons.handlers.mouse.DoubleClickHandler;
+import com.axokoi.bandurriaj.gui.commons.handlers.mouse.SinglePrimaryClickHandler;
 import com.axokoi.bandurriaj.gui.editor.controllers.DiscEditorController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.Track;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -30,48 +35,91 @@ public class DiscEditorView extends EditorView<Disc> {
    private ListView<Track> tracks = new ListView<>();
    private ImageView frontCover = new ImageView();
    private Button frontCoverEditButton;
-
+   private final String ADD;
 
 
    protected DiscEditorView(DiscEditorController controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
 
+      ADD = messagesProvider.getMessageFrom("button.add");
+
       frontCoverEditButton = new Button(messagesProvider.getMessageFrom("disc.editor.view.edit.image"));
       frontCover.setFitHeight(250);
       frontCover.setFitWidth(250);
 
-      GridPane center = new GridPane();
+      Font font = new Font(frontCoverEditButton.getFont().getFamily(), 20);
 
-      center.add(mainArtist, 0, 0, 1, 1);
-      center.add(relatedArtist, 1, 0, 1, 1);
-      center.add(tracks, 0, 1, 1, 1);
-      center.add(frontCover, 1, 1, 1, 1);
-      center.add(cancelButton, 0, 2, 1, 1);
-      center.add(saveButton, 1, 2, 1, 1);
+      GridPane center = new GridPane();
+      center.setAlignment(Pos.BOTTOM_CENTER);
+      center.setHgap(10);
+      center.setVgap(10);
+
+      addArtists(messagesProvider, font, center, "disc.editor.view.main.artists.label", 0, mainArtist);
+
+      addArtists(messagesProvider, font, center, "disc.editor.view.related.artists.label", 1, relatedArtist);
+
+      addTracks(messagesProvider, font, center);
+
+      addCoverImage(messagesProvider, font, center);
+
+      center.add(cancelButton, 0, 4, 1, 1);
+      center.add(saveButton, 1, 4, 1, 1);
       this.getChildren().add(center);
 
-      //IRO probably to add a right click edit menu?
+
       mainArtist.setOnMouseClicked(new DoubleClickHandler(controller::displayArtistEditor));
-    //IRO We could extract these cells to a common library
-      mainArtist.setCellFactory(x-> new ArtistCell());
+      mainArtist.setCellFactory(x -> new ArtistCell());
 
       relatedArtist.setOnMouseClicked(new DoubleClickHandler(controller::displayArtistEditor));
-      relatedArtist.setCellFactory(x-> new ArtistCell());
+      relatedArtist.setCellFactory(x -> new ArtistCell());
 
       tracks.setOnMouseClicked(new DoubleClickHandler(controller::displayTrackEditor));
+      tracks.setCellFactory(x -> new TrackCell());
 
-      tracks.setCellFactory(x->new TrackCell());
-
-      frontCover.setOnMouseClicked(new DoubleClickHandler(event->{
+      frontCoverEditButton.setOnMouseClicked(new SinglePrimaryClickHandler(event -> {
          FileChooser fileChooser = new FileChooser();
          File file = fileChooser.showOpenDialog(this.getScene().getWindow());
          try {
-            frontCover.setImage(new Image(new FileInputStream(file.getAbsolutePath())));
-            entityToEdit.setPathToImage(file.getAbsolutePath());
+            if (file != null) {
+               frontCover.setImage(new Image(new FileInputStream(file.getAbsolutePath())));
+               entityToEdit.setPathToImage(file.getAbsolutePath());
+            }
          } catch (Exception e) {
-            log.error("Error when loading the image at:"+ file.getAbsolutePath(),e);
+            log.error("Error when loading the image at:" + file.getAbsolutePath(), e);
          }
       }));
+   }
+
+   private void addCoverImage(MessagesProvider messagesProvider, Font font, GridPane center) {
+      Label frontCoverLabel = new Label(messagesProvider.getMessageFrom("disc.editor.view.front.cover.label"));
+      frontCoverLabel.setFont(font);
+      HBox frontCoverHBox = new HBox(frontCoverLabel, frontCoverEditButton);
+      frontCoverHBox.setSpacing(10);
+      center.add(frontCoverHBox, 1, 2, 1, 1);
+      center.add(frontCover, 1, 3, 1, 1);
+   }
+
+   private void addTracks(MessagesProvider messagesProvider, Font font, GridPane center) {
+      Label tracksLabel = new Label(messagesProvider.getMessageFrom("disc.editor.view.tracks.label"));
+      tracksLabel.setFont(font);
+     // Button addTrackButton = new Button(ADD);
+     // HBox tracksHBox = new HBox(tracksLabel, addTrackButton);
+      HBox tracksHBox = new HBox(tracksLabel);
+      tracksHBox.setSpacing(10);
+      center.add(tracksHBox, 0, 2, 1, 1);
+      center.add(tracks, 0, 3, 1, 1);
+   }
+
+   private void addArtists(MessagesProvider messagesProvider, Font font, GridPane center, String messageKey, int colIndex, ListView<Artist> mainArtist) {
+      Label mainArtistLabel = new Label(messagesProvider.getMessageFrom(messageKey));
+    //  Button addMainArtistButton = new Button(ADD);
+     // HBox mainArtistHBox = new HBox(mainArtistLabel, addMainArtistButton);
+      HBox mainArtistHBox = new HBox(mainArtistLabel);
+      mainArtistHBox.setSpacing(10);
+      mainArtistLabel.setFont(font);
+
+      center.add(mainArtistHBox, colIndex, 0, 1, 1);
+      center.add(mainArtist, colIndex, 1, 1, 1);
    }
 
    @Override

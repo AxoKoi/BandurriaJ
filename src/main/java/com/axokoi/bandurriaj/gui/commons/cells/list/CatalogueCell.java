@@ -10,6 +10,7 @@ public class CatalogueCell extends ListCell<Catalogue> {
       super.updateItem(catalogue, empty);
       if (catalogue == null) {
          disableProperty();
+         setText("");
       } else {
          setText(catalogue.getName());
       }
