@@ -48,7 +48,7 @@ public class DiscEditorView extends EditorView<Disc> {
       center.add(frontCover, 1, 1, 1, 1);
       center.add(cancelButton, 0, 2, 1, 1);
       center.add(saveButton, 1, 2, 1, 1);
-      this.setCenter(center);
+      this.getChildren().add(center);
 
       //IRO probably to add a right click edit menu?
       mainArtist.setOnMouseClicked(new DoubleClickHandler(controller::displayArtistEditor));

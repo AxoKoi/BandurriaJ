@@ -27,7 +27,7 @@ public class CatalogueEditorView extends EditorView<Catalogue> {
       center.add(catalogueNameInput, 1, 0, 1, 1);
       center.add(cancelButton, 0, 1, 1, 1);
       center.add(saveButton, 1, 1, 1, 1);
-      this.setCenter(center);
+      this.getChildren().add(center);
    }
 
    @Override

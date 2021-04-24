@@ -46,7 +46,7 @@ public class TrackEditorView extends EditorView<Track> {
 
       center.add(cancelButton, 0, 4, 1, 1);
       center.add(saveButton, 1, 4, 1, 1);
-      this.setCenter(center);
+      this.getChildren().add(center);
    }
 
    @Override
