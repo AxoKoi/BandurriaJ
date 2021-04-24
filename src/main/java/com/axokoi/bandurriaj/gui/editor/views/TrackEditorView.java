@@ -4,9 +4,11 @@ import com.axokoi.bandurriaj.gui.editor.controllers.EditorController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Track;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,7 +22,7 @@ public class TrackEditorView extends EditorView<Track> {
    private final TextField durationText;
    private final Label commentLabel;
    private final TextField commentText;
-
+   private final Label title = new Label();
 
    protected TrackEditorView(EditorController<Track> controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
@@ -34,7 +36,16 @@ public class TrackEditorView extends EditorView<Track> {
       commentLabel = new Label(messagesProvider.getMessageFrom("track.editor.view.comments"));
       commentText = new TextField();
 
+      this.setAlignment(Pos.TOP_CENTER);
+
+      title.setText(messagesProvider.getMessageFrom("track.editor.view.title"));
+      title.setFont(new Font(title.getFont().getFamily(),20));
+      this.getChildren().add(title);
+
       GridPane center = new GridPane();
+      center.setAlignment(Pos.BOTTOM_CENTER);
+      center.setHgap(10);
+      center.setVgap(10);
       center.add(numberLabel, 0, 0, 1, 1);
       center.add(numberText, 1, 0, 1, 1);
       center.add(nameLabel, 0, 1, 1, 1);

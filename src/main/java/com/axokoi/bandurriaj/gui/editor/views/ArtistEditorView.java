@@ -39,7 +39,7 @@ public class ArtistEditorView extends EditorView<Artist> {
       topTitle.setFont(new Font(topTitle.getFont().getFamily(),20));
       this.getChildren().add(topTitle);
 
-      center.setAlignment(Pos.CENTER);
+      center.setAlignment(Pos.BOTTOM_CENTER);
       center.setHgap(10);
       center.setVgap(10);
       center.add(artistNameLabel,0,1,1,1);
