@@ -14,8 +14,8 @@ Music fan may have a huge amount of physical CDs, LPs, Cassettes. BandurriaJ wil
  Finally, you can search in your collection by artist, band name, songs etc!
 
 If you want to participate, please do not hesitate to contact us! You can check our contributing page but your options are:
-1. You want to work on an issue --> check the open issues.
-2. You want to participate but not spending too much time--> Just pick one of our Todos in the code and create an issue to solve it! 
+1. You want to work on an issue --> check the open issues. There are a few good first issues.
+2. You want to participate but not spending too much time --> Maybe you can help us to test the alpha versions! You can download the last alpha release from https://github.com/AxoKoi/BandurriaJ/releases 
 3. You wan to do other things? just let us now.
 
 
