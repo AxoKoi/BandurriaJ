@@ -14,9 +14,11 @@ import java.util.stream.Collectors;
 public class DiscService implements SmartSearchService<Disc> {
 
 	private final DiscRepository discRepository;
+	private final CatalogueService catalogueService;
 
-	public DiscService(DiscRepository discRepository) {
+	public DiscService(DiscRepository discRepository, CatalogueService catalogueService) {
 		this.discRepository = discRepository;
+		this.catalogueService = catalogueService;
 	}
 
 
@@ -76,5 +78,11 @@ public class DiscService implements SmartSearchService<Disc> {
 						.anyMatch(y -> y.getType() == externalIdentifier.getType() && y.getIdentifier().equals(externalIdentifier.getIdentifier())))
 				.findFirst();
 
+	}
+
+	@Transactional
+	public void deleteDisc(Disc entityToDelete) {
+		catalogueService.deleteDiscFromCatalogues(entityToDelete);
+		discRepository.delete(entityToDelete);
 	}
 }

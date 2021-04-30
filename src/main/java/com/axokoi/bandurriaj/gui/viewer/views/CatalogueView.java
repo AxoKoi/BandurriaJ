@@ -2,6 +2,7 @@ package com.axokoi.bandurriaj.gui.viewer.views;
 
 
 import com.axokoi.bandurriaj.gui.commons.cells.tree.SearchableCell;
+import com.axokoi.bandurriaj.gui.commons.handlers.mouse.SinglePrimaryClickHandler;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.gui.viewer.controllers.CatalogueController;
 import com.axokoi.bandurriaj.model.Catalogue;
@@ -64,11 +65,10 @@ public final class CatalogueView extends VBox {
 		);
 
 		treeViewToBuild.addEventHandler(KeyEvent.KEY_PRESSED, getCatalogueKeyEventEventHandler(treeViewToBuild));
-		treeViewToBuild.setOnMouseClicked(event -> {
-			if (treeViewToBuild.getSelectionModel().getSelectedItem() != null &&
-					treeViewToBuild.getSelectionModel().getSelectedItem().getValue() instanceof Disc) {
-				catalogueController.dispatchRefreshToController((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
-			}});
+		treeViewToBuild.setOnMouseClicked(new SinglePrimaryClickHandler(mouseEvent->	{ if (treeViewToBuild.getSelectionModel().getSelectedItem() != null &&
+				treeViewToBuild.getSelectionModel().getSelectedItem().getValue() instanceof Disc) {
+			catalogueController.dispatchRefreshToController((Disc) treeViewToBuild.getSelectionModel().getSelectedItem().getValue());
+		}}));
 
 		treeViewToBuild.setRoot(rootItem);
 		addContextMenu(treeViewToBuild);
@@ -108,7 +108,7 @@ public final class CatalogueView extends VBox {
 		MenuItem addNewCatalogueItem = new MenuItem(messagesProvider.getMessageFrom("catalogue.view.add.new.catalogue.item"));
 		addNewCatalogueItem.setOnAction(displayAddNewCataloguePopupHandler());
 
-		MenuItem editCatalogue = new MenuItem("Edit");
+		MenuItem editCatalogue = new MenuItem(messagesProvider.getMessageFrom("catalogue.view.edit.catalogue.item"));
 		editCatalogue.setOnAction(event->catalogueController.displayEditMenu(event, (Catalogue) treeView.getSelectionModel().getSelectedItem().getValue()));
 		catalogueContextMenu.getItems().addAll(addNewCatalogueItem,editCatalogue);
 

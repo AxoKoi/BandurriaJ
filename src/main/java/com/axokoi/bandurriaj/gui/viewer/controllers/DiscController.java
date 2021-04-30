@@ -3,6 +3,7 @@ package com.axokoi.bandurriaj.gui.viewer.controllers;
 import javax.transaction.Transactional;
 
 import com.axokoi.bandurriaj.gui.commons.PopUpDisplayer;
+import com.axokoi.bandurriaj.gui.commons.popups.DeleteDiscWarningPopupController;
 import com.axokoi.bandurriaj.gui.editor.controllers.DiscEditorController;
 import com.axokoi.bandurriaj.gui.viewer.views.DiscView;
 import javafx.event.ActionEvent;
@@ -27,7 +28,8 @@ public class DiscController extends ViewerController<Disc> {
 	private ArtistService artistService;
 	@Autowired
 	private ArtistController artistController;
-
+	@Autowired
+	private DeleteDiscWarningPopupController deleteDiscWarningPopupController;
 	@Autowired
 	private  DiscEditorController discEditorController;
 	private final PopUpDisplayer popUpDisplayer;
@@ -68,5 +70,10 @@ public class DiscController extends ViewerController<Disc> {
 			discView.refresh(disc);
 			return null;
 		});
+	}
+
+	public void displayDeletePopup(ActionEvent event, Disc disc) {
+		deleteDiscWarningPopupController.refreshView(disc);
+		popUpDisplayer.displayNewPopupWithFunction(deleteDiscWarningPopupController.getView(), this.getView(), () -> null);
 	}
 }

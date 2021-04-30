@@ -43,10 +43,12 @@ public class DiscView extends VBox {
     private final HBox header;
     private final HBox numberContainer;
     private final HBox editContainer;
+    private final HBox deleteContainer;
     private ListView<Artist> artists = new ListView<>();
     private ImageView albumPicture = new ImageView();
     private HBox centralComponent = new HBox();
     private final Button editButton;
+    private final Button deleteButton;
 
 
 
@@ -63,16 +65,20 @@ public class DiscView extends VBox {
         albumPicture.setFitHeight(250);
         albumPicture.setFitWidth(250);
         centralComponent.getChildren().addAll(artists,albumPicture);
-        editButton = new Button("Edit");
-
+        editButton = new Button(messagesProvider.getMessageFrom("disc.edit.button"));
+        deleteButton = new Button(messagesProvider.getMessageFrom("disc.delete.button"));
 
         numberContainer = new HBox(discNumber);
         numberContainer.setAlignment(Pos.CENTER_LEFT);
         editContainer = new HBox(editButton);
         editContainer.setAlignment(Pos.CENTER_RIGHT);
-        Region region = new Region();
+        deleteContainer = new HBox(deleteButton);
+        deleteContainer.setAlignment(Pos.CENTER_RIGHT);
+        var region = new Region();
         HBox.setHgrow(region, Priority.ALWAYS);
-        header = new HBox(numberContainer, region, editContainer);
+        var leftHeaderContainer = new VBox(editContainer, deleteContainer);
+        leftHeaderContainer.setSpacing(8);
+        header = new HBox(numberContainer, region, leftHeaderContainer);
         header.setAlignment(Pos.TOP_CENTER);
 
         VBox.setVgrow(trackListView, Priority.ALWAYS);
@@ -105,6 +111,7 @@ public class DiscView extends VBox {
         }
 
         editButton.setOnAction(event -> discController.displayEditorPopup(event,disc));
+        deleteButton.setOnAction(event->discController.displayDeletePopup(event,disc));
 
         this.getChildren().clear();
         this.getChildren().add(header);
