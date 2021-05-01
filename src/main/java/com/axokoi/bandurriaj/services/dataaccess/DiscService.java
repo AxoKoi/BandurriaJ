@@ -77,7 +77,6 @@ public class DiscService implements SmartSearchService<Disc> {
 				.filter(x -> x.getExternalIdentifiers().stream()
 						.anyMatch(y -> y.getType() == externalIdentifier.getType() && y.getIdentifier().equals(externalIdentifier.getIdentifier())))
 				.findFirst();
-
 	}
 
 	@Transactional

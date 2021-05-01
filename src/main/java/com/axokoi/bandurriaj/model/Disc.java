@@ -94,8 +94,12 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
 
    public Set<Artist> getAllArtist() {
       Set<Artist> allArtist = new LinkedHashSet<>();
-      allArtist.addAll(this.getCreditedArtists());
-      allArtist.addAll(this.getRelatedArtist());
+      if (this.getCreditedArtists() != null) {
+         allArtist.addAll(this.getCreditedArtists());
+      }
+      if (this.getRelatedArtist() != null) {
+         allArtist.addAll(this.getRelatedArtist());
+      }
       return allArtist;
    }
 
@@ -141,8 +145,8 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
       this.discId = discId;
    }
 
-   public Optional<String> getUserIdentifier(){
-      if(this.getExternalIdentifiers()==null){
+   public Optional<String> getUserIdentifier() {
+      if (this.getExternalIdentifiers() == null) {
          return Optional.empty();
       }
       return getExternalIdentifiers().stream()
