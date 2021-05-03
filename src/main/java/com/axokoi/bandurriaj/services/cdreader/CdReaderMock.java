@@ -26,4 +26,9 @@ public class CdReaderMock implements CdReader {
       return cdIds[random.nextInt(cdIds.length)];
    }
 
+   @Override
+   public String readToC(String driverPath) {
+      return "1 7 164900 150 22460 50197 80614 100828 133318 144712";
+   }
+
 }

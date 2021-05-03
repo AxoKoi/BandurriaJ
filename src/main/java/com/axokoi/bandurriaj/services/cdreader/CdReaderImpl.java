@@ -16,21 +16,33 @@ import java.io.File;
 class CdReaderImpl implements CdReader {
 
 
-    private final String pathToLib;
-    public CdReaderImpl(@Value("${PathToLib}") String pathToLib) {
-        this.pathToLib = pathToLib;
-    }
+   private final String pathToLib;
+   private final JMBDiscId jmbDiscId;
 
-    public String readId(String driverPath) {
-        JMBDiscId discId = new JMBDiscId();
+   public CdReaderImpl(@Value("${PathToLib}") String pathToLib) {
+      this.pathToLib = pathToLib;
+      jmbDiscId = getJmbDiscId();
+   }
 
-        String relativePath= (new File("")).getAbsolutePath();
-        log.info("Initiating library at :[" + relativePath + pathToLib + "]");
-        String extension = SystemUtils.IS_OS_WINDOWS ? ".dll" : ".so";
-        discId.init(relativePath + pathToLib + extension);
+   public String readId(String driverPath) {
+      return jmbDiscId.getDiscId(driverPath);
+   }
 
-        return discId.getDiscId(driverPath);
-    }
+   @Override
+   public String readToC(String driverPath) {
+      return jmbDiscId.getToC(driverPath);
+   }
+
+   private JMBDiscId getJmbDiscId() {
+      JMBDiscId discId = new JMBDiscId();
+      String relativePath = (new File("")).getAbsolutePath();
+      log.info("Initiating library at :[" + relativePath + pathToLib + "]");
+      String extension = SystemUtils.IS_OS_WINDOWS ? ".dll" : ".so";
+      discId.init(relativePath + pathToLib + extension);
+      return discId;
+   }
+
+
 
 
 }
