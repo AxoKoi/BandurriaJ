@@ -66,7 +66,7 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
 
             return release.getMediumList().getCompleteTrackList().stream()
                     .flatMap(trackWs2 -> trackWs2.getRecording().getRelationList().getRelations().stream().map(RelationWs2::getTarget))
-                    .filter(entityWs2 -> entityWs2 instanceof ArtistWs2)
+                    .filter(ArtistWs2.class::isInstance)
                     .map(ArtistWs2.class::cast)
                     //Collect artist with the same id from different tracks
                     .collect(Collectors.groupingBy(EntityWs2::getId))

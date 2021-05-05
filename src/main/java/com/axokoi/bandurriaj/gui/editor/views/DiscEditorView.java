@@ -35,13 +35,13 @@ public class DiscEditorView extends EditorView<Disc> {
    private ListView<Track> tracks = new ListView<>();
    private ImageView frontCover = new ImageView();
    private Button frontCoverEditButton;
-   private final String ADD;
+   private final String add;
 
 
    protected DiscEditorView(DiscEditorController controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
 
-      ADD = messagesProvider.getMessageFrom("button.add");
+      add = messagesProvider.getMessageFrom("button.add");
 
       frontCoverEditButton = new Button(messagesProvider.getMessageFrom("disc.editor.view.edit.image"));
       frontCover.setFitHeight(250);
