@@ -20,9 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
@@ -64,37 +62,44 @@ public class LoadedCdController {
 
    public Disc saveCdOnCatalogue(Disc disc, Catalogue catalogue) {
       //For the moment we only have MusicBrainz implemented so we just pick the only one in the set
-      ExternalIdentifier externalIdentifier = disc.getExternalIdentifiers().stream()
-              .filter(x->x.getType()== ExternalIdentifier.Type.MUSICBRAINZ)
-              .findAny()
-              .orElseThrow(() -> new RuntimeException("Impossible to find the external indentifier for disc"));
+      Optional<ExternalIdentifier> externalIdentifier = disc.getExternalIdentifiers().stream().filter(Objects::nonNull)
+              .filter(x -> x.getType() == ExternalIdentifier.Type.MUSICBRAINZ)
+              .findAny();
 
-      Optional<Disc> discByExternalIdentifier = discService.findByExternalIdentifier(externalIdentifier);
+      Optional<Disc> discByExternalIdentifier = Optional.empty();
+      if (externalIdentifier.isPresent()) {
+         discByExternalIdentifier = discService.findByExternalIdentifier(externalIdentifier.get());
+      }
+
       //Return fast if the cd is already present on one of the catalogues.
       if (discByExternalIdentifier.isPresent()) {
          popUpDisplayer.displayNewPopupWithFunction(alreadyLoadedCdView, null, () -> null);
          return discByExternalIdentifier.get();
       }
 
-      //Complete the discinfo
 
-      ExternalIdentifier userExternalIdentifier = new ExternalIdentifier();
+      //Complete general the discinfo
+      var userExternalIdentifier = new ExternalIdentifier();
       userExternalIdentifier.setType(ExternalIdentifier.Type.USER);
       userExternalIdentifier.setIdentifier(externalIdentifierService.getNextUserIdentifier());
 
-      // Create the task for looking the metadata in the background
-      Future<?> futureTaggedDisc = retrieveDiscCorrespondingToIdentifier(externalIdentifier);
+      Set<Artist> creditedArtistsToPersist = new HashSet<>();
+      Set<Artist> relatedArtistToPersists = new HashSet<>();
 
-      popUpDisplayer.displayNewPopupWithFunction(taggingDiscPopupView, null, () -> null);
-      disc = getDiscFromFuture(externalIdentifier, futureTaggedDisc);
+      //If we can use a tagger provider
+      if(externalIdentifier.isPresent()) {
+         // Create the task for looking the metadata in the background
+         Future<?> futureTaggedDisc = retrieveDiscCorrespondingToIdentifier(externalIdentifier.get());
+
+         popUpDisplayer.displayNewPopupWithFunction(taggingDiscPopupView, null, () -> null);
+         disc = getDiscFromFuture(externalIdentifier.get(), futureTaggedDisc);
+         creditedArtistsToPersist = getArtistsToPersists(disc.getCreditedArtists());
+         relatedArtistToPersists = getArtistsToPersists(disc.getRelatedArtist());
+         disc.setCreditedArtists(creditedArtistsToPersist);
+         disc.setRelatedArtist(relatedArtistToPersists);
+      }
       disc.addExternalIdentifier(userExternalIdentifier);
-
-      Set<Artist> creditedArtistsToPersist = getArtistsToPersists(disc.getCreditedArtists());
-      Set<Artist> relatedArtistToPersists = getArtistsToPersists(disc.getRelatedArtist());
-
       catalogue.getDiscs().add(disc);
-      disc.setCreditedArtists(creditedArtistsToPersist);
-      disc.setRelatedArtist(relatedArtistToPersists);
       persistsCdOnCatalogue(catalogue, creditedArtistsToPersist, relatedArtistToPersists, disc);
       userConfigurationService.saveConfiguration(UserConfiguration.Keys.LAST_CATALOGUE_USED, catalogue.getId().toString());
 
@@ -133,6 +138,7 @@ public class LoadedCdController {
       artistsToPersist.forEach(artistService::save);
       relatedArtistToPersists.forEach(artistService::save);
       discService.save(discToPersist);
+//IRO ERror when saving
       catalogueRepository.save(catalogue);
    }
 

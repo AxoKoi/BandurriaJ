@@ -104,6 +104,9 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
    }
 
    public Set<ExternalIdentifier> getExternalIdentifiers() {
+      if (externalIdentifier == null) {
+         externalIdentifier = new HashSet<>();
+      }
       return externalIdentifier;
    }
 

@@ -17,4 +17,9 @@ public class CdReadingFacade {
         log.info("Reading from driverPath:[" + driverPath +"]");
         return reader.readId(driverPath);
     }
+
+    public String readToc(String driverPath){
+        log.info("Creating ToC from driverPath:[" + driverPath +"]");
+        return reader.readToC(driverPath);
+    }
 }
