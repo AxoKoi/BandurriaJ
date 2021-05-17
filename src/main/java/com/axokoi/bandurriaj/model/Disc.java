@@ -40,6 +40,10 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
 
    private String pathToImage;
 
+   @OneToMany(fetch = FetchType.EAGER)
+   private Set<MusicGenre> genres;
+
+
    public Disc() {
       businessIdentifier = super.getBusinessIdentifier();
    }
@@ -163,5 +167,12 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
          this.externalIdentifier = new HashSet<>();
       }
       externalIdentifier.add(userExternalIdentifier);
+   }
+   public Set<MusicGenre> getGenres() {
+      return genres;
+   }
+
+   public void setGenres(Set<MusicGenre> genres) {
+      this.genres = genres;
    }
 }

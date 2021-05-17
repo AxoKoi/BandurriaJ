@@ -1,5 +1,4 @@
 
--- create new table
 CREATE CACHED TABLE "PUBLIC"."MUSIC_GENRE"(
                                         "ID" BIGINT NOT NULL PRIMARY KEY,
                                         "NAME" VARCHAR(255)
