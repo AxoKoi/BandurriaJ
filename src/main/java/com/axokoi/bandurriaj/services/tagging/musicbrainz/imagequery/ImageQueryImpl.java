@@ -48,7 +48,7 @@ public class ImageQueryImpl implements ReleaseImageQuery {
 
       try {
          restTemplate.execute(url, HttpMethod.GET, requestCallback, responseExtractor, mbIdentifier);
-      } catch (RuntimeException e) {
+      }catch (RuntimeException e) {
          log.error("Couldn't download image for release " + mbIdentifier, e);
          return Optional.empty();
       }

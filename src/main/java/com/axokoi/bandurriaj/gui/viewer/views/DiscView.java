@@ -8,6 +8,7 @@ import com.axokoi.bandurriaj.gui.viewer.controllers.DiscController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
 import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
+import com.axokoi.bandurriaj.model.MusicGenre;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -40,6 +42,7 @@ public class DiscView extends VBox {
     private final Label discName = new Label();
     private final Label byLabel;
     private final Label creditedArtistLabel = new Label();
+    private final Label discGenres = new Label();
     private final HBox header;
     private final HBox numberContainer;
     private final HBox editContainer;
@@ -96,6 +99,7 @@ public class DiscView extends VBox {
         discName.setText(disc.getName());
         discNumber.setText(discToDisplay.getUserIdentifier().orElse(messagesProvider.getMessageFrom("disc.view.no.user.identifier")));
         creditedArtistLabel.setText(disc.getCreditedArtists().stream().map(Artist::getName).reduce("", (x, y) -> x + " " + y));
+        discGenres.setText(disc.getGenres().stream().map(MusicGenre::getName).collect(Collectors.joining(" - ")));
         trackListView.refresh(disc.getTracks());
         artists = refreshArtistsView(disc);
 
@@ -118,6 +122,7 @@ public class DiscView extends VBox {
         this.getChildren().add(discName);
         this.getChildren().add(byLabel);
         this.getChildren().add(creditedArtistLabel);
+        this.getChildren().add(discGenres);
         centralComponent.getChildren().clear();
         HBox.setHgrow(artists, Priority.ALWAYS);
         centralComponent.getChildren().addAll(artists, albumPicture);
