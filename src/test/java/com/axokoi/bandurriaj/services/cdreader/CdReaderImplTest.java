@@ -1,7 +1,9 @@
 package com.axokoi.bandurriaj.services.cdreader;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test class to work that the LibdiscId is working.
  * It's not a unit test, used as a development tool.
  */
+@Ignore
 @RunWith(SpringRunner.class)
 public class CdReaderImplTest {
    /**

@@ -2,6 +2,7 @@ package com.axokoi.bandurriaj.gui.viewer.views;
 
 
 import com.axokoi.bandurriaj.gui.commons.cells.list.ArtistCell;
+import com.axokoi.bandurriaj.gui.commons.handlers.key.EnterKeyHandler;
 import com.axokoi.bandurriaj.gui.commons.handlers.mouse.DoubleClickHandler;
 import com.axokoi.bandurriaj.gui.viewer.controllers.DiscController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
@@ -16,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -131,7 +131,7 @@ public class DiscView extends VBox {
         ListView<Artist> newArtistsToDisplay = new ListView<>();
         newArtistsToDisplay.getItems().clear();
         newArtistsToDisplay.setCellFactory(x->new ArtistCell());
-        newArtistsToDisplay.addEventHandler(KeyEvent.KEY_PRESSED, event-> discController.replaceCenterWithArtist(newArtistsToDisplay.getSelectionModel().getSelectedItem()));
+        newArtistsToDisplay.setOnKeyPressed(new EnterKeyHandler(event -> discController.replaceCenterWithArtist(newArtistsToDisplay.getSelectionModel().getSelectedItem())));
         newArtistsToDisplay.setOnMouseClicked(new DoubleClickHandler(x->discController.replaceCenterWithArtist(newArtistsToDisplay.getSelectionModel().getSelectedItem())));
 
         ObservableList<Artist> artistsToDisplay = FXCollections.observableArrayList(disc.getAllArtist());
