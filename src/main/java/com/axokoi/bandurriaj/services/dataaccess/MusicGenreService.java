@@ -15,12 +15,15 @@ public class MusicGenreService {
       this.repository = repository;
    }
 
+   public void save(MusicGenre genre){
+      repository.save(genre);
+   }
 
-   Optional<MusicGenre> findByName(String name) {
+   public Optional<MusicGenre> findByName(String name) {
       return repository.findByName(name);
    }
 
-   MusicGenre findByNameAddIfNotPresent(String name) {
+   public MusicGenre findByNameAddIfNotPresent(String name) {
       Optional<MusicGenre> musicGenre = repository.findByName(name);
       if (musicGenre.isPresent()) {
          return musicGenre.get();

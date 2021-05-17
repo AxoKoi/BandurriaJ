@@ -5,10 +5,7 @@ import com.axokoi.bandurriaj.gui.commons.popups.AlreadyLoadedCdPopupView;
 import com.axokoi.bandurriaj.gui.commons.popups.TaggingDiscPopupView;
 import com.axokoi.bandurriaj.gui.viewer.views.LoadedCdView;
 import com.axokoi.bandurriaj.model.*;
-import com.axokoi.bandurriaj.services.dataaccess.ArtistService;
-import com.axokoi.bandurriaj.services.dataaccess.DiscService;
-import com.axokoi.bandurriaj.services.dataaccess.ExternalIdentifierService;
-import com.axokoi.bandurriaj.services.dataaccess.UserConfigurationService;
+import com.axokoi.bandurriaj.services.dataaccess.*;
 import com.axokoi.bandurriaj.services.tagging.TaggingFacade;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -49,8 +46,9 @@ public class LoadedCdController {
    private final PopUpDisplayer popUpDisplayer;
    private final AlreadyLoadedCdPopupView alreadyLoadedCdView;
    private final ExternalIdentifierService externalIdentifierService;
+   private final MusicGenreService musicGenreService;
 
-   public LoadedCdController(TaggingDiscPopupView taggingDiscPopupView, ThreadPoolTaskExecutor executorService, UserConfigurationService userConfigurationService, PopUpDisplayer popUpDisplayer, AlreadyLoadedCdPopupView alreadyLoadedCdView, ExternalIdentifierService externalIdentifierService) {
+   public LoadedCdController(TaggingDiscPopupView taggingDiscPopupView, ThreadPoolTaskExecutor executorService, UserConfigurationService userConfigurationService, PopUpDisplayer popUpDisplayer, AlreadyLoadedCdPopupView alreadyLoadedCdView, ExternalIdentifierService externalIdentifierService, MusicGenreService musicGenreService) {
       this.taggingDiscPopupView = taggingDiscPopupView;
       this.executorService = executorService;
 
@@ -58,6 +56,7 @@ public class LoadedCdController {
       this.popUpDisplayer = popUpDisplayer;
       this.alreadyLoadedCdView = alreadyLoadedCdView;
       this.externalIdentifierService = externalIdentifierService;
+      this.musicGenreService = musicGenreService;
    }
 
    public Disc saveCdOnCatalogue(Disc disc, Catalogue catalogue) {
@@ -87,7 +86,7 @@ public class LoadedCdController {
       Set<Artist> relatedArtistToPersists = new HashSet<>();
 
       //If we can use a tagger provider
-      if(externalIdentifier.isPresent()) {
+      if (externalIdentifier.isPresent()) {
          // Create the task for looking the metadata in the background
          Future<?> futureTaggedDisc = retrieveDiscCorrespondingToIdentifier(externalIdentifier.get());
 
@@ -137,8 +136,11 @@ public class LoadedCdController {
    protected void persistsCdOnCatalogue(Catalogue catalogue, Set<Artist> artistsToPersist, Set<Artist> relatedArtistToPersists, Disc discToPersist) {
       artistsToPersist.forEach(artistService::save);
       relatedArtistToPersists.forEach(artistService::save);
+
+      discToPersist.setGenres(discToPersist.getGenres().stream().map(x -> musicGenreService.findByNameAddIfNotPresent(x.getName())).collect(Collectors.toSet()));
+
       discService.save(discToPersist);
-//IRO ERror when saving
+
       catalogueRepository.save(catalogue);
    }
 

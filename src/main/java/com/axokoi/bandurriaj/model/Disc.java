@@ -40,7 +40,7 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
 
    private String pathToImage;
 
-   @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+   @OneToMany(fetch = FetchType.EAGER)
    private Set<MusicGenre> genres;
 
    public Disc() {
@@ -169,6 +169,9 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
    }
 
    public Set<MusicGenre> getGenres() {
+      if (genres == null) {
+         return new HashSet<>();
+      }
       return genres;
    }
 
