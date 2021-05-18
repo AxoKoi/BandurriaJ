@@ -7,18 +7,15 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.axokoi.bandurriaj.services.dataaccess.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.axokoi.bandurriaj.model.Artist;
-import com.axokoi.bandurriaj.services.dataaccess.ArtistService;
 import com.axokoi.bandurriaj.model.Catalogue;
-import com.axokoi.bandurriaj.services.dataaccess.CatalogueService;
 import com.axokoi.bandurriaj.model.Disc;
-import com.axokoi.bandurriaj.services.dataaccess.DiscService;
 import com.axokoi.bandurriaj.model.Searchable;
 import com.axokoi.bandurriaj.model.Track;
-import com.axokoi.bandurriaj.services.dataaccess.TrackService;
 import com.axokoi.bandurriaj.gui.viewer.views.SmartSearchView;
 
 @Component
@@ -41,7 +38,8 @@ public class SmartSearchController {
 	private ArtistService artistService;
 	@Autowired
 	private CatalogueService catalogueService;
-
+	@Autowired
+	private MusicGenreService musicGenreService;
 
 	@Transactional
 	public void smartSearch(String inputSearch) {
@@ -54,6 +52,8 @@ public class SmartSearchController {
 		results.addAll(artistService.smartSearch(inputSearch));
 		//search Track
 		results.addAll(trackService.smartSearch(inputSearch));
+		//Search CDs from Genre
+		results.addAll(musicGenreService.smartSearch(inputSearch));
 
 		results = results.stream().sorted(Comparator.comparing(x -> x.getClass().toString())
 		.thenComparing(x->((Searchable)x).getName()))
