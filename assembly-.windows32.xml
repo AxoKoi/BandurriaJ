@@ -26,5 +26,9 @@
             <directory>${javafx.path.from}</directory>
             <outputDirectory>lib/javafx</outputDirectory>
         </fileSet>
+        <fileSet> <!-- Create empty directory -->
+            <outputDirectory>images</outputDirectory>
+            <excludes><exclude>**/*</exclude></excludes>
+        </fileSet>
     </fileSets>
 </assembly>
