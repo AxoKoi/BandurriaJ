@@ -40,6 +40,9 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
 
    private String pathToImage;
 
+   @OneToMany(fetch = FetchType.EAGER)
+   private Set<MusicGenre> genres;
+
    public Disc() {
       businessIdentifier = super.getBusinessIdentifier();
    }
@@ -94,12 +97,19 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
 
    public Set<Artist> getAllArtist() {
       Set<Artist> allArtist = new LinkedHashSet<>();
-      allArtist.addAll(this.getCreditedArtists());
-      allArtist.addAll(this.getRelatedArtist());
+      if (this.getCreditedArtists() != null) {
+         allArtist.addAll(this.getCreditedArtists());
+      }
+      if (this.getRelatedArtist() != null) {
+         allArtist.addAll(this.getRelatedArtist());
+      }
       return allArtist;
    }
 
    public Set<ExternalIdentifier> getExternalIdentifiers() {
+      if (externalIdentifier == null) {
+         externalIdentifier = new HashSet<>();
+      }
       return externalIdentifier;
    }
 
@@ -141,8 +151,8 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
       this.discId = discId;
    }
 
-   public Optional<String> getUserIdentifier(){
-      if(this.getExternalIdentifiers()==null){
+   public Optional<String> getUserIdentifier() {
+      if (this.getExternalIdentifiers() == null) {
          return Optional.empty();
       }
       return getExternalIdentifiers().stream()
@@ -156,5 +166,16 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
          this.externalIdentifier = new HashSet<>();
       }
       externalIdentifier.add(userExternalIdentifier);
+   }
+
+   public Set<MusicGenre> getGenres() {
+      if (genres == null) {
+         return new HashSet<>();
+      }
+      return genres;
+   }
+
+   public void setGenres(Set<MusicGenre> genres) {
+      this.genres = genres;
    }
 }

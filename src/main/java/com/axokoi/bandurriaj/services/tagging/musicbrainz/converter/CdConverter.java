@@ -1,13 +1,12 @@
 package com.axokoi.bandurriaj.services.tagging.musicbrainz.converter;
 
-import com.axokoi.bandurriaj.model.Artist;
-import com.axokoi.bandurriaj.model.Disc;
-import com.axokoi.bandurriaj.model.ExternalIdentifier;
-import com.axokoi.bandurriaj.model.Track;
+import com.axokoi.bandurriaj.model.*;
 import com.axokoi.bandurriaj.services.tagging.musicbrainz.imagequery.ReleaseImageQuery;
+import lombok.extern.slf4j.Slf4j;
 import org.musicbrainz.MBWS2Exception;
 import org.musicbrainz.model.NameCreditWs2;
 import org.musicbrainz.model.RelationWs2;
+import org.musicbrainz.model.TagWs2;
 import org.musicbrainz.model.TrackWs2;
 import org.musicbrainz.model.entity.ArtistWs2;
 import org.musicbrainz.model.entity.EntityWs2;
@@ -20,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class CdConverter implements Converter<ReleaseWs2, Disc> {
 
@@ -47,7 +47,8 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
         try {
              release = controller.getComplete(release);
         } catch (MBWS2Exception e) {
-            e.printStackTrace();//IRO add logger instead
+            log.error("Error when retrieving information for:" + disc.getName() + " A minimal CD will be generated.");
+            return disc;
         }
 
         Set<Artist> relatedArtists  = extractRelatedArtistFromRelease(release);
@@ -55,6 +56,10 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
         disc.setTracks(getTrackList(release));
         disc.setDiscId(release.getMediumList().getCompleteDiscList().stream().findAny().orElseThrow().getDiscId());
         imageQuery.downloadFrontImage(release.getId()).ifPresent(disc::setPathToImage);
+
+        List<TagWs2> tags = release.getReleaseGroup().getTags();
+        Set<MusicGenre> genres = tags.stream().map(TagWs2::getName).map(MusicGenre::new).collect(Collectors.toSet());
+        disc.setGenres(genres);
 
         return disc;
     }
@@ -66,7 +71,7 @@ public class CdConverter implements Converter<ReleaseWs2, Disc> {
 
             return release.getMediumList().getCompleteTrackList().stream()
                     .flatMap(trackWs2 -> trackWs2.getRecording().getRelationList().getRelations().stream().map(RelationWs2::getTarget))
-                    .filter(entityWs2 -> entityWs2 instanceof ArtistWs2)
+                    .filter(ArtistWs2.class::isInstance)
                     .map(ArtistWs2.class::cast)
                     //Collect artist with the same id from different tracks
                     .collect(Collectors.groupingBy(EntityWs2::getId))

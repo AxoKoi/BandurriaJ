@@ -49,7 +49,9 @@ public class MenuBarView extends MenuBar {
         menuItem.setOnAction(e -> {
             Optional<String> userPreferredPath = menuBarController.getUserPreferredPath();
             File pathToDriver = userPreferredPath.map(File::new).orElseGet(() -> choosePathToPreferredDriver(stage));
-            menuBarController.handleReadCd(pathToDriver);
+            if (pathToDriver != null) {
+                menuBarController.handleReadCd(pathToDriver);
+            }
         });
 
         menu.getItems().add(menuItem);
@@ -59,7 +61,9 @@ public class MenuBarView extends MenuBar {
     private File choosePathToPreferredDriver(Stage stage) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File path = directoryChooser.showDialog(stage);
-        menuBarController.savePathToPreferredDriver(path.getAbsolutePath());
+        if(path != null) {
+            menuBarController.savePathToPreferredDriver(path.getAbsolutePath());
+        }
         return path;
     }
 

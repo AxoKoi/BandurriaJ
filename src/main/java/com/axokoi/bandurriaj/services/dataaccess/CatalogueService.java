@@ -2,6 +2,7 @@ package com.axokoi.bandurriaj.services.dataaccess;
 
 import java.util.List;
 
+import com.axokoi.bandurriaj.model.Disc;
 import org.springframework.stereotype.Component;
 
 import com.axokoi.bandurriaj.model.Catalogue;
@@ -25,5 +26,12 @@ public class CatalogueService implements SmartSearchService<Catalogue> {
 
 	public void save(Catalogue catalogue){
 		catalogueRepository.save(catalogue);
+	}
+
+	public void deleteDiscFromCatalogues(Disc entityToDelete) {
+		catalogueRepository.findAll().forEach(catalogue -> {
+			catalogue.getDiscs().remove(entityToDelete);
+			this.save(catalogue);
+		});
 	}
 }
