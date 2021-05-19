@@ -1,6 +1,9 @@
 # BandurriaJ
 
-Our First Alpha version is released! you can download it for windows here: https://axokoi.com/bandurriaj/
+Our Alpha versions have been released! you can download the latest one at https://github.com/AxoKoi/BandurriaJ/releases 
+We provide executable for Windows 34/64 bits and ubuntu (Although it's not a supported version).
+
+## What is BandurriaJ?
 
 Music fan may have a huge amount of physical CDs, LPs, Cassettes. BandurriaJ will allow them to manage their full catalogue,
  providing tagging features and queries possibilities.
