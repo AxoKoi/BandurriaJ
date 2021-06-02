@@ -2,9 +2,7 @@ package com.axokoi.bandurriaj.gui.editor.views;
 
 import com.axokoi.bandurriaj.gui.editor.CRUDTrackView;
 import com.axokoi.bandurriaj.gui.editor.controllers.AddTrackEditorController;
-import com.axokoi.bandurriaj.gui.editor.controllers.EditorController;
 import com.axokoi.bandurriaj.i18n.MessagesProvider;
-import com.axokoi.bandurriaj.model.Track;
 import javafx.event.ActionEvent;
 import org.springframework.stereotype.Component;
 

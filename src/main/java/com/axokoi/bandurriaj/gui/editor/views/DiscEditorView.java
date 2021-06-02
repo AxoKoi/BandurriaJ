@@ -22,7 +22,6 @@ import javafx.stage.FileChooser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.util.Comparator;
 
@@ -36,35 +35,34 @@ public class DiscEditorView extends EditorView<Disc> {
    private ImageView frontCover = new ImageView();
    private Button frontCoverEditButton;
    private final String add;
-   private final DiscEditorController controller;
+
 
    protected DiscEditorView(DiscEditorController controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
-      this.controller = controller;
       add = messagesProvider.getMessageFrom("button.add");
 
       frontCoverEditButton = new Button(messagesProvider.getMessageFrom("disc.editor.view.edit.image"));
       frontCover.setFitHeight(250);
       frontCover.setFitWidth(250);
 
-      Font font = new Font(frontCoverEditButton.getFont().getFamily(), 20);
+      var font = new Font(frontCoverEditButton.getFont().getFamily(), 20);
 
-      GridPane center = new GridPane();
-      center.setAlignment(Pos.BOTTOM_CENTER);
-      center.setHgap(10);
-      center.setVgap(10);
+      var centerGridPane = new GridPane();
+      centerGridPane.setAlignment(Pos.BOTTOM_CENTER);
+      centerGridPane.setHgap(10);
+      centerGridPane.setVgap(10);
 
-      addArtists(messagesProvider, font, center, "disc.editor.view.main.artists.label", 0, mainArtist);
+      addArtists(messagesProvider, font, centerGridPane, "disc.editor.view.main.artists.label", 0, mainArtist);
 
-      addArtists(messagesProvider, font, center, "disc.editor.view.related.artists.label", 1, relatedArtist);
+      addArtists(messagesProvider, font, centerGridPane, "disc.editor.view.related.artists.label", 1, relatedArtist);
 
-      addTracks(messagesProvider, font, center);
+      addTracks(messagesProvider, font, centerGridPane);
 
-      addCoverImage(messagesProvider, font, center);
+      addCoverImage(messagesProvider, font, centerGridPane);
 
-      center.add(cancelButton, 0, 4, 1, 1);
-      center.add(saveButton, 1, 4, 1, 1);
-      this.getChildren().add(center);
+      centerGridPane.add(cancelButton, 0, 4, 1, 1);
+      centerGridPane.add(saveButton, 1, 4, 1, 1);
+      this.getChildren().add(centerGridPane);
 
 
       mainArtist.setOnMouseClicked(new DoubleClickHandler(controller::displayArtistEditor));
@@ -77,8 +75,8 @@ public class DiscEditorView extends EditorView<Disc> {
       tracks.setCellFactory(x -> new TrackCell());
 
       frontCoverEditButton.setOnMouseClicked(new SinglePrimaryClickHandler(event -> {
-         FileChooser fileChooser = new FileChooser();
-         File file = fileChooser.showOpenDialog(this.getScene().getWindow());
+         var fileChooser = new FileChooser();
+         var file = fileChooser.showOpenDialog(this.getScene().getWindow());
          try {
             if (file != null) {
                frontCover.setImage(new Image(new FileInputStream(file.getAbsolutePath())));
@@ -91,9 +89,9 @@ public class DiscEditorView extends EditorView<Disc> {
    }
 
    private void addCoverImage(MessagesProvider messagesProvider, Font font, GridPane center) {
-      Label frontCoverLabel = new Label(messagesProvider.getMessageFrom("disc.editor.view.front.cover.label"));
+      var frontCoverLabel = new Label(messagesProvider.getMessageFrom("disc.editor.view.front.cover.label"));
       frontCoverLabel.setFont(font);
-      HBox frontCoverHBox = new HBox(frontCoverLabel, frontCoverEditButton);
+      var frontCoverHBox = new HBox(frontCoverLabel, frontCoverEditButton);
       frontCoverHBox.setSpacing(10);
       center.add(frontCoverHBox, 1, 2, 1, 1);
       center.add(frontCover, 1, 3, 1, 1);
@@ -103,19 +101,17 @@ public class DiscEditorView extends EditorView<Disc> {
       var tracksLabel = new Label(messagesProvider.getMessageFrom("disc.editor.view.tracks.label"));
       tracksLabel.setFont(font);
       var addTrackButton = new Button(add);
-      addTrackButton.setOnAction(event->controller.addNewTrack(event));
-      HBox tracksHBox = new HBox(tracksLabel, addTrackButton);
-      //HBox tracksHBox = new HBox(tracksLabel);
+
+      addTrackButton.setOnAction(((DiscEditorController) controller)::addNewTrack);
+      var tracksHBox = new HBox(tracksLabel, addTrackButton);
       tracksHBox.setSpacing(10);
       center.add(tracksHBox, 0, 2, 1, 1);
       center.add(tracks, 0, 3, 1, 1);
    }
 
    private void addArtists(MessagesProvider messagesProvider, Font font, GridPane center, String messageKey, int colIndex, ListView<Artist> mainArtist) {
-      Label mainArtistLabel = new Label(messagesProvider.getMessageFrom(messageKey));
-      //  Button addMainArtistButton = new Button(ADD);
-      // HBox mainArtistHBox = new HBox(mainArtistLabel, addMainArtistButton);
-      HBox mainArtistHBox = new HBox(mainArtistLabel);
+      var mainArtistLabel = new Label(messagesProvider.getMessageFrom(messageKey));
+      var mainArtistHBox = new HBox(mainArtistLabel);
       mainArtistHBox.setSpacing(10);
       mainArtistLabel.setFont(font);
 
