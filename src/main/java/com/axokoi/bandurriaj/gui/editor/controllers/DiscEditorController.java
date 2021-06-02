@@ -23,6 +23,8 @@ public class DiscEditorController extends EditorController<Disc> {
    private ArtistEditorController artistEditorController;
    @Autowired
    private TrackEditorController trackEditorController;
+   @Autowired
+   private AddTrackEditorController addTrackEditorController;
 
    public DiscEditorController(DiscService discService, PopUpDisplayer popUpDisplayer) {
       this.discService = discService;
@@ -70,5 +72,15 @@ public class DiscEditorController extends EditorController<Disc> {
               }
       );
 
+   }
+
+   public void addNewTrack(ActionEvent event) {
+      addTrackEditorController.refreshView();
+      popUpDisplayer.displayNewPopupWithFunction(addTrackEditorController.getView(),null,
+              ()->{
+         this.getView().getEntityToEdit().getTracks().add(addTrackEditorController.getView().getEntityToEdit());
+         this.refreshView(this.getView().getEntityToEdit());
+         return  null;
+              });
    }
 }

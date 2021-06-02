@@ -36,11 +36,11 @@ public class DiscEditorView extends EditorView<Disc> {
    private ImageView frontCover = new ImageView();
    private Button frontCoverEditButton;
    private final String add;
-
+   private final DiscEditorController controller;
 
    protected DiscEditorView(DiscEditorController controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
-
+      this.controller = controller;
       add = messagesProvider.getMessageFrom("button.add");
 
       frontCoverEditButton = new Button(messagesProvider.getMessageFrom("disc.editor.view.edit.image"));
@@ -100,11 +100,12 @@ public class DiscEditorView extends EditorView<Disc> {
    }
 
    private void addTracks(MessagesProvider messagesProvider, Font font, GridPane center) {
-      Label tracksLabel = new Label(messagesProvider.getMessageFrom("disc.editor.view.tracks.label"));
+      var tracksLabel = new Label(messagesProvider.getMessageFrom("disc.editor.view.tracks.label"));
       tracksLabel.setFont(font);
-     // Button addTrackButton = new Button(ADD);
-     // HBox tracksHBox = new HBox(tracksLabel, addTrackButton);
-      HBox tracksHBox = new HBox(tracksLabel);
+      var addTrackButton = new Button(add);
+      addTrackButton.setOnAction(event->controller.addNewTrack(event));
+      HBox tracksHBox = new HBox(tracksLabel, addTrackButton);
+      //HBox tracksHBox = new HBox(tracksLabel);
       tracksHBox.setSpacing(10);
       center.add(tracksHBox, 0, 2, 1, 1);
       center.add(tracks, 0, 3, 1, 1);
@@ -112,8 +113,8 @@ public class DiscEditorView extends EditorView<Disc> {
 
    private void addArtists(MessagesProvider messagesProvider, Font font, GridPane center, String messageKey, int colIndex, ListView<Artist> mainArtist) {
       Label mainArtistLabel = new Label(messagesProvider.getMessageFrom(messageKey));
-    //  Button addMainArtistButton = new Button(ADD);
-     // HBox mainArtistHBox = new HBox(mainArtistLabel, addMainArtistButton);
+      //  Button addMainArtistButton = new Button(ADD);
+      // HBox mainArtistHBox = new HBox(mainArtistLabel, addMainArtistButton);
       HBox mainArtistHBox = new HBox(mainArtistLabel);
       mainArtistHBox.setSpacing(10);
       mainArtistLabel.setFont(font);

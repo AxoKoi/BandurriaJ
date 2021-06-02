@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public abstract class EditorView<S extends Searchable> extends VBox {
 
-   private final EditorController<S> controller;
+   protected final EditorController<S> controller;
    protected final Button saveButton;
    protected final Button cancelButton;
    protected final MessagesProvider messagesProvider;

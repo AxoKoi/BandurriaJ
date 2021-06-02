@@ -32,6 +32,11 @@ public abstract class CRUDTrackView extends EditorView<Track> {
       title.setFont(new Font(title.getFont().getFamily(),20));
       this.getChildren().add(title);
 
+      numberLabel.setText(messagesProvider.getMessageFrom("track.editor.view.number"));
+      nameLabel.setText(messagesProvider.getMessageFrom("track.editor.view.name"));
+      durationLabel.setText(messagesProvider.getMessageFrom("track.editor.view.duration"));
+      commentLabel.setText(messagesProvider.getMessageFrom("track.editor.view.comments"));
+
       var center = new GridPane();
       center.setAlignment(Pos.BOTTOM_CENTER);
       center.setHgap(10);
