@@ -23,4 +23,8 @@ public class TrackService implements SmartSearchService<Track> {
 	public void save(Track track){
 		trackRepository.save(track);
 	}
+
+	public void delete(Track track) {
+		trackRepository.delete(track);
+	}
 }

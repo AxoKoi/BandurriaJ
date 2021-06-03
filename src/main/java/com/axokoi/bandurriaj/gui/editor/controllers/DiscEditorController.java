@@ -6,6 +6,7 @@ import com.axokoi.bandurriaj.model.Artist;
 import com.axokoi.bandurriaj.model.Disc;
 import com.axokoi.bandurriaj.model.Track;
 import com.axokoi.bandurriaj.services.dataaccess.DiscService;
+import com.axokoi.bandurriaj.services.dataaccess.TrackService;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.ListView;
@@ -18,6 +19,7 @@ public class DiscEditorController extends EditorController<Disc> {
    @Autowired
    private DiscEditorView discEditorView;
    private final DiscService discService;
+   private final TrackService trackService;
    private final PopUpDisplayer popUpDisplayer;
    @Autowired
    private ArtistEditorController artistEditorController;
@@ -26,8 +28,9 @@ public class DiscEditorController extends EditorController<Disc> {
    @Autowired
    private AddTrackEditorController addTrackEditorController;
 
-   public DiscEditorController(DiscService discService, PopUpDisplayer popUpDisplayer) {
+   public DiscEditorController(DiscService discService, TrackService trackService, PopUpDisplayer popUpDisplayer) {
       this.discService = discService;
+      this.trackService = trackService;
       this.popUpDisplayer = popUpDisplayer;
    }
 
@@ -82,5 +85,14 @@ public class DiscEditorController extends EditorController<Disc> {
          this.refreshView(this.getView().getEntityToEdit());
          return  null;
               });
+   }
+//IRO to double check all of this.
+   public void deleteTrack(ActionEvent actionEvent, ListView<Track> tracks) {
+      var track = tracks.getSelectionModel().getSelectedItem();
+      if(track!=null){
+         discService.deleteTrackFromCD(this.getView().getEntityToEdit(),track);
+
+         this.refreshView(this.getView().getEntityToEdit());
+      }
    }
 }

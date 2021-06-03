@@ -23,7 +23,7 @@ public class Disc extends BusinessEntity<Disc> implements Searchable {
    @ManyToMany(targetEntity = Artist.class, fetch = FetchType.EAGER)
    private Set<Artist> relatedArtist;
 
-   @OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+   @OneToMany(targetEntity = Track.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
    private Set<Track> tracks;
 
    /**

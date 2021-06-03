@@ -84,4 +84,10 @@ public class DiscService implements SmartSearchService<Disc> {
 		catalogueService.deleteDiscFromCatalogues(entityToDelete);
 		discRepository.delete(entityToDelete);
 	}
+
+	@Transactional
+	public void deleteTrackFromCD(Disc disc, Track track) {
+		disc.getTracks().remove(track);
+		discRepository.save(disc);
+	}
 }

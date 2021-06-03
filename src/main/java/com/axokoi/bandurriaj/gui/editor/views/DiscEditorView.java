@@ -35,11 +35,13 @@ public class DiscEditorView extends EditorView<Disc> {
    private ImageView frontCover = new ImageView();
    private Button frontCoverEditButton;
    private final String add;
+   private final String delete;
 
 
    protected DiscEditorView(DiscEditorController controller, MessagesProvider messagesProvider) {
       super(controller, messagesProvider);
       add = messagesProvider.getMessageFrom("button.add");
+      delete = messagesProvider.getMessageFrom("button.delete");
 
       frontCoverEditButton = new Button(messagesProvider.getMessageFrom("disc.editor.view.edit.image"));
       frontCover.setFitHeight(250);
@@ -101,9 +103,14 @@ public class DiscEditorView extends EditorView<Disc> {
       var tracksLabel = new Label(messagesProvider.getMessageFrom("disc.editor.view.tracks.label"));
       tracksLabel.setFont(font);
       var addTrackButton = new Button(add);
-
       addTrackButton.setOnAction(((DiscEditorController) controller)::addNewTrack);
-      var tracksHBox = new HBox(tracksLabel, addTrackButton);
+
+      var deleteTrackButton = new Button(delete);
+      Track selectedTrack;
+
+      deleteTrackButton.setOnAction(event -> ((DiscEditorController) controller).deleteTrack(event, tracks));
+
+      var tracksHBox = new HBox(tracksLabel, addTrackButton, deleteTrackButton);
       tracksHBox.setSpacing(10);
       center.add(tracksHBox, 0, 2, 1, 1);
       center.add(tracks, 0, 3, 1, 1);
