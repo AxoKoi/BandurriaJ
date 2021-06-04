@@ -43,7 +43,7 @@ public class DiscServiceTest {
    @Before
    public void setup() {
       catalogueService = new CatalogueService(catalogueRepository);
-      discService = new DiscService(discRepository, catalogueService);
+      discService = new DiscService(trackRepository, discRepository, catalogueService);
    }
 
    @Test
@@ -67,7 +67,7 @@ public class DiscServiceTest {
    }
 
    @Test
-   public void findByExternalIdentifier(){
+   public void findByExternalIdentifier() {
       //given
       Disc disc = buildCD();
       disc.getAllArtist().forEach(artist -> artistRepository.save(artist));
@@ -81,8 +81,41 @@ public class DiscServiceTest {
       Optional<Disc> discByExternalIdentifier = discService.findByExternalIdentifier(externalIdentifier);
 
       //then
-
       Assert.assertTrue(discByExternalIdentifier.isPresent());
+   }
+
+   @Test
+   public void addTrackToCD() {
+      //Given
+      Disc disc = buildCD();
+      discRepository.save(disc);
+      Track newTrack = new Track();
+      newTrack.setName("new Track");
+      newTrack.setDuration("2:56");
+      newTrack.setNumber(0);
+      //when
+      Disc updatedDisc = discService.addTrackToCd(disc, newTrack);
+
+      //Then
+      Assert.assertEquals(2, updatedDisc.getTracks().size());
+      Assert.assertTrue(updatedDisc.getTracks().contains(newTrack));
+
+   }
+
+   @Test
+   public void deleteTrackFromCD() {
+      //Given
+      Disc disc = buildCD();
+      discRepository.save(disc);
+      artistRepository.saveAll(disc.getAllArtist());
+      Track track = (Track) disc.getTracks().toArray()[0];
+
+      //when
+      Disc updatedDisc = discService.deleteTrackFromCD(disc, track);
+
+      //Then
+      Assert.assertEquals(0, updatedDisc.getTracks().size());
+      Assert.assertTrue(trackRepository.findByBusinessIdentifier(track.getBusinessIdentifier()).isEmpty());
    }
 
    private Disc buildCD() {
@@ -101,4 +134,5 @@ public class DiscServiceTest {
       disc.setTracks(tracks);
       return disc;
    }
+
 }

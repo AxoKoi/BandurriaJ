@@ -62,7 +62,7 @@ public class DiscEditorView extends EditorView<Disc> {
 
       addCoverImage(messagesProvider, font, centerGridPane);
 
-      centerGridPane.add(cancelButton, 0, 4, 1, 1);
+   //   centerGridPane.add(cancelButton, 0, 4, 1, 1);
       centerGridPane.add(saveButton, 1, 4, 1, 1);
       this.getChildren().add(centerGridPane);
 
@@ -106,8 +106,6 @@ public class DiscEditorView extends EditorView<Disc> {
       addTrackButton.setOnAction(((DiscEditorController) controller)::addNewTrack);
 
       var deleteTrackButton = new Button(delete);
-      Track selectedTrack;
-
       deleteTrackButton.setOnAction(event -> ((DiscEditorController) controller).deleteTrack(event, tracks));
 
       var tracksHBox = new HBox(tracksLabel, addTrackButton, deleteTrackButton);

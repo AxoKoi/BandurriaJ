@@ -13,10 +13,12 @@ import java.util.stream.Collectors;
 @Transactional
 public class DiscService implements SmartSearchService<Disc> {
 
+	private final TrackRepository trackRepository;
 	private final DiscRepository discRepository;
 	private final CatalogueService catalogueService;
 
-	public DiscService(DiscRepository discRepository, CatalogueService catalogueService) {
+	public DiscService(TrackRepository trackRepository, DiscRepository discRepository, CatalogueService catalogueService) {
+		this.trackRepository = trackRepository;
 		this.discRepository = discRepository;
 		this.catalogueService = catalogueService;
 	}
@@ -86,8 +88,15 @@ public class DiscService implements SmartSearchService<Disc> {
 	}
 
 	@Transactional
-	public void deleteTrackFromCD(Disc disc, Track track) {
+	public Disc deleteTrackFromCD(Disc disc, Track track) {
 		disc.getTracks().remove(track);
-		discRepository.save(disc);
+		trackRepository.delete(track);
+		return discRepository.save(disc);
+
+	}
+
+	public Disc addTrackToCd(Disc disc, Track track) {
+		disc.getTracks().add(track);
+		return discRepository.save(disc);
 	}
 }
