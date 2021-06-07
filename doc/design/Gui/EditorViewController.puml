@@ -1,0 +1,39 @@
+
+@startuml
+' Definitions
+abstract "Editor View"{
+    # onSave()
+    # onCancel()
+    + getEntitityToEdit()::Searchable
+    + {abstract} refresh(Searchable)
+}
+abstract CRUDView
+class ConcreteView
+
+abstract GuiController{
+    # {abstract} getView()::Node
+    # {abstract} refreshView(Searchable)
+}
+
+abstract "Editor Controller<Searchable>"{
+    + {abstract} onCancel(event)
+    + {abstract} onSave(event)
+}
+class ConcreteController
+
+'Relationships
+
+"Editor View"<|-- CRUDView
+CRUDView <|-- ConcreteView
+ConcreteView o-- "Editor View"
+
+GuiController <|-- "Editor Controller<Searchable>"
+"Editor Controller<Searchable>"<|--ConcreteController
+
+ConcreteController<-->ConcreteView
+
+GuiController-->Services : requests
+
+"Editor View"-->"Editor Controller<Searchable>" : onSave/onCancel
+
+@enduml
